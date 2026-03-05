@@ -103,6 +103,34 @@
       <!-- One-way mirror (dark, you can see your reflection faintly) -->
       <a-box position="2.99 2.5 0" width="0.05" height="3" depth="4" material="color:#111; metalness:0.9; opacity:0.8; transparent:true"></a-box>
 
+      <!-- Hidden observers behind one-way mirror (shadowy figures watching you) -->
+      <a-entity position="4 0 -1">
+        <a-cylinder position="0 0.75 0" radius="0.16" height="1" material="color:#0a0a0a"></a-cylinder>
+        <a-sphere position="0 1.4 0" radius="0.15" material="color:#2a2a2a"></a-sphere>
+        <a-sphere position="-0.04 1.43 -0.12" radius="0.02" material="color:#334; emissive:#334; emissiveIntensity:0.3"></a-sphere>
+        <a-sphere position="0.04 1.43 -0.12" radius="0.02" material="color:#334; emissive:#334; emissiveIntensity:0.3"></a-sphere>
+      </a-entity>
+      <a-entity position="4 0 0.6">
+        <a-cylinder position="0 0.75 0" radius="0.16" height="1" material="color:#0a0a0a"></a-cylinder>
+        <a-sphere position="0 1.4 0" radius="0.15" material="color:#1a1a1a"></a-sphere>
+        <a-sphere position="-0.04 1.43 -0.12" radius="0.02" material="color:#334; emissive:#334; emissiveIntensity:0.2"></a-sphere>
+        <a-sphere position="0.04 1.43 -0.12" radius="0.02" material="color:#334; emissive:#334; emissiveIntensity:0.2"></a-sphere>
+      </a-entity>
+      <a-entity position="4.5 0 -0.3">
+        <a-cylinder position="0 0.75 0" radius="0.15" height="0.95" material="color:#080808"></a-cylinder>
+        <a-sphere position="0 1.38 0" radius="0.14" material="color:#222"></a-sphere>
+        <a-sphere position="-0.04 1.41 -0.11" radius="0.02" material="color:#445; emissive:#445; emissiveIntensity:0.25"></a-sphere>
+        <a-sphere position="0.04 1.41 -0.11" radius="0.02" material="color:#445; emissive:#445; emissiveIntensity:0.25"></a-sphere>
+      </a-entity>
+      <a-entity position="5 0 0.8">
+        <a-cylinder position="0 0.75 0" radius="0.14" height="0.9" material="color:#0c0c0c"></a-cylinder>
+        <a-sphere position="0 1.35 0" radius="0.14" material="color:#1a1a1a"></a-sphere>
+      </a-entity>
+      <a-entity position="5.2 0 -0.8">
+        <a-cylinder position="0 0.75 0" radius="0.15" height="0.95" material="color:#0a0a0a"></a-cylinder>
+        <a-sphere position="0 1.38 0" radius="0.14" material="color:#222"></a-sphere>
+      </a-entity>
+
       <!-- Recording indicator (red dot) -->
       <a-sphere position="2 4.5 -2" radius="0.05" material="color:#ff0000; emissive:#ff0000; emissiveIntensity:0"
                 animation="property:material.emissiveIntensity; from:0; to:0.8; dur:1500; dir:alternate; loop:true"></a-sphere>
@@ -194,6 +222,154 @@
         <a-sphere position="0 1.35 0" radius="0.14" material="color:#111"></a-sphere>
       </a-entity>
 
+      <!-- LIVE STUDIO AUDIENCE (seated behind cameras, watching you) -->
+      <!-- Front row (8 people, closest to cameras) -->
+      <a-entity position="-4 0 -7.5">
+        <a-cylinder position="0 0.55 0" radius="0.14" height="0.8" material="color:#2a1a2a"></a-cylinder>
+        <a-sphere position="0 1.1 0" radius="0.13" material="color:#c0a080"></a-sphere>
+        <a-sphere position="-0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+        <a-sphere position="0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+      </a-entity>
+      <a-entity position="-2.5 0 -7.8">
+        <a-cylinder position="0 0.55 0" radius="0.14" height="0.8" material="color:#1a2a1a"></a-cylinder>
+        <a-sphere position="0 1.1 0" radius="0.13" material="color:#b89878"></a-sphere>
+        <a-sphere position="-0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+        <a-sphere position="0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+      </a-entity>
+      <a-entity position="-1 0 -8">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.8" material="color:#222233"></a-cylinder>
+        <a-sphere position="0 1.1 0" radius="0.13" material="color:#d4b898"></a-sphere>
+        <a-sphere position="-0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+        <a-sphere position="0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+      </a-entity>
+      <a-entity position="0.5 0 -8">
+        <a-cylinder position="0 0.55 0" radius="0.14" height="0.8" material="color:#2a2a1a"></a-cylinder>
+        <a-sphere position="0 1.1 0" radius="0.13" material="color:#c8a888"></a-sphere>
+        <a-sphere position="-0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+        <a-sphere position="0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+      </a-entity>
+      <a-entity position="2 0 -7.8">
+        <a-cylinder position="0 0.55 0" radius="0.14" height="0.8" material="color:#1a1a33"></a-cylinder>
+        <a-sphere position="0 1.1 0" radius="0.13" material="color:#c0a080"></a-sphere>
+        <a-sphere position="-0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+        <a-sphere position="0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+      </a-entity>
+      <a-entity position="3.5 0 -7.5">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.8" material="color:#2a1a1a"></a-cylinder>
+        <a-sphere position="0 1.1 0" radius="0.12" material="color:#b89070"></a-sphere>
+        <a-sphere position="-0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+        <a-sphere position="0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+      </a-entity>
+      <a-entity position="5.5 0 -6.5">
+        <a-cylinder position="0 0.55 0" radius="0.14" height="0.8" material="color:#222222"></a-cylinder>
+        <a-sphere position="0 1.1 0" radius="0.13" material="color:#d0b090"></a-sphere>
+        <a-sphere position="-0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+        <a-sphere position="0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+      </a-entity>
+      <a-entity position="-5.5 0 -6.5">
+        <a-cylinder position="0 0.55 0" radius="0.14" height="0.8" material="color:#1a2a2a"></a-cylinder>
+        <a-sphere position="0 1.1 0" radius="0.13" material="color:#c8a080"></a-sphere>
+        <a-sphere position="-0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+        <a-sphere position="0.035 1.13 0.1" radius="0.02" material="color:#111"></a-sphere>
+      </a-entity>
+      <!-- Second row (elevated, 10 people) -->
+      <a-entity position="-6 0.6 -9">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.78" material="color:#1a1a22"></a-cylinder>
+        <a-sphere position="0 1.08 0" radius="0.12" material="color:#c0a080"></a-sphere>
+      </a-entity>
+      <a-entity position="-4.5 0.6 -9.5">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.78" material="color:#22221a"></a-cylinder>
+        <a-sphere position="0 1.08 0" radius="0.12" material="color:#b89878"></a-sphere>
+      </a-entity>
+      <a-entity position="-3 0.6 -9.8">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.78" material="color:#1a2222"></a-cylinder>
+        <a-sphere position="0 1.08 0" radius="0.12" material="color:#d4b898"></a-sphere>
+      </a-entity>
+      <a-entity position="-1.5 0.6 -10">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.78" material="color:#221a1a"></a-cylinder>
+        <a-sphere position="0 1.08 0" radius="0.12" material="color:#c8a888"></a-sphere>
+      </a-entity>
+      <a-entity position="0 0.6 -10.2">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.78" material="color:#222"></a-cylinder>
+        <a-sphere position="0 1.08 0" radius="0.12" material="color:#c0a080"></a-sphere>
+      </a-entity>
+      <a-entity position="1.5 0.6 -10">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.78" material="color:#2a2a1a"></a-cylinder>
+        <a-sphere position="0 1.08 0" radius="0.12" material="color:#b89070"></a-sphere>
+      </a-entity>
+      <a-entity position="3 0.6 -9.8">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.78" material="color:#1a221a"></a-cylinder>
+        <a-sphere position="0 1.08 0" radius="0.12" material="color:#d0b090"></a-sphere>
+      </a-entity>
+      <a-entity position="4.5 0.6 -9.5">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.78" material="color:#2a1a22"></a-cylinder>
+        <a-sphere position="0 1.08 0" radius="0.12" material="color:#c8a080"></a-sphere>
+      </a-entity>
+      <a-entity position="6 0.6 -9">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.78" material="color:#1a1a2a"></a-cylinder>
+        <a-sphere position="0 1.08 0" radius="0.12" material="color:#b89878"></a-sphere>
+      </a-entity>
+      <a-entity position="7 0.6 -8">
+        <a-cylinder position="0 0.55 0" radius="0.13" height="0.78" material="color:#222233"></a-cylinder>
+        <a-sphere position="0 1.08 0" radius="0.12" material="color:#d4b898"></a-sphere>
+      </a-entity>
+      <!-- Third row (higher, 12 people, dimmer) -->
+      <a-entity position="-7 1.4 -10.5">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#151520"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#a08868"></a-sphere>
+      </a-entity>
+      <a-entity position="-5.5 1.4 -11">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#201518"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#b09878"></a-sphere>
+      </a-entity>
+      <a-entity position="-4 1.4 -11.3">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#152015"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#c0a080"></a-sphere>
+      </a-entity>
+      <a-entity position="-2.5 1.4 -11.5">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#181820"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#a89070"></a-sphere>
+      </a-entity>
+      <a-entity position="-1 1.4 -11.7">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#202018"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#b89878"></a-sphere>
+      </a-entity>
+      <a-entity position="0.5 1.4 -11.8">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#181518"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#c8a888"></a-sphere>
+      </a-entity>
+      <a-entity position="2 1.4 -11.5">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#152020"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#a08060"></a-sphere>
+      </a-entity>
+      <a-entity position="3.5 1.4 -11.3">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#201820"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#b09878"></a-sphere>
+      </a-entity>
+      <a-entity position="5 1.4 -11">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#182018"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#c0a080"></a-sphere>
+      </a-entity>
+      <a-entity position="6.5 1.4 -10.5">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#181518"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#a89070"></a-sphere>
+      </a-entity>
+      <a-entity position="-7.5 1.4 -9.5">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#202020"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#b89070"></a-sphere>
+      </a-entity>
+      <a-entity position="7.5 1.4 -9.5">
+        <a-cylinder position="0 0.5 0" radius="0.12" height="0.7" material="color:#181820"></a-cylinder>
+        <a-sphere position="0 0.98 0" radius="0.11" material="color:#d0b090"></a-sphere>
+      </a-entity>
+      <!-- Audience murmur indicator (phones lit up) -->
+      <a-sphere position="-3 1.6 -9.2" radius="0.04" material="color:#88aaff; emissive:#88aaff; emissiveIntensity:0.4; fog:false"
+               animation="property:material.emissiveIntensity; from:0.2; to:0.6; dur:2000; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="2 1.6 -10" radius="0.04" material="color:#88aaff; emissive:#88aaff; emissiveIntensity:0.3; fog:false"
+               animation="property:material.emissiveIntensity; from:0.1; to:0.5; dur:2500; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="5 0.8 -7" radius="0.04" material="color:#88aaff; emissive:#88aaff; emissiveIntensity:0.5; fog:false"
+               animation="property:material.emissiveIntensity; from:0.3; to:0.7; dur:1800; dir:alternate; loop:true"></a-sphere>
+
       <!-- "ON AIR" sign on wall -->
       <a-box position="0 5 -8" width="2" height="0.8" depth="0.1" material="color:#330000; emissive:#ff0000; emissiveIntensity:0.3"></a-box>
       <a-text position="0 5 -7.94" value="ON AIR" color="#ff0000" scale="0.5 0.5 0.5" align="center"
@@ -205,7 +381,11 @@
       <a-text position="6 3.9 -2.94" value="14,200,000" color="#ff4444" scale="0.15 0.15 0.15" align="center"
               animation="property:value; from:14200000; to:14200000; dur:1; loop:false"></a-text>
 
-      <a-text value="LIVE TV — 14.2 MILLION watching right now.\nThe teleprompter just went blank. You're on your own.\nThree cameras record every bead of sweat.\nThe producer screams in your earpiece: KEEP TALKING!" position="0 4.5 -2" align="center" color="#ff6688" scale="0.35 0.35 0.35" face-camera></a-text>
+      <!-- Audience seating area (visible behind cameras + lights) -->
+      <a-box position="0 0.3 -11" width="18" height="0.6" depth="4" material="color:#1a1a22; roughness:0.8"></a-box>
+      <a-box position="0 1 -13" width="18" height="0.6" depth="3" material="color:#1a1a22; roughness:0.8"></a-box>
+
+      <a-text value="LIVE TV — 14.2 MILLION watching right now.\nThe teleprompter just went blank. You're on your own.\n30+ studio audience stare. Cameras record every bead of sweat.\nThe producer screams in your earpiece: KEEP TALKING!" position="0 4.5 -2" align="center" color="#ff6688" scale="0.35 0.35 0.35" face-camera></a-text>
     </a-entity>
 
     <!-- ======= LEVEL 3: WORLD ARENA SUMMIT ======= -->
@@ -328,6 +508,55 @@
                animation="property:material.opacity; from:0.15; to:0.25; dur:3000; dir:alternate; loop:true"></a-plane>
       <a-text position="0 7 -34.7" value="LIVE BROADCAST TO 194 NATIONS" color="#ff4444" scale="0.6 0.6 0.6" align="center"
               animation="property:material.opacity; from:1; to:0.5; dur:2000; dir:alternate; loop:true"></a-text>
+
+      <!-- Extra side galleries (left and right upper tiers) -->
+      <!-- Left upper gallery -->
+      <a-entity position="-28 4.5 -8"><a-cylinder position="0 0.6 0" radius="0.11" height="0.8" material="color:#1a1a22"></a-cylinder><a-sphere position="0 1.1 0" radius="0.1" material="color:#c0a080"></a-sphere></a-entity>
+      <a-entity position="-27 4.5 -11"><a-cylinder position="0 0.6 0" radius="0.11" height="0.8" material="color:#22221a"></a-cylinder><a-sphere position="0 1.1 0" radius="0.1" material="color:#b89878"></a-sphere></a-entity>
+      <a-entity position="-26 4.5 -14"><a-cylinder position="0 0.6 0" radius="0.11" height="0.8" material="color:#1a2222"></a-cylinder><a-sphere position="0 1.1 0" radius="0.1" material="color:#d4b898"></a-sphere></a-entity>
+      <a-entity position="-28 7 -10"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#151520"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#c8a888"></a-sphere></a-entity>
+      <a-entity position="-27 7 -13"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#201518"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#c0a080"></a-sphere></a-entity>
+      <a-entity position="-26 7 -16"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#181820"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#b89070"></a-sphere></a-entity>
+      <!-- Right upper gallery -->
+      <a-entity position="28 4.5 -8"><a-cylinder position="0 0.6 0" radius="0.11" height="0.8" material="color:#221a1a"></a-cylinder><a-sphere position="0 1.1 0" radius="0.1" material="color:#d0b090"></a-sphere></a-entity>
+      <a-entity position="27 4.5 -11"><a-cylinder position="0 0.6 0" radius="0.11" height="0.8" material="color:#1a1a2a"></a-cylinder><a-sphere position="0 1.1 0" radius="0.1" material="color:#c8a080"></a-sphere></a-entity>
+      <a-entity position="26 4.5 -14"><a-cylinder position="0 0.6 0" radius="0.11" height="0.8" material="color:#2a1a22"></a-cylinder><a-sphere position="0 1.1 0" radius="0.1" material="color:#b89878"></a-sphere></a-entity>
+      <a-entity position="28 7 -10"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#182018"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#d4b898"></a-sphere></a-entity>
+      <a-entity position="27 7 -13"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#201820"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#c0a888"></a-sphere></a-entity>
+      <a-entity position="26 7 -16"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#152015"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#b89070"></a-sphere></a-entity>
+
+      <!-- Row 5 (nosebleed section, upper balcony, farthest) -->
+      <a-entity id="row5">
+        <a-entity position="-22 9 -22"><a-cylinder position="0 0.45 0" radius="0.09" height="0.6" material="color:#121218"></a-cylinder><a-sphere position="0 0.85 0" radius="0.08" material="color:#a08868"></a-sphere></a-entity>
+        <a-entity position="-17 9 -26"><a-cylinder position="0 0.45 0" radius="0.09" height="0.6" material="color:#181215"></a-cylinder><a-sphere position="0 0.85 0" radius="0.08" material="color:#b09878"></a-sphere></a-entity>
+        <a-entity position="-11 9 -28"><a-cylinder position="0 0.45 0" radius="0.09" height="0.6" material="color:#121812"></a-cylinder><a-sphere position="0 0.85 0" radius="0.08" material="color:#c0a080"></a-sphere></a-entity>
+        <a-entity position="-5 9 -29.5"><a-cylinder position="0 0.45 0" radius="0.09" height="0.6" material="color:#151518"></a-cylinder><a-sphere position="0 0.85 0" radius="0.08" material="color:#a89070"></a-sphere></a-entity>
+        <a-entity position="0 9 -30"><a-cylinder position="0 0.45 0" radius="0.09" height="0.6" material="color:#181818"></a-cylinder><a-sphere position="0 0.85 0" radius="0.08" material="color:#b89878"></a-sphere></a-entity>
+        <a-entity position="5 9 -29.5"><a-cylinder position="0 0.45 0" radius="0.09" height="0.6" material="color:#181215"></a-cylinder><a-sphere position="0 0.85 0" radius="0.08" material="color:#c8a888"></a-sphere></a-entity>
+        <a-entity position="11 9 -28"><a-cylinder position="0 0.45 0" radius="0.09" height="0.6" material="color:#121818"></a-cylinder><a-sphere position="0 0.85 0" radius="0.08" material="color:#d0b090"></a-sphere></a-entity>
+        <a-entity position="17 9 -26"><a-cylinder position="0 0.45 0" radius="0.09" height="0.6" material="color:#151218"></a-cylinder><a-sphere position="0 0.85 0" radius="0.08" material="color:#c0a080"></a-sphere></a-entity>
+        <a-entity position="22 9 -22"><a-cylinder position="0 0.45 0" radius="0.09" height="0.6" material="color:#181815"></a-cylinder><a-sphere position="0 0.85 0" radius="0.08" material="color:#b89070"></a-sphere></a-entity>
+      </a-entity>
+
+      <!-- More camera flashes from audience -->
+      <a-sphere position="-18 4 -18" radius="0.06" material="color:#fff; emissive:#fff; emissiveIntensity:0; fog:false"
+               animation="property:material.emissiveIntensity; from:0; to:3; dur:50; delay:2000; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="12 6.5 -26" radius="0.06" material="color:#fff; emissive:#fff; emissiveIntensity:0; fog:false"
+               animation="property:material.emissiveIntensity; from:0; to:2.5; dur:50; delay:7000; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="-22 2.5 -5" radius="0.06" material="color:#fff; emissive:#fff; emissiveIntensity:0; fog:false"
+               animation="property:material.emissiveIntensity; from:0; to:3; dur:50; delay:4500; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="0 9.5 -29" radius="0.05" material="color:#fff; emissive:#fff; emissiveIntensity:0; fog:false"
+               animation="property:material.emissiveIntensity; from:0; to:2; dur:50; delay:9500; dir:alternate; loop:true"></a-sphere>
+
+      <!-- Phone screens glowing in audience -->
+      <a-sphere position="-9 4.2 -22" radius="0.05" material="color:#88aaff; emissive:#88aaff; emissiveIntensity:0.4; fog:false"
+               animation="property:material.emissiveIntensity; from:0.2; to:0.6; dur:2000; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="5 6.8 -27.5" radius="0.05" material="color:#88aaff; emissive:#88aaff; emissiveIntensity:0.3; fog:false"
+               animation="property:material.emissiveIntensity; from:0.1; to:0.5; dur:2500; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="-16 2 -12" radius="0.05" material="color:#88aaff; emissive:#88aaff; emissiveIntensity:0.35; fog:false"
+               animation="property:material.emissiveIntensity; from:0.15; to:0.55; dur:1800; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="20 4 -17" radius="0.05" material="color:#88aaff; emissive:#88aaff; emissiveIntensity:0.4; fog:false"
+               animation="property:material.emissiveIntensity; from:0.2; to:0.6; dur:2200; dir:alternate; loop:true"></a-sphere>
 
       <!-- Press photographers (flashes randomly) -->
       <a-sphere position="-8 1.5 -9" radius="0.08" material="color:#fff; emissive:#fff; emissiveIntensity:0; fog:false"
