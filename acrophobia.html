@@ -21,6 +21,9 @@
     #fall-overlay .fall-text{position:absolute;top:40%;left:50%;transform:translate(-50%,-50%);color:#ff3333;font-family:Inter,sans-serif;font-size:42px;font-weight:900;letter-spacing:8px;text-shadow:0 0 30px rgba(255,0,0,0.7);animation:fallPulse 0.3s ease-in-out infinite}
     #fall-overlay .fall-alt{position:absolute;top:55%;left:50%;transform:translateX(-50%);color:#ffa94d;font-family:Inter,sans-serif;font-size:20px;font-weight:700;letter-spacing:3px;text-shadow:0 0 12px rgba(255,169,77,0.8)}
     @keyframes fallPulse{0%,100%{opacity:1;transform:translate(-50%,-50%) scale(1)}50%{opacity:0.6;transform:translate(-50%,-50%) scale(1.05)}}
+    #fall-overlay .try-again{position:absolute;top:68%;left:50%;transform:translateX(-50%);padding:14px 40px;background:rgba(255,60,60,0.8);color:#fff;font-family:Inter,sans-serif;font-size:16px;font-weight:700;letter-spacing:3px;border:2px solid #ff6666;border-radius:8px;cursor:pointer;pointer-events:auto;opacity:0;transition:opacity 0.5s;text-shadow:0 0 8px rgba(255,0,0,0.6);animation:none}
+    #fall-overlay .try-again:hover{background:rgba(255,80,80,1);transform:translateX(-50%) scale(1.05)}
+    #fall-overlay .try-again.show{opacity:1;animation:fallPulse 1.5s ease-in-out infinite}
   </style>
 </head>
 <body>
@@ -28,7 +31,7 @@
   <div id="wind-overlay"></div>
   <div id="vertigo-overlay"></div>
   <div id="lift-overlay"><span class="lift-arrow">▲</span><span class="lift-text">ASCENDING</span></div>
-  <div id="fall-overlay"><div class="fall-text">FALLING</div><div class="fall-alt" id="fall-alt">300m</div></div>
+  <div id="fall-overlay"><div class="fall-text">FALLING</div><div class="fall-alt" id="fall-alt">300m</div><button class="try-again" id="try-again-btn" onclick="retryLevel()">TRY AGAIN</button></div>
   <div class="scene-ui">
     <div class="scene-header">
       <a href="index.html" class="back-btn">← Back</a>
@@ -427,6 +430,8 @@
 
     function setLevel(num) {
       if (liftAnim) { cancelAnimationFrame(liftAnim); liftAnim = null; }
+      if (fallAnim) { cancelAnimationFrame(fallAnim); fallAnim = null; }
+      isFalling = false;
       currentLevel = num;
 
       document.getElementById('level1').setAttribute('visible', num === 1);
@@ -437,11 +442,22 @@
       });
 
       var rig = document.getElementById('rig');
+      var cam = document.querySelector('a-camera');
       var scene = document.getElementById('vrscene');
       var wind = document.getElementById('wind-overlay');
       var vertigo = document.getElementById('vertigo-overlay');
       var altDisplay = document.getElementById('alt-display');
       var liftEl = document.getElementById('lift-overlay');
+      var fallEl = document.getElementById('fall-overlay');
+      var tryBtn = document.getElementById('try-again-btn');
+
+      // Hide fall overlay and try-again button
+      fallEl.style.opacity = '0';
+      fallEl.style.background = '';
+      tryBtn.classList.remove('show');
+
+      // Reset camera local position (wasd-controls moves camera, not rig)
+      cam.setAttribute('position', '0 0 0');
 
       // Lift configs: camera starts at ground, rises to destination
       var configs = {
@@ -538,24 +554,45 @@
       3: { minX:-5.5, maxX:5.5, minZ:-7.5, maxZ:7.5, groundY:-6771, label:'400km' }
     };
 
+    function retryLevel() {
+      setLevel(currentLevel);
+    }
+
+    function getCameraWorldPos() {
+      var cam = document.querySelector('a-camera');
+      var wp = new THREE.Vector3();
+      cam.object3D.getWorldPosition(wp);
+      return wp;
+    }
+
     function triggerFall() {
       if (isFalling || liftAnim) return;
       isFalling = true;
       var rig = document.getElementById('rig');
+      var cam = document.querySelector('a-camera');
       var fallEl = document.getElementById('fall-overlay');
       var fallAltEl = document.getElementById('fall-alt');
       var altDisplay = document.getElementById('alt-display');
       var wind = document.getElementById('wind-overlay');
       var vertigo = document.getElementById('vertigo-overlay');
+      var tryBtn = document.getElementById('try-again-btn');
       var bounds = platformBounds[currentLevel];
       fallEl.style.opacity = '1';
+      fallEl.style.background = 'linear-gradient(to bottom,rgba(255,0,0,0.15),rgba(0,0,0,0.8))';
       wind.style.opacity = '0.8';
       vertigo.style.opacity = '0.9';
+      tryBtn.classList.remove('show');
 
-      var pos = rig.getAttribute('position');
-      var startY = pos.y;
-      var startX = pos.x;
-      var startZ = pos.z;
+      // Get camera world position for accurate start
+      var worldPos = getCameraWorldPos();
+      var startY = worldPos.y;
+      var startX = worldPos.x;
+      var startZ = worldPos.z;
+
+      // Reset camera local offset and teleport rig to camera's world position
+      cam.setAttribute('position', '0 0 0');
+      rig.setAttribute('position', startX.toFixed(2) + ' ' + startY.toFixed(2) + ' ' + startZ.toFixed(2));
+
       var totalDrop = startY - bounds.groundY;
       var fallDur = currentLevel === 3 ? 12000 : (currentLevel === 2 ? 8000 : 5000);
       var startTime = performance.now();
@@ -592,29 +629,27 @@
         if (t < 1) {
           fallAnim = requestAnimationFrame(fallStep);
         } else {
-          // Impact — flash red then reset
-          fallEl.style.background = 'rgba(200,0,0,0.6)';
+          // Impact — flash red, show try again
+          fallEl.style.background = 'rgba(200,0,0,0.7)';
           vertigo.style.opacity = '1';
+          fallAltEl.textContent = 'IMPACT';
+          altDisplay.textContent = '0m';
+          fallAnim = null;
+          // Show Try Again button after 1 second
           setTimeout(function() {
-            fallEl.style.opacity = '0';
-            fallEl.style.background = '';
-            isFalling = false;
-            fallAnim = null;
-            // Reset — re-lift from ground
-            setLevel(currentLevel);
-          }, 1800);
+            tryBtn.classList.add('show');
+          }, 1000);
         }
       }
       fallAnim = requestAnimationFrame(fallStep);
     }
 
-    // Edge detection loop — runs every 200ms after lift completes
+    // Edge detection loop — uses camera WORLD position (wasd moves camera, not rig)
     setInterval(function() {
       if (isFalling || liftAnim || !currentLevel) return;
-      var rig = document.getElementById('rig');
-      var pos = rig.getAttribute('position');
+      var wp = getCameraWorldPos();
       var b = platformBounds[currentLevel];
-      if (pos.x < b.minX || pos.x > b.maxX || pos.z < b.minZ || pos.z > b.maxZ) {
+      if (wp.x < b.minX || wp.x > b.maxX || wp.z < b.minZ || wp.z > b.maxZ) {
         triggerFall();
       }
     }, 200);
