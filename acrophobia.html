@@ -13,12 +13,17 @@
     #wind-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50;opacity:0;transition:opacity 1s}
     #vertigo-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:49;opacity:0;transition:opacity 2s;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.5) 100%)}
     @keyframes screenShake{0%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(2px,-3px)}75%{transform:translate(-2px,3px)}100%{transform:translate(0,0)}}
+    #lift-overlay{position:fixed;bottom:28%;left:50%;transform:translateX(-50%);z-index:52;pointer-events:none;text-align:center;transition:opacity 0.5s;opacity:0}
+    #lift-overlay .lift-arrow{color:#ffa94d;font-size:36px;display:block;animation:liftPulse 1s ease-in-out infinite;text-shadow:0 0 20px rgba(255,169,77,0.8)}
+    #lift-overlay .lift-text{color:#ffa94d;font-family:Inter,sans-serif;font-size:13px;font-weight:700;letter-spacing:4px;text-shadow:0 0 12px rgba(255,169,77,0.6)}
+    @keyframes liftPulse{0%,100%{transform:translateY(4px);opacity:0.3}50%{transform:translateY(-4px);opacity:1}}
   </style>
 </head>
 <body>
   <div id="height-indicator"><span class="height-val" id="alt-display">300m</span>above ground</div>
   <div id="wind-overlay"></div>
   <div id="vertigo-overlay"></div>
+  <div id="lift-overlay"><span class="lift-arrow">▲</span><span class="lift-text">ASCENDING</span></div>
   <div class="scene-ui">
     <div class="scene-header">
       <a href="index.html" class="back-btn">← Back</a>
@@ -162,6 +167,14 @@
         <a-box width="4" height="0.01" depth="0.01" material="color:#fff; opacity:0.2; transparent:true"></a-box>
       </a-entity>
 
+      <!-- Cloud layers encountered during ascent -->
+      <a-sphere position="-20 -180 -15" radius="22" material="color:#bbc; opacity:0.14; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="15 -170 10" radius="18" material="color:#ccd; opacity:0.12; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="5 -160 -20" radius="25" material="color:#aab; opacity:0.1; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="-10 -100 12" radius="20" material="color:#dde; opacity:0.1; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="18 -90 -10" radius="15" material="color:#bbc; opacity:0.08; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="-25 -140 5" radius="16" material="color:#ccc; opacity:0.11; transparent:true; fog:false"></a-sphere>
+
       <a-text value="COLLAPSING SKYSCRAPER — 300m up.\nThe floor is cracking. Debris falls into the void.\nNo complete railing. The building groans and shifts.\nLook down through the hole in the floor." position="0 3.5 -6" align="center" color="#ffa94d" scale="0.55 0.55 0.55" face-camera></a-text>
     </a-entity>
 
@@ -259,6 +272,14 @@
       <a-entity animation="property:position; from:4 25 20; to:7 1 22; dur:11000; loop:true; easing:linear; delay:6000">
         <a-sphere radius="0.08" material="color:#444; opacity:0.3; transparent:true"></a-sphere>
       </a-entity>
+
+      <!-- Volcanic smoke/clouds encountered during ascent -->
+      <a-sphere position="-20 -320 18" radius="28" material="color:#443322; opacity:0.18; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="15 -280 -12" radius="22" material="color:#554433; opacity:0.15; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="5 -220 22" radius="25" material="color:#553322; opacity:0.16; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="-12 -160 10" radius="20" material="color:#664433; opacity:0.12; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="20 -100 -8" radius="18" material="color:#554422; opacity:0.13; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="-8 -60 18" radius="22" material="color:#5a3a20; opacity:0.1; transparent:true; fog:false"></a-sphere>
 
       <a-text value="ACTIVE VOLCANO — 3,700m elevation.\nThe caldera drops 400m to molten lava below.\nThe ground shakes. Toxic fumes burn your lungs.\nRock crumbles at the edge. One wrong step..." position="0 4 14" align="center" color="#ff8844" scale="0.5 0.5 0.5" face-camera></a-text>
     </a-entity>
@@ -373,6 +394,22 @@
       <!-- Moon -->
       <a-sphere position="-150 60 -250" radius="12" material="color:#ddd; emissive:#aaa; emissiveIntensity:0.15; fog:false"></a-sphere>
 
+      <!-- Launch ground + atmosphere layers for ascent -->
+      <a-plane position="0 -155 0" rotation="-90 0 0" width="600" height="600" material="color:#2a4a2a; fog:false"></a-plane>
+      <a-plane position="0 -154.8 0" rotation="-90 0 0" width="24" height="24" material="color:#555; metalness:0.4; fog:false"></a-plane>
+      <!-- Low thick clouds -->
+      <a-sphere position="0 -120 0" radius="50" material="color:#aabbcc; opacity:0.14; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="-35 -115 25" radius="40" material="color:#bbccdd; opacity:0.12; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="30 -110 -20" radius="35" material="color:#aabbcc; opacity:0.1; transparent:true; fog:false"></a-sphere>
+      <!-- Mid-altitude clouds -->
+      <a-sphere position="20 -80 15" radius="45" material="color:#8899bb; opacity:0.1; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="-25 -70 -15" radius="40" material="color:#99aacc; opacity:0.08; transparent:true; fog:false"></a-sphere>
+      <!-- High wispy clouds -->
+      <a-sphere position="0 -45 0" radius="35" material="color:#4466aa; opacity:0.06; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="25 -30 -25" radius="28" material="color:#334488; opacity:0.05; transparent:true; fog:false"></a-sphere>
+      <!-- Near-space glow -->
+      <a-sphere position="0 -15 0" radius="20" material="color:#1a2255; opacity:0.04; transparent:true; fog:false"></a-sphere>
+
       <a-text value="DISINTEGRATING SPACE STATION — 400km above Earth.\nThe station is tearing apart. An empty suit drifts past.\nBelow is 400km of nothing. You are utterly alone.\nSparks fly. Oxygen is running out." position="0 3 -5" align="center" color="#ffa94d" scale="0.4 0.4 0.4" face-camera></a-text>
     </a-entity>
   </a-scene>
@@ -380,27 +417,124 @@
   <script src="shared.js"></script>
   <script>
     var altitudes = { 1: '300m', 2: '3,700m', 3: '400km' };
+    var liftAnim = null;
+    var currentLevel = 0;
+
     function setLevel(num) {
+      if (liftAnim) { cancelAnimationFrame(liftAnim); liftAnim = null; }
+      currentLevel = num;
+
       document.getElementById('level1').setAttribute('visible', num === 1);
       document.getElementById('level2').setAttribute('visible', num === 2);
       document.getElementById('level3').setAttribute('visible', num === 3);
+      document.querySelectorAll('.level-btn').forEach(function(btn, i) {
+        btn.classList.toggle('active', i === num - 1);
+      });
+
       var rig = document.getElementById('rig');
       var scene = document.getElementById('vrscene');
       var wind = document.getElementById('wind-overlay');
       var vertigo = document.getElementById('vertigo-overlay');
-      if (num === 1) { rig.setAttribute('position','0 1.6 5'); scene.setAttribute('fog','type:linear; color:#8899aa; near:80; far:600'); wind.style.opacity='0.35'; vertigo.style.opacity='0.25'; }
-      if (num === 2) { rig.setAttribute('position','0 1.6 20'); scene.setAttribute('fog','type:linear; color:#1a0800; near:50; far:400'); wind.style.opacity='0.5'; vertigo.style.opacity='0.5'; }
-      if (num === 3) { rig.setAttribute('position','0 1.6 0'); scene.setAttribute('fog','type:linear; color:#000002; near:200; far:8000'); wind.style.opacity='0'; vertigo.style.opacity='0.7'; }
-      document.getElementById('alt-display').textContent = altitudes[num];
-      document.querySelectorAll('.level-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === num - 1); });
-      showComfortMessage();
-    }
-    setInterval(function() {
-      if (document.getElementById('level1').getAttribute('visible')) {
-        document.getElementById('vertigo-overlay').style.animation = 'screenShake 0.6s ease';
-        setTimeout(function() { document.getElementById('vertigo-overlay').style.animation = ''; }, 600);
+      var altDisplay = document.getElementById('alt-display');
+      var liftEl = document.getElementById('lift-overlay');
+
+      // Lift configs: camera starts at ground, rises to destination
+      var configs = {
+        1: { startY:-298, endY:1.6, startZ:16, endZ:5, maxAlt:300, unit:'m', dur:7000, endWind:0.35, endVertigo:0.25 },
+        2: { startY:-350, endY:1.6, startZ:20, endZ:20, maxAlt:3700, unit:'m', dur:9000, endWind:0.5, endVertigo:0.5 },
+        3: { startY:-150, endY:1.6, startZ:0, endZ:0, maxAlt:400, unit:'km', dur:14000, endWind:0, endVertigo:0.7 }
+      };
+      var c = configs[num];
+
+      // Start at ground level
+      rig.setAttribute('position', '0 ' + c.startY + ' ' + c.startZ);
+      wind.style.opacity = '0';
+      vertigo.style.opacity = '0';
+      altDisplay.textContent = '0m';
+      liftEl.style.opacity = '1';
+
+      // Ground-level fog
+      if (num === 1) scene.setAttribute('fog', 'type:linear; color:#aabbcc; near:5; far:120');
+      if (num === 2) scene.setAttribute('fog', 'type:linear; color:#2a3a2a; near:5; far:150');
+      if (num === 3) scene.setAttribute('fog', 'type:linear; color:#6699bb; near:8; far:120');
+
+      var startTime = performance.now();
+
+      function step(now) {
+        var t = Math.min((now - startTime) / c.dur, 1);
+        // easeInOutCubic: slow takeoff, fast middle, gentle arrival
+        var e = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2;
+
+        // Interpolate position
+        var y = c.startY + (c.endY - c.startY) * e;
+        var z = c.startZ + (c.endZ - c.startZ) * e;
+        rig.setAttribute('position', '0 ' + y.toFixed(2) + ' ' + z.toFixed(2));
+
+        // Live altitude counter
+        var alt = c.maxAlt * e;
+        if (c.unit === 'km') {
+          altDisplay.textContent = alt < 1 ? Math.round(alt * 1000).toLocaleString() + 'm' : alt.toFixed(1) + 'km';
+        } else {
+          altDisplay.textContent = Math.round(alt).toLocaleString() + 'm';
+        }
+
+        // Progressive wind & vertigo
+        wind.style.opacity = (c.endWind * e).toFixed(3);
+        vertigo.style.opacity = (c.endVertigo * e).toFixed(3);
+
+        // Level 1: fog clears as you rise above city haze
+        if (num === 1) {
+          var fogNear = 5 + 75 * e, fogFar = 120 + 480 * e;
+          scene.setAttribute('fog', 'type:linear; color:#8899aa; near:' + fogNear.toFixed(0) + '; far:' + fogFar.toFixed(0));
+        }
+        // Level 2: fog transitions from green mountain to volcanic red
+        if (num === 2) {
+          var r2 = Math.round(42 - 16*e), g2 = Math.round(58 - 50*e), b2 = Math.round(42 - 42*e);
+          scene.setAttribute('fog', 'type:linear; color:rgb('+r2+','+g2+','+b2+'); near:'+(5+45*e).toFixed(0)+'; far:'+(150+250*e).toFixed(0));
+        }
+        // Level 3: sky transitions blue → dark → space
+        if (num === 3) {
+          var sky3 = document.querySelector('#level3 a-sky');
+          if (t < 0.15) sky3.setAttribute('color', '#6699cc');
+          else if (t < 0.3) sky3.setAttribute('color', '#3366aa');
+          else if (t < 0.45) sky3.setAttribute('color', '#1a3377');
+          else if (t < 0.6) sky3.setAttribute('color', '#0a1a44');
+          else if (t < 0.75) sky3.setAttribute('color', '#050a22');
+          else sky3.setAttribute('color', '#000002');
+          scene.setAttribute('fog','type:linear; color:#000005; near:'+(8+192*e).toFixed(0)+'; far:'+(120+7880*e).toFixed(0));
+        }
+
+        // Fade out ascending indicator near end
+        if (t > 0.85) liftEl.style.opacity = ((1 - t) / 0.15).toFixed(3);
+
+        if (t < 1) {
+          liftAnim = requestAnimationFrame(step);
+        } else {
+          // Arrived at destination
+          liftAnim = null;
+          liftEl.style.opacity = '0';
+          altDisplay.textContent = altitudes[num];
+          if (num === 1) scene.setAttribute('fog','type:linear; color:#8899aa; near:80; far:600');
+          if (num === 2) scene.setAttribute('fog','type:linear; color:#1a0800; near:50; far:400');
+          if (num === 3) scene.setAttribute('fog','type:linear; color:#000002; near:200; far:8000');
+          showComfortMessage();
+        }
       }
-    }, 7000 + Math.random() * 5000);
+
+      liftAnim = requestAnimationFrame(step);
+    }
+
+    // Periodic building shake for Level 1 (only after arrival)
+    (function shakeLoop() {
+      setTimeout(function() {
+        if (currentLevel === 1 && !liftAnim) {
+          document.getElementById('vertigo-overlay').style.animation = 'screenShake 0.6s ease';
+          setTimeout(function() { document.getElementById('vertigo-overlay').style.animation = ''; }, 600);
+        }
+        shakeLoop();
+      }, 7000 + Math.random() * 5000);
+    })();
+
     window.addEventListener('load', function() { initPhobiaScene(); initVRPhobiaApp(); setLevel(1); });
   </script>
 </body>
