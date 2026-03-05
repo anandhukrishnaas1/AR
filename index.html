@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PhobiaVR — Therapy Through Virtual Reality</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <!-- Hero / Landing -->
+    <header class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">Phobia<span class="accent">VR</span></h1>
+        <p class="hero-subtitle">Exposure Therapy in Virtual Reality</p>
+        <p class="hero-desc">
+          Gradually face your fears in safe, immersive VR environments.
+          Choose a phobia below to begin your journey toward recovery.
+        </p>
+        <div class="scroll-hint">↓ Choose Your Session ↓</div>
+      </div>
+    </header>
+
+    <!-- Phobia Cards -->
+    <main class="sessions">
+      <h2 class="section-title">Therapy Sessions</h2>
+      <p class="section-desc">Each session has 3 intensity levels. Start easy and progress at your own pace.</p>
+
+      <div class="card-grid">
+        <!-- Social Anxiety -->
+        <div class="card card-social" onclick="window.location.href='social.html'">
+          <div class="card-icon">🗣️</div>
+          <h3>Social Anxiety</h3>
+          <p>Practice being in social situations — from a quiet café to a crowded auditorium stage.</p>
+          <div class="card-levels">
+            <span class="level easy">Level 1: Café</span>
+            <span class="level medium">Level 2: Classroom</span>
+            <span class="level hard">Level 3: Stage</span>
+          </div>
+          <button class="card-btn">Enter Session →</button>
+        </div>
+
+        <!-- Acrophobia -->
+        <div class="card card-acro" onclick="window.location.href='acrophobia.html'">
+          <div class="card-icon">🏔️</div>
+          <h3>Acrophobia</h3>
+          <p>Overcome fear of heights — from a low balcony to a mountain cliff edge.</p>
+          <div class="card-levels">
+            <span class="level easy">Level 1: Balcony</span>
+            <span class="level medium">Level 2: Rooftop</span>
+            <span class="level hard">Level 3: Cliff</span>
+          </div>
+          <button class="card-btn">Enter Session →</button>
+        </div>
+
+        <!-- Aquaphobia -->
+        <div class="card card-aqua" onclick="window.location.href='aquaphobia.html'">
+          <div class="card-icon">🌊</div>
+          <h3>Aquaphobia</h3>
+          <p>Face your fear of water — from a calm pool to the deep open ocean.</p>
+          <div class="card-levels">
+            <span class="level easy">Level 1: Pool</span>
+            <span class="level medium">Level 2: Lake</span>
+            <span class="level hard">Level 3: Ocean</span>
+          </div>
+          <button class="card-btn">Enter Session →</button>
+        </div>
+
+        <!-- Nyctophobia -->
+        <div class="card card-nycto" onclick="window.location.href='nyctophobia.html'">
+          <div class="card-icon">🌑</div>
+          <h3>Nyctophobia</h3>
+          <p>Conquer the fear of darkness — from a dim room to a dark forest at midnight.</p>
+          <div class="card-levels">
+            <span class="level easy">Level 1: Dim Room</span>
+            <span class="level medium">Level 2: Twilight Path</span>
+            <span class="level hard">Level 3: Dark Forest</span>
+          </div>
+          <button class="card-btn">Enter Session →</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Info -->
+    <section class="info">
+      <h2>How It Works</h2>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-num">1</div>
+          <h4>Choose a Phobia</h4>
+          <p>Select the fear you want to work on from the sessions above.</p>
+        </div>
+        <div class="info-item">
+          <div class="info-num">2</div>
+          <h4>Pick a Level</h4>
+          <p>Start with the easiest level and build up gradually.</p>
+        </div>
+        <div class="info-item">
+          <div class="info-num">3</div>
+          <h4>Choose Your Device</h4>
+          <p><strong>Meta Quest:</strong> Click VR icon for full immersion. <strong>Laptop:</strong> Use mouse + WASD to explore.</p>
+        </div>
+        <div class="info-item">
+          <div class="info-num">4</div>
+          <h4>Breathe & Progress</h4>
+          <p>Use the built-in breathing guide. Move to the next level when ready.</p>
+        </div>
+      </div>
+      
+      <div style="margin-top: 3rem; padding: 1.5rem; background: rgba(108, 99, 255, 0.1); border: 1px solid var(--accent); border-radius: 12px; text-align: center;">
+        <h3 style="margin-bottom: 0.5rem;">🥽 Meta Quest Support</h3>
+        <p>PhobiaVR is fully optimized for Meta Quest 2, 3, and Pro. Open this link on your Quest browser and enter VR mode for the best experience. Hand controllers are supported.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-dim);">💻 Works on Windows, Mac, and Linux. Mobile browsers also supported.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>PhobiaVR — Built with <a href="https://aframe.io" target="_blank">A-Frame</a> | For educational & therapeutic exploration</p>
+    </footer>
+  </div>
+</body>
+</html>
