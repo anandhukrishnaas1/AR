@@ -7,268 +7,180 @@
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <!-- UI Overlay -->
-  <div class="scene-ui">
-    <div class="scene-header">
-      <a href="index.html" class="back-btn">← Back</a>
-      <h1>🌊 Aquaphobia Therapy</h1>
-      <div></div>
-    </div>
-    <div class="level-selector">
-      <button class="level-btn active" onclick="setLevel(1)">Level 1: Pool</button>
-      <button class="level-btn" onclick="setLevel(2)">Level 2: Lake</button>
-      <button class="level-btn" onclick="setLevel(3)">Level 3: Ocean</button>
-    </div>
-  </div>
+  <style>
+    #depth-indicator{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:100;color:#4dc9f6;font-family:Inter,sans-serif;font-size:14px;text-align:right;pointer-events:none;text-shadow:0 0 10px rgba(77,201,246,0.8)}
+    #depth-indicator .depth-val{font-size:28px;font-weight:800;display:block}
+    #water-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50;opacity:0;transition:opacity 1s;background:linear-gradient(180deg,rgba(0,40,80,0.1) 0%,rgba(0,20,60,0.3) 100%)}
+    #wave<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meen<html lang="enx:<head>
+  <meta an  <men:  <meta name="viewport"ad  <title>Aquaphobia — PhobiaVR</title>
+  <script src="https://aframe. 7  <script src="https://aframe.io/releasd=  <link rel="stylesheet" href="styles.css">
+  <link href="https://fontspa  <link href="https://fonts.googleapis.comay  <style>
+    #depth-indicator{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:100;color:#4in    #dep"     #depth-indicator .depth-val{font-size:28px;font-weight:800;display:block}
+    #water-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50;opacity:0;transition:opacity 1s;background:linear-gbutton class="level-btn" onclick="setLevel(2)">Level 2: Sinking Ship</button>
+      #wave<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meen<html lang="enx:<head>
+  <meta an  <men:  <meta name="viewport"ad  <title>Aquaphobia — PhobiaVR</title>
+  <script src="https://a t<html lang="en">
+<head> <<head>
+  <meta et  <meer  <meen<html lang="enx:be  <meta an  <men:  <meta nam"m  <script src="https://aframe. 7  <script src="https://aframe.io/releasd=  <link cl  <link href="https://fontspa  <link href="https://fonts.googleapis.comay  <style>
+    #depth-indicator{position:find    #depth-indicator{position:fixed;right:20px;top:50%;transform:translateY(-50%)hm    #water-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50;opacity:0;transition:opacity 1s;background:linear-gbutton class="level-btn" onclick="setL00      #wave<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meen<html lang="enx:<head>
+  <meta an  <men:  <meta name="viewport"ad  <title>Aquaphobia — PhobiaVR</title>
+  <script src="https://a t<html lang="e"a<html lanolor="#334455" int<head>
+  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namlo  <script src="https://a t<html lang="en">
+<head> <<head>
+  <metaes -->
+      <a-li<head> <<head>
+  <meta et  <meer  <meen<h="  <meta et  <lo    #depth-indicator{position:find    #depth-indicator{position:fixed;right:20px;top:50%;transform:translateY(-50%)hm    #water-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50;opacity:0;transitiin<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meen<html lang="enx:<head>
+  <meta an  <men:  <meta name="viewport"ad  <title>Aquaphobia — PhobiaVR</title>
+  <script src="https://a t<html lang="e"a<html lanolor="#334455" int<head>
+  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namlo  <script src="https://a te<head>
+  <meta 4a  <mepa  <meen<html lang="enx:ru  <meta an  <men:  <meta nam"p  <script src="https://a t<html lang="e"a<html lanolor="#334455" int<head>
+  <mettS  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namlo th  <meen<html la"1<head> <<head>
+  <metaes -->
+      <a-li<head> <<head>
+  <meta et  <meer  <meen<h="  <meta et  <:p  <metaes --> 1      <a-li<0;  <meta et  <meer  <meene;<head>
+  <meta charset="UTF-8">
+  <meen<html lang="enx:<head>
+  <meta an  <men:  <meta name="viewport"ad  <title>Aquaphobia — PhobiaVR</title>
+  <script src="https://a t<html lang="e"a<html lanolor="#334455" int<head>
+  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namlo  <sat  <meop  <meen<html lang="enx:Si  <meta an  <men:  <metox posi  <script src="https://a t<html lang="e"a<html lanolor="#334455" int<head>
+  <mety:  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namlo y:  <meen<html la0   <meta 4a  <mepa  <meen<html lang="enx:ru  <meta an  <men:  <meta nam"p  <script src="it  <mettS  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namlo th  <meen<html la"1<head> <<head>
+  <metaes -->
+      <a-li<head    <m         animation="p  <metaes -->
+      <a-li<head> <<head>
+  <meta et  <meer  <meen<h="  <meta et  <:a-plane>      <a-li< S  <meta et  <meer  <meentl  <meta charset="UTF-8">
+  <meen<html lang="enx:<head>
+  <meta an  <men:  <meta name="viewport"ad  <tit:1  <meen<html lang="enx:lt  <meta an  <men:  <meta namse  <script src="https://a t<html lang="e"a<html lanolor="#334455" int<head>
+  <met0;  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namlo n_  <meen<html lay:  <mety:  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namlo y:  <meen<html la0   <meta 4a  <mepa  <meen<html lang="enx:ru  <meta an  <men:  <meta nam"p  <script src="it  <mettss  <meen<html lang="enx:<a  <meen<html lang="enx:re  <meta an  <men:  <meta namlo th  <meen<html la"1<head> <<head>
+  <metaes -->
+      <a-li<head    <m         animation="p  <metaes -->
+      <a-li<head> <<head>
+0"  <metaes -->
+      <a-li<head    <m         animation="p  <metaes -->
+      <a-li<head>l=      :#5a4030      <a-li<head> <<head>
+  <meta et  <meer  <meen<h=" he  <meta et  <meer  <meenma  <meen<html lang="enx:<head>
+  <meta an  <men:  <meta name="viewport"ad  <tit:1  <meen<html lang="enx:lt  <meta io  <meta an  <men:  <meta namer  <met0;  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namlo n_  <meen<html lay:  <mety:  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namtr  <meen<html lang="enx: <  <meen<html lang="enx:re  <meta an  <men:  <meta namlo y:  <meen<html la0   <meta 4a  <mepa  <mee</  <metaes -->
+      <a-li<head    <m         animation="p  <metaes -->
+      <a-li<head> <<head>
+0"  <metaes -->
+      <a-li<head    <m         animation="p  <metaes -->
+      <a-li<head>l=      :#5a4030      <a-li<head> <<head>
+  <meta et  <meer  <meen<h=" he  <meta et  <meer  <meenma</      <a-li<        <a-li<head> <<head>
+0"  <metaes -->
+      <a-li<h p0"  <metaes -->
+      <aio      <a-li<hesi      <a-li<head>l=      :#5a4030      <a-li<head> <<hein  <meta et  <meer  <meen<h=" he  <meta et  <meer  <meenma0.  <meta an  <men:  <meta name="viewport"ad  <tit:1  <meen<html lang="enx:lt  <meta io>
+  <meen<html lang="enx:re  <meta an  <men:  <meta namlo n_  <meen<html lay:  <mety:  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <    <meen<html lang="enx:re  <meta an  <men:  <meta namtr  <meen<html lang="enx: <  <meen<html lang=:t      <a-li<head    <m         animation="p  <metaes -->
+      <a-li<head> <<head>
+0"  <metaes -->
+      <a-li<head    <m         animation="p  <metaes -->
+      <a-li<head>l       <a-box width=      <a-li<head> <<head>
+0"  <metaes -->
+      <a-li<h o0"  <metaes -->
+      <atr      <a-li<he0       <a-li<head>l=      :#5a4030      <a-li<head> <<hean  <meta et  <meer  <meen<h=" he  <meta et  <meer  <meenma0"0"  <metaes -->
+      <a-li<h p0"  <metaes -->
+      <aio      <a-li<hesi      <a-li<head>l=      v      <a-li<h  S      <aio      <a-li<hesi   un  <meen<html lang="enx:re  <meta an  <men:  <meta namlo n_  <meen<html lay:  <mety:  <meta a-  <me>
+  <meen<html lang="enx:re  <meta an  <    <meen<html lang="enx:re  <meta an  <men:  <meta namtr  <meen<html lang="enx: <  <meenle  <meen<html lang="enx:re  <meta an  <    <meen<html lang="enx:re  <meta an  <men:  <meta namtr  <gh      <a-li<head> <<head>
+0"  <metaes -->
+      <a-li<head    <m         animation="p  <metaes -->
+      <a-li<head>l       <a-box width=      <a-li<head> <<head>
+0"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+      <ait      <a-li<heol      <a-li<head>l       <a-box width=      <a-li<head>ro0"  <metaes -->
+      <a-li<h o0"  <metaes -->
+      <atr     op      <a-li<h ht      <atr      <a-li<he0     p      <a-li<h p0"  <metaes -->
+      <aio      <a-li<hesi      <a-li<head>l=      v      <a-li<h  S      <aio      <a-li<hesi   un  <meen<html lang="enx:re t>      <aio      <a-li<hesi   k   <meen<html lang="enx:re  <meta an  <    <meen<html lang="enx:re  <meta an  <men:  <meta namtr  <meen<html lang="enx: <  <meenle  <meen<html lang="enx:re  <meta an  <    <me; loop:true; easing:easeI0"  <metaes -->
+      <a-li<head    <m         animation="p  <metaes -->
+      <a-li<head>l       <a-box width=      <a-li<head> <<head>
+0"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-li<he3a      <a-li<head>l       <a-box width=      <a-li<head>100"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+      <ait  a3      <a-li<h .4      <ait      <a-li<heol      li      <a-li<h o0"  <metaes -->
+      <atr     op      <a-li<h ht      <atr      <a-li<he0     p  8;      <atr     op      <a-li<        <aio      <a-li<hesi      <a-li<head>l=      v      <a-li<h  S      <aio      <a-li<hess:      <a-li<head    <m         animation="p  <metaes -->
+      <a-li<head>l       <a-box width=      <a-li<head> <<head>
+0"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-li<he3a      <a-li<head>l       <a-box width=      <a-li<head>100"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+      <ai"c      <a-li<head>l       <a-box width=      <a-li<head>ok0"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+      <ait  s=      <a-li<h co      <ait      <a-li<heol      nt      <a-li<h o0 <0"  <metaes -->
+      <ait  a3      <a-li<h .4      <ait      <a-li<heol      li      <a-li<h o0"  <metaes -->
+      <atr     op  <a-plane       <ait  a3      <a-li<h .4  0       <atr     op      <a-li<h ht      <atr      <a-li<he0     p  8;      <atr     op      <a:0      <a-li<head>l       <a-box width=      <a-li<head> <<head>
+0"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-li<he3a      <a-li<head>l       <a-box width=      <a-li<hat0"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+      <ait          <a-li<h ro      <ait      <a-li<heol      ;       <a-li<h o0 <0"  <metaes -->
+      <ai"c      <a-li<head>l       <a-box width=      <a-li<head>ok0"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+   ri      <ai"c      <a-li<head>l   mp      <a-li<h o0 <0"  <metaes -->
+      <ait  s=      <a-li<h co      <ait      <aht      <aipth="1.5" material="color      <ait  a3      <a-li<h .4      <ait      <a-li<heol      li      <a-li<h o0"  <metaes -->
+ "       <atr     op  <a-plane       <ait  a3      <a-li<h .4  0       <atr     op      <a-li<h ; 0"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-li<he3a      <a-li<head>l       <a-box width=      <a-li<hat0"  <metaes -->
+      <a-li<h o0bo      <a-li<h li      <ait      <a-li<heol       0      <a-li<h o0 <0"  <metaes -->
+      <ait          <a-li<h ro      <ait      <a-li<heol      ;       <a-li<h o0 <0"  <metaes -->
+      <ai"c      <a"       <ait          <a-li<h ro  he      <ai"c      <a-li<head>l       <a-box width=      <a-li<head>ok0"  <metae <a-entity position=      <a-li<h o0 <0"  <metaes -->
+   ri      <ai"c      <a-li<head>l   mp      <a- r   ri      <ai"c      <a-li<headci      <ait  s=      <a-li<h co      <ait      <aht      <aipth="1.5" mara "       <atr     op  <a-plane       <ait  a3      <a-li<h .4  0       <atr     op      <a-li<h ; 0"  <metaes -->
+      <a-li<h o0 <0"  <metaes -->
+      <ait      <a-li<heol   0"      <a-li<h o0 <0"  <metaes -->
+      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-ly:      <ait      <a-li<heol      5       <a-li<h o0bo      <a-li<h li      <ait      <a-li<heol       0      <a-li<h o0 <0"  <metaes -->
+      <ait          <a-li<h ro      <ait      <a-Th      <ait          <a-li<h ro      <ait      <a-li<heol      ;       <a-li<h o0 <0"  <metaes -->
+  -c      <ai"c      <a"       <ait          <a-li<h ro  he      <ai"c      <a-li<head>water -->
+    <   ri      <ai"c      <a-li<head>l   mp      <a- r   ri      <ai"c      <a-li<headci      <ait  s=      <a-li<h co      <ait      <aht      <aipth="1.5" mara "       <atr     op  <a-pla        <a-li<h o0 <0"  <metaes -->
+      <ait      <a-li<heol   0"      <a-li<h o0 <0"  <metaes -->
+      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-ly:      <ait      <a-li<heol      5       <a-li<h o0bo      <a-li<h li      <ait      <a-li<er      <ait      <a-li<heol   0" >
+      <ait      <a-li<heol      <a-li<head>l       <a-box wor:#33      <ait          <a-li<h ro      <ait      <a-Th      <ait          <a-li<h ro      <ait      <a-li<heol      ;       <a-li<h o0 <0"  <metaes -->
+  -c      <ai"c      <a"       <ait          <a-li<h ro  he      ta  -c      <ai"c      <a"       <ait          <a-li<h ro  he      <ai"c      <a-li<head>water -->
+    <   ri      <ai"c      <a-li<head>l   mp      /a    <   ri      <ai"c      <a-li<head>l   mp      <a- r   ri      <ai"c      <a-li<headci      ="      <ait      <a-li<heol   0"      <a-li<h o0 <0"  <metaes -->
+      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-ly:      <ait      <a-li<heol      5       <a-li<h o0bo      <a-li<h li      <ait te      <ait      <a-li<heol      <a-li<head>l       <a-box widthte      <ait      <a-li<heol      <a-li<head>l       <a-box wor:#33      <ait          <a-li<h ro      <ait      <a-Th      <ait          <a-li<h ro      <ait      <a-li<heol      ;       <a-li<h o0 <0"  <msi  -c      <ai"c      <a"       <ait          <a-li<h ro  he      ta  -c      <ai"c      <a"       <ait          <a-li<h ro  he      <ai"c      <a-li<head>water -->
+    <   ri      <ai"c      <a-li<head>l   mp    "     <   ri      <ai"c      <a-li<head>l   mp      /a    <   ri      <ai"c      <a-li<head>l   mp      <a- r   ri      <ai"c      <a-li<headci      ="      <ait   >
+      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-ly:      <ait      <a-li<heol      5       <a-li<h o0bo      <a-li<h li      <ait te      <ait      <a-li<heol      <a-li<head>l       "     <   ri      <ai"c      <a-li<head>l   mp    "     <   ri      <ai"c      <a-li<head>l   mp      /a    <   ri      <ai"c      <a-li<head>l   mp      <a- r   ri      <ai"c      <a-li<headci      ="      <ait   >
+      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-ly:      <ait      <a-li<heol      5       <a-li<h o0bo      <a-li<h li      <ait te      <ait      <a-li<heol      <a-li<head>l       "     <   ri      <ai"c      <a-li<head>l   mp    "     <   ri      <ai"c      <a-li<head>l   mp      /a    <   ri      <ai"c      <a-li<head>l   mp      <a- r   ri    20      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-ly:      <ait      <a-li<heol      5       <a-li<h o0bo      <a-li<h li      <ait te      <ait      <a-li<heol      <a-li<head>l       #0      <ait      <a-li<heol      <a-li<head>l       <a-box width=  at      <a-ly:      <ait      <a-li<heol      5       <a-li<h o0bo      <a-li<h li      <ait te      <ait      <a-li<heol      <a-li<head>l       "     <   ri      <ai"c      <a-li<head>l   mp    "     <   ri      <ai"c      <a-li<head>l   mp      /a    <   ri      <ai"c      <a-li<head>l   mp      <a- r   ri    20      <ait      <a-li<heol      <a-li<head>lloop:true"></a-sphere>
+      <a-sphere position="-4 3 -15" radius="0.06" material="color:#ff44ff; emissive:#ff44ff; emissiveIntensity:1"
+                animation="property:position; to:-6 1 -13; dur:10000; dir:alternate; loop:true; easing:easeInOutSine"
+                animation__glow="property:material.emissiveIntensity; from:0.2; to:1; dur:3000; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="8 -1 -8" radius="0.1" material="color:#4444ff; emissive:#4444ff; emissiveIntensity:1"
+                animation="property:position; to:6 1 -10; dur:12000; dir:alternate; loop:true; easing:easeInOutSine"></a-sphere>
 
-  <!-- Breathing Guide -->
-  <div class="breathing-guide">
-    <div class="breath-circle">Breathe In</div>
-    <div class="breath-label">Follow the rhythm</div>
-  </div>
-
-  <!-- Anxiety Meter -->
-  <div class="anxiety-meter">
-    <span class="meter-label">Anxiety</span>
-    <div class="meter-track">
-      <div class="meter-fill" style="height: 30%"></div>
-    </div>
-  </div>
-
-  <!-- Comfort Message -->
-  <div class="comfort-msg" style="opacity: 0;">You're safe here.</div>
-
-  <!-- A-Frame Scene -->
-  <a-scene id="vrscene" vr-mode-ui="enabled: true" renderer="antialias: true; precision: medium">
-    <!-- Camera -->
-    <a-entity id="rig" position="0 1.6 0">
-      <a-camera look-controls wasd-controls="acceleration: 20">
-        <a-cursor color="#4dc9f6" fuse="false" raycaster="far: 100"></a-cursor>
-      </a-camera>
-    </a-entity>
-
-    <!-- ========== LEVEL 1: Calm Indoor Pool ========== -->
-    <a-entity id="level1" visible="true">
-      <!-- Sky/Ceiling -->
-      <a-sky color="#e8e4df"></a-sky>
-      <a-light type="ambient" color="#ffffff" intensity="0.6" cast-shadow="false"></a-light>
-      <a-light type="point" position="0 4 0" color="#aaddff" intensity="1" distance="25" decay="2"></a-light>
-      <a-light type="point" position="-4 4 -4" color="#88ccff" intensity="0.5" distance="15" decay="2"></a-light>
-      
-      <!-- Room floor (deck) -->
-      <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" 
-               material="color: #d4c8b0; roughness: 0.8; metalness: 0; shader: standard"></a-plane>
-      
-      <!-- Pool water -->
-      <a-box position="0 -0.3 -4" width="8" height="0.6" depth="10" 
-             material="color: #44aadd; opacity: 0.75; transparent: true; metalness: 0.4; roughness: 0.1; shader: standard">
-        <a-animation attribute="material.opacity" from="0.6" to="0.8" dur="2000" 
-                     direction="alternate" repeat="indefinite"></a-animation>
-      </a-box>
-      
-      <!-- Pool edge/rim -->
-      <a-box position="0 0.05 1.1" width="8.4" height="0.1" depth="0.4" material="color: #ddd"></a-box>
-      <a-box position="0 0.05 -9.1" width="8.4" height="0.1" depth="0.4" material="color: #ddd"></a-box>
-      <a-box position="-4.2 0.05 -4" width="0.4" height="0.1" depth="10.8" material="color: #ddd"></a-box>
-      <a-box position="4.2 0.05 -4" width="0.4" height="0.1" depth="10.8" material="color: #ddd"></a-box>
-      
-      <!-- Pool bottom tiles (visible through water) -->
-      <a-plane position="0 -0.59 -4" rotation="-90 0 0" width="8" height="10" 
-               material="color: #88ccee; roughness: 0.9"></a-plane>
-      
-      <!-- Pool lane lines -->
-      <a-box position="-2 -0.4 -4" width="0.05" height="0.01" depth="10" material="color: #336699"></a-box>
-      <a-box position="0 -0.4 -4" width="0.05" height="0.01" depth="10" material="color: #336699"></a-box>
-      <a-box position="2 -0.4 -4" width="0.05" height="0.01" depth="10" material="color: #336699"></a-box>
-      
-      <!-- Pool ladder -->
-      <a-cylinder position="3.8 0.5 0" radius="0.03" height="1" material="color: #ccc"></a-cylinder>
-      <a-cylinder position="3.4 0.5 0" radius="0.03" height="1" material="color: #ccc"></a-cylinder>
-      <a-box position="3.6 0.6 0" width="0.5" height="0.05" depth="0.05" material="color: #ccc"></a-box>
-      <a-box position="3.6 0.3 0" width="0.5" height="0.05" depth="0.05" material="color: #ccc"></a-box>
-      
-      <!-- Walls -->
-      <a-box position="0 2 -10" width="20" height="4" depth="0.2" material="color: #f0ebe0"></a-box>
-      <a-box position="-10 2 0" width="0.2" height="4" depth="20" material="color: #f0ebe0"></a-box>
-      <a-box position="10 2 0" width="0.2" height="4" depth="20" material="color: #f0ebe0"></a-box>
-      
-      <!-- Lounge chairs -->
-      <a-box position="-6 0.25 -2" width="0.6" height="0.3" depth="1.5" rotation="0 0 -10" material="color: #eee"></a-box>
-      <a-box position="-6 0.25 2" width="0.6" height="0.3" depth="1.5" rotation="0 0 -10" material="color: #eee"></a-box>
-      
-      <!-- Water shimmer effect on ceiling -->
-      <a-plane position="0 4 -4" rotation="90 0 0" width="8" height="10" 
-               material="color: #66bbdd; opacity: 0.1; transparent: true">
-      </a-plane>
-      
-      <a-text value="Indoor Pool — Calm, warm water.\nStep closer when you're ready." 
-              position="0 2.5 -2" align="center" color="#4dc9f6" scale="0.5 0.5 0.5" face-camera></a-text>
-    </a-entity>
-
-    <!-- ========== LEVEL 2: Open Lake ========== -->
-    <a-entity id="level2" visible="false">
-      <!-- Sky -->
-      <a-sky color="#87CEEB"></a-sky>
-      <a-light type="ambient" color="#ffffff" intensity="0.5"></a-light>
-      <a-light type="directional" position="2 4 1" color="#fff8e0" intensity="0.9"></a-light>
-      
-      <!-- Ground / Shore -->
-      <a-plane position="0 0 5" rotation="-90 0 0" width="30" height="15" 
-               material="color: #c4a44a; roughness: 1"></a-plane>
-      
-      <!-- Lake water surface -->
-      <a-plane id="lake-water" position="0 -0.1 -15" rotation="-90 0 0" width="80" height="60" 
-               material="color: #2277aa; opacity: 0.75; transparent: true; metalness: 0.4; roughness: 0.2"></a-plane>
-      
-      <!-- Gentle wave simulation (layered planes) -->
-      <a-plane position="0 -0.05 -10" rotation="-88 0 0" width="80" height="60" 
-               material="color: #3388bb; opacity: 0.2; transparent: true"
-               animation="property: position; to: 0 0.05 -10; dur: 3000; dir: alternate; loop: true; easing: easeInOutSine"></a-plane>
-      
-      <!-- Shoreline transition -->
-      <a-plane position="0 -0.05 -1" rotation="-90 0 0" width="30" height="4" 
-               material="color: #88aa77; roughness: 1"></a-plane>
-      
-      <!-- Dock / Pier -->
-      <a-box position="0 0.3 -3" width="2" height="0.1" depth="8" material="color: #8b6f47"></a-box>
-      <a-cylinder position="-0.8 -0.5 -2" radius="0.08" height="1.5" material="color: #6b4c33"></a-cylinder>
-      <a-cylinder position="0.8 -0.5 -2" radius="0.08" height="1.5" material="color: #6b4c33"></a-cylinder>
-      <a-cylinder position="-0.8 -0.5 -5" radius="0.08" height="1.5" material="color: #6b4c33"></a-cylinder>
-      <a-cylinder position="0.8 -0.5 -5" radius="0.08" height="1.5" material="color: #6b4c33"></a-cylinder>
-      
-      <!-- Trees on shore -->
-      <a-entity position="-6 0 4">
-        <a-cylinder radius="0.2" height="3" material="color: #6b4c33"></a-cylinder>
-        <a-sphere position="0 2 0" radius="1.2" material="color: #3a7a2a"></a-sphere>
-      </a-entity>
-      <a-entity position="5 0 6">
-        <a-cylinder radius="0.2" height="3.5" material="color: #6b4c33"></a-cylinder>
-        <a-sphere position="0 2.5 0" radius="1.4" material="color: #4a8a3a"></a-sphere>
-      </a-entity>
-      <a-entity position="-8 0 8">
-        <a-cylinder radius="0.25" height="4" material="color: #6b4c33"></a-cylinder>
-        <a-sphere position="0 2.8 0" radius="1.5" material="color: #3a7a2a"></a-sphere>
-      </a-entity>
-      <a-entity position="8 0 3">
-        <a-cylinder radius="0.15" height="2.5" material="color: #6b4c33"></a-cylinder>
-        <a-sphere position="0 1.8 0" radius="1" material="color: #4a9a3a"></a-sphere>
-      </a-entity>
-      
-      <!-- Mountains in distance -->
-      <a-cone position="-20 0 -40" radius-bottom="15" height="20" material="color: #5a7a5a"></a-cone>
-      <a-cone position="15 0 -50" radius-bottom="20" height="25" material="color: #4a6a4a"></a-cone>
-      
-      <!-- Small boat on lake -->
-      <a-entity position="8 0.1 -10" float-anim="amplitude: 0.15; speed: 4000">
-        <a-box width="1" height="0.3" depth="2.5" material="color: #8b6f47"></a-box>
-      </a-entity>
-      
-      <!-- Ripple indicators -->
-      <a-ring position="3 0 -8" rotation="-90 0 0" radius-inner="0.4" radius-outer="0.5" 
-              material="color: #88ccee; opacity: 0.3; transparent: true"
-              animation="property: scale; from: 1 1 1; to: 3 3 3; dur: 4000; loop: true"
-              animation__fade="property: material.opacity; from: 0.3; to: 0; dur: 4000; loop: true"></a-ring>
-      
-      <a-text value="Open Lake — Walk onto the dock.\nThe water is calm and shallow near shore." 
-              position="0 2.5 0" align="center" color="#4dc9f6" scale="0.5 0.5 0.5" face-camera></a-text>
-    </a-entity>
-
-    <!-- ========== LEVEL 3: Deep Ocean ========== -->
-    <a-entity id="level3" visible="false">
-      <!-- Deep blue sky -->
-      <a-sky color="#1a3a5c"></a-sky>
-      <a-light type="ambient" color="#4477aa" intensity="0.4"></a-light>
-      <a-light type="directional" position="1 3 1" color="#88aacc" intensity="0.6"></a-light>
-      
-      <!-- Ocean water (vast) -->
-      <a-plane position="0 -0.5 0" rotation="-90 0 0" width="500" height="500" 
-               material="color: #0a3a6a; opacity: 0.85; transparent: true; metalness: 0.5; roughness: 0.1"></a-plane>
-      
-      <!-- Wave layers -->
-      <a-plane position="0 -0.3 0" rotation="-87 0 0" width="500" height="500" 
-               material="color: #1a5a8a; opacity: 0.3; transparent: true"
-               animation="property: position; to: 0 0.1 0.5; dur: 4000; dir: alternate; loop: true; easing: easeInOutSine"></a-plane>
-      <a-plane position="0 -0.2 0" rotation="-85 0 0" width="500" height="500" 
-               material="color: #2a6a9a; opacity: 0.15; transparent: true"
-               animation="property: position; to: 0 0.2 -0.5; dur: 3000; dir: alternate; loop: true; easing: easeInOutSine"></a-plane>
-      
-      <!-- Small boat the player stands on -->
-      <a-entity id="boat" position="0 0 0" 
-                animation="property: position; to: 0.3 0.2 0; dur: 5000; dir: alternate; loop: true; easing: easeInOutSine"
-                animation__rock="property: rotation; to: 2 0 3; dur: 4000; dir: alternate; loop: true; easing: easeInOutSine">
-        <a-box position="0 -0.2 0" width="3" height="0.3" depth="5" material="color: #8b6f47"></a-box>
-        <a-box position="0 -0.2 0" width="2.5" height="0.5" depth="4.5" material="color: #7a5e36"></a-box>
-        <!-- Boat sides -->
-        <a-box position="-1.4 0.1 0" width="0.15" height="0.5" depth="5" material="color: #8b6f47"></a-box>
-        <a-box position="1.4 0.1 0" width="0.15" height="0.5" depth="5" material="color: #8b6f47"></a-box>
-        <a-box position="0 0.1 -2.4" width="3" height="0.5" depth="0.15" material="color: #8b6f47"></a-box>
-        <a-box position="0 0.1 2.4" width="3" height="0.5" depth="0.15" material="color: #8b6f47"></a-box>
-      </a-entity>
-      
-      <!-- Deep ocean below (dark) -->
-      <a-plane position="0 -50 0" rotation="-90 0 0" width="500" height="500" 
-               material="color: #001122"></a-plane>
-      
-      <!-- Underwater darkness suggestion -->
-      <a-sphere position="0 -10 -5" radius="3" 
-                material="color: #001a33; opacity: 0.5; transparent: true; side: back"></a-sphere>
-      
-      <!-- Distant waves / whitecaps -->
-      <a-entity position="15 0.1 -20" float-anim="amplitude: 0.3; speed: 3000">
-        <a-plane rotation="-90 0 0" width="3" height="1" 
-                 material="color: #ffffff; opacity: 0.3; transparent: true"></a-plane>
-      </a-entity>
-      <a-entity position="-20 0.1 -15" float-anim="amplitude: 0.2; speed: 3500">
-        <a-plane rotation="-90 0 0" width="2" height="0.8" 
-                 material="color: #ffffff; opacity: 0.25; transparent: true"></a-plane>
-      </a-entity>
-      
-      <!-- Storm clouds suggestion -->
-      <a-entity position="0 15 -30">
-        <a-sphere radius="8" material="color: #334455; opacity: 0.4; transparent: true"></a-sphere>
-        <a-sphere position="6 -1 0" radius="6" material="color: #334455; opacity: 0.3; transparent: true"></a-sphere>
-        <a-sphere position="-5 -1 2" radius="7" material="color: #334455; opacity: 0.35; transparent: true"></a-sphere>
-      </a-entity>
-      
-      <!-- Fish jumping (small detail) -->
-      <a-sphere position="5 0.5 -8" radius="0.15" material="color: #aabbcc"
-                animation="property: position; from: 5 -0.5 -8; to: 5 1 -7; dur: 2000; dir: alternate; loop: true; easing: easeOutQuad"></a-sphere>
-      
-      <!-- Horizon line emphasis -->
-      <a-text value="Deep Ocean — You're in a boat.\nThe water is deep below. Stay present." 
-              position="0 3 -3" align="center" color="#4dc9f6" scale="0.6 0.6 0.6" face-camera></a-text>
-      
-      <!-- Splash sounds indicator -->
-      <a-text value="~ splash ~ splash ~" position="2 0.5 -3" color="#88bbdd" scale="0.25 0.25 0.25"
-              float-anim="amplitude: 0.15; speed: 2000"></a-text>
-    </a-entity>
-  </a-scene>
-
-  <script src="shared.js"></script>
-  <script>
-    function setLevel(num) {
-      document.getElementById('level1').setAttribute('visible', num === 1);
-      document.getElementById('level2').setAttribute('visible', num === 2);
-      document.getElementById('level3').setAttribute('visible', num === 3);
-
-      const rig = document.getElementById('rig');
-      if (num === 1) rig.setAttribute('position', '0 1.6 3');
-      if (num === 2) rig.setAttribute('position', '0 1.6 5');
-      if (num === 3) rig.setAttribute('position', '0 1.6 1');
-
-      document.querySelectorAll('.level-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', i === num - 1);
-      });
-      showComfortMessage();
-    }
-
-    window.addEventListener('load', () => {
-      initPhobiaScene();
-      initVRPhobiaApp();
-      setLevel(1);
-    });
-  </script>
-</body>
-</html>
+      <!-- Giant deep-sea creature silhouette passing -->
+      <a-entity animation="property:position; from:30 0 -20; to:-30 -2 -20; dur:25000; loop:true; easing:linear">
+        <a-box width="12" height="3" depth="2" material="color:#050508; opacity:0.8; transparent:true"></a-box>
+        <a-cone position="7 0 0" rotation="0 0 -90" radius-bottom="2" height="4" material="color:#050508; opaci      <a-sphere pos:t                animation="property:position; to:-6 1 -13; dur:10000; dir:alternate; loop:true; easing:easeInOut40                animation__glow="property:material.emissiveIntensity; from:0.2; to:1; dur:3000; dir:alternate; loop:ri      <a-sphere position="8 -1 -8" radius="0.1" material="color:#4444ff; emissive:#4444ff; emissiveIntensity:1"
+                animr)                animation="property:position; to:6 1 -10; dur:12000; dir:alternate; loop:true; easing:easeInOuou
+      <!-- Giant deep-sea creature silhouette passing -->
+      <a-entity animation="property:position; from:30 0 -20; to:-30          <a-entity animation="property:position; from:30 0 :5        <a-box width="12" height="3" depth="2" material="color:#050508; opacity:0.8; transparent:true"></a-box>
+r:        <a-cone position="7 0 0" rotation="0 0 -90" radius-bottom="2" height="4" material="color:#050508; opacst                animr)                animation="property:position; to:6 1 -10; dur:12000; dir:alternate; loop:true; easing:easeInOuou
+      <!-- Giant deep-sea creature silhouette passing -->
+      <a-entity animation="property:position; from:30 0 -20; to:-30          <a-entity animation="property:position; from:30 0 :5        <a-box width="12" height="3" depth="2" material="color:#050508; opacity:0.8; transparent:true"></a-box>
+r:        <a-cone position="7 0 0" rotat        <!-- Giant deep-sea creature silhouette passing -->
+      <a-entity animation="property:position; from:30 0 -20; to:-30        :p      <a-entity animation="property:position; from:30 0 ">r:        <a-cone position="7 0 0" rotation="0 0 -90" radius-bottom="2" height="4" material="color:#050508; opacst                animr)                animation="property:position; to:6 1 -10; dur:12000; dir:alternate; loop:true; easing:ere      <!-- Giant deep-sea creature silhouette passing -->
+      <a-entity animation="property:position; from:30 0 -20; to:-30          <a-entity animation="property:position; from:30 0 :5        <a-box width="12" height="3" depth="2" material="colrs      <a-entity animation="property:position; from:30 0  ar:        <a-cone position="7 0 0" rotat        <!-- Giant deep-sea creature silhouette passing -->
+      <a-entity animation="property:position; from:30 0 -20; to:-30        :p      <a-entity animation="property:position; from:30 0 ">r:  ar      <a-entity animation="property:position; from:30 0 -20; to:-30        :p      <a-entity animant      <a-entity animation="property:position; from:30 0 -20; to:-30          <a-entity animation="property:position; from:30 0 :5        <a-box width="12" height="3" depth="2" material="colrs      <a-entity animation="property:position; from:30 0  ar:        <a-cone position="7 0 0" rotat        <!-- Giant deep-sea creature silhouette passing -->
+      <a-entity animation="property:position; from:30 0 -20; to:-30        :p      0       <a-entity animation="property:position; from:30 0 -20; to:-30        :p      <a-entity animation="property:position; from:30 0 ">r:  ar      <a-entity animation="property:position; from:30 0 -20; to:-30        :p      <a-entity animant      <a-entity animation="property:position; from:30 0 -20; to:-30          <a-entity animation="propertyex      <a-entity animation="property:position; from:30 0 -20; to:-30        :p      0       <a-entity animation="property:position; from:30 0 -20; to:-30        :p      <a-entity animation="property:position; from:30 0 ">r:  ar      <a-entity animation="property:position; from:30 0 -20; to:-30        :p      <a-entity animant      <a-entity animation="property:position; from:30 0 -20; to:-30          <a-entity animation="propertyex      <a-entity animation="property:position; from:30 0 -20; to:-30        :p      0       <a-entity animation="property:position; from:30 0 -20; to:-30  /html>
