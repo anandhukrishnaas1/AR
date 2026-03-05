@@ -76,6 +76,190 @@ AFRAME.registerComponent('thumbstick-locomotion', {
   }
 });
 
+// ========== REALISTIC PERSON COMPONENT (THREE.js direct) ==========
+// Creates detailed humanoid figures from primitives with face, hair, limbs
+AFRAME.registerComponent('realistic-person', {
+  schema: {
+    skin: { type: 'color', default: '#c8a882' },
+    shirt: { type: 'color', default: '#2a2a3a' },
+    pants: { type: 'color', default: '#1a1a2a' },
+    shoes: { type: 'color', default: '#111' },
+    hair: { type: 'color', default: '#1a1008' },
+    hairStyle: { type: 'string', default: 'short' },
+    pose: { type: 'string', default: 'standing' },
+    detail: { type: 'string', default: 'high' }
+  },
+  init: function () {
+    var d = this.data;
+    var g = new THREE.Group();
+    var S = new THREE.MeshStandardMaterial({ color: d.skin });
+    var H = new THREE.MeshStandardMaterial({ color: d.shirt });
+    var P = new THREE.MeshStandardMaterial({ color: d.pants });
+    var SH = new THREE.MeshStandardMaterial({ color: d.shoes });
+    var HR = new THREE.MeshStandardMaterial({ color: d.hair });
+    var W = new THREE.MeshStandardMaterial({ color: '#ffffff' });
+    var D = new THREE.MeshStandardMaterial({ color: '#1a1a1a' });
+    var L = new THREE.MeshStandardMaterial({ color: '#884444' });
+    var sit = d.pose.indexOf('sit') > -1 || d.pose === 'leaning';
+    function bx(w,h,dp,mt,x,y,z,rx,ry,rz) {
+      var m = new THREE.Mesh(new THREE.BoxGeometry(w,h,dp), mt);
+      m.position.set(x||0,y||0,z||0);
+      if(rx||ry||rz) m.rotation.set(rx||0,ry||0,rz||0);
+      g.add(m); return m;
+    }
+    function cy(r,h,mt,x,y,z,rx,ry,rz) {
+      var m = new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,8), mt);
+      m.position.set(x||0,y||0,z||0);
+      if(rx||ry||rz) m.rotation.set(rx||0,ry||0,rz||0);
+      g.add(m); return m;
+    }
+    function sp(r,mt,x,y,z) {
+      var m = new THREE.Mesh(new THREE.SphereGeometry(r,10,8), mt);
+      m.position.set(x||0,y||0,z||0);
+      g.add(m); return m;
+    }
+    function cn(rb,rt,h,mt,x,y,z,rx,ry,rz) {
+      var m = new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,8), mt);
+      m.position.set(x||0,y||0,z||0);
+      if(rx||ry||rz) m.rotation.set(rx||0,ry||0,rz||0);
+      g.add(m); return m;
+    }
+
+    // ---- LOW DETAIL (distant crowds) ----
+    if (d.detail === 'low') {
+      var bH = sit ? 0.6 : 1.0, bY = sit ? 0.7 : 0.55;
+      cy(0.15, bH, H, 0, bY, 0);
+      var hd = bY + bH/2 + 0.16;
+      sp(0.13, S, 0, hd, 0);
+      if (d.hairStyle !== 'bald') bx(0.22, 0.07, 0.2, HR, 0, hd+0.09, -0.02);
+      sp(0.016, D, -0.035, hd+0.02, 0.11);
+      sp(0.016, D, 0.035, hd+0.02, 0.11);
+      this.el.setObject3D('mesh', g); return;
+    }
+
+    var tY = sit ? 0.78 : 0.88;
+
+    // ---- MEDIUM DETAIL ----
+    if (d.detail === 'medium') {
+      bx(0.34, 0.4, 0.2, H, 0, tY, 0);
+      if (sit) {
+        cy(0.055, 0.35, P, -0.09, 0.48, 0.15, 1.3, 0, 0);
+        cy(0.055, 0.35, P, 0.09, 0.48, 0.15, 1.3, 0, 0);
+        cy(0.048, 0.35, P, -0.09, 0.22, 0.32);
+        cy(0.048, 0.35, P, 0.09, 0.22, 0.32);
+        bx(0.1, 0.06, 0.17, SH, -0.09, 0.04, 0.35);
+        bx(0.1, 0.06, 0.17, SH, 0.09, 0.04, 0.35);
+      } else {
+        cy(0.058, 0.5, P, -0.09, 0.31, 0);
+        cy(0.058, 0.5, P, 0.09, 0.31, 0);
+        bx(0.1, 0.06, 0.17, SH, -0.09, 0.04, 0.03);
+        bx(0.1, 0.06, 0.17, SH, 0.09, 0.04, 0.03);
+      }
+      cy(0.04, 0.3, H, -0.22, tY-0.05, 0);
+      cy(0.04, 0.3, H, 0.22, tY-0.05, 0);
+      sp(0.028, S, -0.22, tY-0.22, 0);
+      sp(0.028, S, 0.22, tY-0.22, 0);
+      cy(0.04, 0.08, S, 0, tY+0.24, 0);
+      var hY = tY + 0.38;
+      sp(0.13, S, 0, hY, 0);
+      sp(0.017, W, -0.04, hY+0.02, 0.11);
+      sp(0.017, W, 0.04, hY+0.02, 0.11);
+      sp(0.01, D, -0.04, hY+0.02, 0.122);
+      sp(0.01, D, 0.04, hY+0.02, 0.122);
+      cn(0.018, 0.008, 0.035, S, 0, hY-0.01, 0.135, -0.3, 0, 0);
+      bx(0.04, 0.008, 0.01, L, 0, hY-0.045, 0.125);
+      sp(0.025, S, -0.13, hY, 0);
+      sp(0.025, S, 0.13, hY, 0);
+      if (d.hairStyle === 'short') { bx(0.24, 0.07, 0.2, HR, 0, hY+0.1, -0.02); bx(0.25, 0.12, 0.09, HR, 0, hY+0.04, -0.1); }
+      else if (d.hairStyle === 'medium') { bx(0.25, 0.08, 0.22, HR, 0, hY+0.1, -0.02); bx(0.04, 0.12, 0.14, HR, -0.12, hY-0.01, -0.02); bx(0.04, 0.12, 0.14, HR, 0.12, hY-0.01, -0.02); }
+      else if (d.hairStyle === 'long') { bx(0.25, 0.08, 0.22, HR, 0, hY+0.1, -0.02); bx(0.22, 0.28, 0.07, HR, 0, hY-0.14, -0.1); bx(0.04, 0.2, 0.14, HR, -0.13, hY-0.08, -0.02); bx(0.04, 0.2, 0.14, HR, 0.13, hY-0.08, -0.02); }
+      this.el.setObject3D('mesh', g); return;
+    }
+
+    // ---- HIGH DETAIL ----
+    bx(0.36, 0.44, 0.22, H, 0, tY, 0);
+    bx(0.12, 0.04, 0.06, S, 0, tY+0.22, 0.08);
+    sp(0.065, H, -0.2, tY+0.18, 0);
+    sp(0.065, H, 0.2, tY+0.18, 0);
+    bx(0.37, 0.04, 0.23, SH, 0, tY-0.2, 0);
+    // Legs
+    if (sit) {
+      cy(0.06, 0.38, P, -0.1, 0.50, 0.16, 1.3, 0, 0);
+      cy(0.06, 0.38, P, 0.1, 0.50, 0.16, 1.3, 0, 0);
+      cy(0.05, 0.38, P, -0.1, 0.24, 0.35);
+      cy(0.05, 0.38, P, 0.1, 0.24, 0.35);
+      bx(0.11, 0.07, 0.2, SH, -0.1, 0.04, 0.38);
+      bx(0.11, 0.07, 0.2, SH, 0.1, 0.04, 0.38);
+    } else {
+      cy(0.065, 0.4, P, -0.1, 0.46, 0);
+      cy(0.065, 0.4, P, 0.1, 0.46, 0);
+      cy(0.055, 0.4, P, -0.1, 0.2, 0);
+      cy(0.055, 0.4, P, 0.1, 0.2, 0);
+      bx(0.12, 0.08, 0.22, SH, -0.1, 0.04, 0.04);
+      bx(0.12, 0.08, 0.22, SH, 0.1, 0.04, 0.04);
+    }
+    // Arms
+    if (d.pose === 'sitting-crossed') {
+      cy(0.045, 0.3, H, -0.25, tY, 0.02, 0, 0, 0.8);
+      cy(0.045, 0.3, H, 0.25, tY, 0.02, 0, 0, -0.8);
+      cy(0.04, 0.28, H, -0.1, tY-0.1, 0.1, 0.2, 0, -0.7);
+      cy(0.04, 0.28, H, 0.1, tY-0.1, 0.1, 0.2, 0, 0.7);
+      sp(0.032, S, 0.12, tY-0.15, 0.12);
+      sp(0.032, S, -0.12, tY-0.15, 0.12);
+    } else if (d.pose === 'leaning') {
+      cy(0.045, 0.3, H, -0.25, tY-0.02, 0.08, 0.5, 0, 0.15);
+      cy(0.045, 0.3, H, 0.25, tY-0.02, 0.08, 0.5, 0, -0.15);
+      sp(0.035, S, -0.2, tY-0.18, 0.22);
+      sp(0.035, S, 0.2, tY-0.18, 0.22);
+    } else if (d.pose === 'sitting') {
+      cy(0.045, 0.3, H, -0.24, tY-0.02, 0.08, 0.4, 0, 0.1);
+      cy(0.045, 0.3, H, 0.24, tY-0.02, 0.08, 0.4, 0, -0.1);
+      sp(0.035, S, -0.18, tY-0.18, 0.2);
+      sp(0.035, S, 0.18, tY-0.18, 0.2);
+    } else {
+      cy(0.045, 0.32, H, -0.25, tY-0.02, 0);
+      cy(0.045, 0.32, H, 0.25, tY-0.02, 0);
+      cy(0.04, 0.28, S, -0.25, tY-0.32, 0);
+      cy(0.04, 0.28, S, 0.25, tY-0.32, 0);
+      sp(0.032, S, -0.25, tY-0.46, 0);
+      sp(0.032, S, 0.25, tY-0.46, 0);
+    }
+    // Neck
+    cy(0.05, 0.1, S, 0, tY+0.27, 0);
+    // Head
+    var hY = tY + 0.42;
+    sp(0.135, S, 0, hY, 0);
+    // Face
+    sp(0.02, W, -0.045, hY+0.025, 0.115);
+    sp(0.02, W, 0.045, hY+0.025, 0.115);
+    sp(0.012, D, -0.045, hY+0.025, 0.13);
+    sp(0.012, D, 0.045, hY+0.025, 0.13);
+    bx(0.05, 0.012, 0.015, HR, -0.045, hY+0.06, 0.115);
+    bx(0.05, 0.012, 0.015, HR, 0.045, hY+0.06, 0.115);
+    cn(0.022, 0.01, 0.04, S, 0, hY-0.01, 0.14, -0.3, 0, 0);
+    bx(0.045, 0.012, 0.01, L, 0, hY-0.05, 0.125);
+    sp(0.03, S, -0.14, hY, 0);
+    sp(0.03, S, 0.14, hY, 0);
+    // Hair
+    if (d.hairStyle === 'short') {
+      bx(0.24, 0.08, 0.22, HR, 0, hY+0.1, -0.02);
+      bx(0.26, 0.13, 0.1, HR, 0, hY+0.04, -0.1);
+    } else if (d.hairStyle === 'medium') {
+      bx(0.26, 0.1, 0.24, HR, 0, hY+0.1, -0.02);
+      bx(0.28, 0.18, 0.12, HR, 0, hY+0.02, -0.1);
+      bx(0.04, 0.14, 0.16, HR, -0.13, hY-0.02, -0.02);
+      bx(0.04, 0.14, 0.16, HR, 0.13, hY-0.02, -0.02);
+    } else if (d.hairStyle === 'long') {
+      bx(0.26, 0.1, 0.24, HR, 0, hY+0.1, -0.02);
+      bx(0.28, 0.2, 0.12, HR, 0, hY+0.01, -0.1);
+      bx(0.24, 0.3, 0.08, HR, 0, hY-0.16, -0.1);
+      bx(0.04, 0.22, 0.16, HR, -0.14, hY-0.08, -0.02);
+      bx(0.04, 0.22, 0.16, HR, 0.14, hY-0.08, -0.02);
+    }
+    this.el.setObject3D('mesh', g);
+  }
+});
+
 // Breathing guide controller
 class BreathingGuide {
   constructor() {
