@@ -11,11 +11,12 @@
     #height-indicator{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:100;color:#ffa94d;font-family:Inter,sans-serif;font-size:14px;text-align:right;pointer-events:none;text-shadow:0 0 10px rgba(255,169,77,0.8)}
     #height-indicator .height-val{font-size:28px;font-weight:800;display:block}
     #wind-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50;opacity:0;transition:opacity 1s}
-    #vertigo-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:49;opacity:0;transition:opacity 2s;background:radial-gradient(ellipse at center,transparent 40%,rgba(0,0,0,0.4) 100%)}
+    #vertigo-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:49;opacity:0;transition:opacity 2s;background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,0.5) 100%)}
+    @keyframes screenShake{0%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}50%{transform:translate(2px,-3px)}75%{transform:translate(-2px,3px)}100%{transform:translate(0,0)}}
   </style>
 </head>
 <body>
-  <div id="height-indicator"><span class="height-val" id="alt-display">200m</span>above ground</div>
+  <div id="height-indicator"><span class="height-val" id="alt-display">300m</span>above ground</div>
   <div id="wind-overlay"></div>
   <div id="vertigo-overlay"></div>
   <div class="scene-ui">
@@ -25,167 +26,319 @@
       <div></div>
     </div>
     <div class="level-selector">
-      <button class="level-btn active" onclick="setLevel(1)">Level 1: Skyscraper Rooftop</button>
-      <button class="level-btn" onclick="setLevel(2)">Level 2: Burj Khalifa Summit</button>
-      <button class="level-btn" onclick="setLevel(3)">Level 3: Space Elevator</button>
+      <button class="level-btn active" onclick="setLevel(1)">Level 1: Collapsing Skyscraper</button>
+      <button class="level-btn" onclick="setLevel(2)">Level 2: Volcano Rim</button>
+      <button class="level-btn" onclick="setLevel(3)">Level 3: Orbital Freefall</button>
     </div>
   </div>
   <div class="breathing-guide"><div class="breath-circle">Breathe In</div><div class="breath-label">Follow the rhythm</div></div>
   <div class="anxiety-meter"><span class="meter-label">Anxiety</span><div class="meter-track"><div class="meter-fill" style="height:30%"></div></div></div>
   <div class="comfort-msg" style="opacity:0;">You are safe here.</div>
 
-  <a-scene id="vrscene" vr-mode-ui="enabled:true" renderer="antialias:true; colorManagement:true; physicallyCorrectLights:true; logarithmicDepthBuffer:true" fog="type:linear; color:#88bbee; near:100; far:800">
+  <a-scene id="vrscene" vr-mode-ui="enabled:true" renderer="antialias:true; colorManagement:true; physicallyCorrectLights:true; logarithmicDepthBuffer:true" fog="type:linear; color:#8899aa; near:80; far:600">
     <a-entity id="rig" position="0 1.6 0">
       <a-camera look-controls wasd-controls="acceleration:30">
         <a-cursor color="#ffa94d" fuse="false" raycaster="far:500"></a-cursor>
       </a-camera>
     </a-entity>
 
-    <!-- LEVEL 1: 50-Story Skyscraper 200m -->
+    <!-- ======= LEVEL 1: Collapsing Skyscraper 300m ======= -->
     <a-entity id="level1" visible="true">
-      <a-sky color="#5599dd"></a-sky>
-      <a-light type="directional" position="50 80 30" color="#fff5e0" intensity="1.8" cast-shadow="true"></a-light>
-      <a-light type="ambient" color="#88aacc" intensity="0.35"></a-light>
-      <a-light type="hemisphere" color="#87CEEB" groundColor="#444" intensity="0.4"></a-light>
-      <!-- Sun -->
-      <a-sphere position="50 80 30" radius="5" material="color:#fff; emissive:#fff8e0; emissiveIntensity:1; fog:false"></a-sphere>
-      <a-sphere position="50 80 30" radius="12" material="color:#fff8a0; opacity:0.15; transparent:true; fog:false; side:double"></a-sphere>
-      <!-- Rooftop -->
-      <a-box position="0 0 0" width="30" height="0.3" depth="30" material="color:#888; roughness:0.95"></a-box>
-      <!-- Thin railing -->
-      <a-box position="0 0.4 -15" width="30" height="0.8" depth="0.15" material="color:#666; metalness:0.5"></a-box>
-      <a-box position="0 0.4 15" width="30" height="0.8" depth="0.15" material="color:#666; metalness:0.5"></a-box>
-      <a-box position="-15 0.4 0" width="0.15" height="0.8" depth="30" material="color:#666; metalness:0.5"></a-box>
-      <a-box position="15 0.4 0" width="0.15" height="0.8" depth="30" material="color:#666; metalness:0.5"></a-box>
-      <!-- Rooftop structures -->
-      <a-box position="8 1.5 8" width="4" height="3" depth="3" material="color:#777"></a-box>
-      <a-box position="-6 2 10" width="3" height="4" depth="2.5" material="color:#999"></a-box>
-      <a-cylinder position="10 3 -5" radius="0.8" height="4" material="color:#888; metalness:0.3"></a-cylinder>
-      <!-- Building going DOWN -->
-      <a-box position="0 -100 0" width="30" height="200" depth="30" material="color:#556677; metalness:0.3"></a-box>
-      <a-box position="0 -100 -15.1" width="28" height="198" depth="0.1" material="color:#334455; metalness:0.7; opacity:0.8; transparent:true"></a-box>
-      <a-box position="15.1 -100 0" width="0.1" height="198" depth="28" material="color:#334455; metalness:0.7; opacity:0.8; transparent:true"></a-box>
-      <!-- Ground 200m below -->
-      <a-plane position="0 -200 0" rotation="-90 0 0" width="2000" height="2000" material="color:#4a5a3a"></a-plane>
-      <!-- Streets -->
-      <a-box position="0 -199.9 -30" width="10" height="0.05" depth="2000" material="color:#333"></a-box>
-      <a-box position="50 -199.9 0" width="10" height="0.05" depth="2000" material="color:#333"></a-box>
-      <!-- Moving cars (specks) -->
-      <a-box position="1 -199.5 -50" width="0.3" height="0.15" depth="0.6" material="color:#ffcc00" animation="property:position; to:1 -199.5 -20; dur:15000; loop:true"></a-box>
-      <a-box position="3 -199.5 -35" width="0.3" height="0.15" depth="0.6" material="color:#cc2222"></a-box>
-      <a-box position="-2 -199.5 -33" width="0.3" height="0.15" depth="0.6" material="color:#2222cc"></a-box>
-      <!-- City skyline -->
-      <a-box position="-60 -80 -40" width="25" height="240" depth="25" material="color:#667788; metalness:0.6"></a-box>
-      <a-box position="70 -50 -60" width="20" height="300" depth="20" material="color:#556677; metalness:0.6"></a-box>
-      <a-box position="-40 -70 60" width="22" height="260" depth="22" material="color:#778899; metalness:0.6"></a-box>
-      <a-box position="50 -90 50" width="18" height="220" depth="18" material="color:#889999; metalness:0.6"></a-box>
-      <a-box position="-80 -60 -80" width="30" height="280" depth="25" material="color:#5a6a7a; metalness:0.6"></a-box>
-      <!-- Clouds at eye level -->
-      <a-entity position="-80 10 -120" float-anim="amplitude:3; speed:15000">
-        <a-sphere radius="15" material="color:#fff; opacity:0.5; transparent:true; fog:false"></a-sphere>
-        <a-sphere position="12 2 0" radius="10" material="color:#fff; opacity:0.4; transparent:true; fog:false"></a-sphere>
-      </a-entity>
-      <!-- Birds circling below -->
-      <a-entity position="0 -20 -30" animation="property:rotation; from:0 0 0; to:0 360 0; dur:20000; loop:true; easing:linear">
-        <a-text value="v" position="10 0 0" color="#222" scale="0.8 0.8 0.8"></a-text>
-        <a-text value="v" position="-8 2 5" color="#222" scale="0.6 0.6 0.6"></a-text>
-      </a-entity>
-      <!-- Wind streaks -->
-      <a-entity animation="property:position; from:-30 2 -8; to:30 3 -12; dur:4000; loop:true; easing:linear">
-        <a-box width="3" height="0.01" depth="0.01" material="color:#fff; opacity:0.3; transparent:true"></a-box>
-      </a-entity>
-      <a-text value="50th Floor Skyscraper - 200m above the streets.\nLook down over the edge. The cars are specks." position="0 3 -8" align="center" color="#ffa94d" scale="0.7 0.7 0.7" face-camera></a-text>
-    </a-entity>
+      <a-sky color="#778899"></a-sky>
+      <a-light type="directional" position="40 60 20" color="#fff5e0" intensity="1.5" cast-shadow="true"></a-light>
+      <a-light type="ambient" color="#99aabb" intensity="0.35"></a-light>
+      <a-light type="hemisphere" color="#aabbcc" groundColor="#555" intensity="0.3"></a-light>
+      <!-- Overcast sun -->
+      <a-sphere position="40 60 20" radius="4" material="color:#fff; emissive:#ffe8c0; emissiveIntensity:0.8; fog:false"></a-sphere>
 
-    <!-- LEVEL 2: Burj Khalifa 828m -->
-    <a-entity id="level2" visible="false">
-      <a-sky color="#2255aa"></a-sky>
-      <a-light type="directional" position="40 60 20" color="#fff8e0" intensity="2.2" cast-shadow="true"></a-light>
-      <a-light type="ambient" color="#6688bb" intensity="0.25"></a-light>
-      <a-light type="hemisphere" color="#4488cc" groundColor="#333" intensity="0.3"></a-light>
-      <!-- Blazing sun -->
-      <a-sphere position="40 60 20" radius="6" material="color:#fff; emissive:#ffffcc; emissiveIntensity:1; fog:false"></a-sphere>
-      <a-sphere position="40 60 20" radius="15" material="color:#ffffaa; opacity:0.1; transparent:true; fog:false; side:double"></a-sphere>
-      <!-- Spire platform -->
-      <a-cylinder position="0 0 0" radius="3" height="0.2" material="color:#aaa; metalness:0.7"></a-cylinder>
-      <a-cylinder position="0 10 0" radius="0.3" height="20" material="color:#ccc; metalness:0.8"></a-cylinder>
-      <!-- Glass railing barely there -->
-      <a-cylinder position="0 0.6 0" radius="3" height="1.2" material="color:#aaccee; opacity:0.15; transparent:true; side:double" open-ended="true"></a-cylinder>
-      <!-- Tower going down 828m -->
-      <a-cylinder position="0 -50 0" radius="4" height="100" material="color:#99aabb; metalness:0.7"></a-cylinder>
-      <a-cylinder position="0 -200 0" radius="8" height="200" material="color:#7788aa; metalness:0.6"></a-cylinder>
-      <a-cylinder position="0 -500 0" radius="15" height="400" material="color:#667799; metalness:0.6"></a-cylinder>
-      <!-- Ground 828m below -->
-      <a-plane position="0 -828 0" rotation="-90 0 0" width="5000" height="5000" material="color:#d4c090"></a-plane>
-      <!-- Dubai buildings below -->
-      <a-box position="80 -780 -100" width="30" height="100" depth="30" material="color:#aab; metalness:0.5"></a-box>
-      <a-box position="-60 -790 80" width="25" height="80" depth="25" material="color:#99a; metalness:0.5"></a-box>
-      <a-box position="120 -770 50" width="20" height="120" depth="20" material="color:#bbc; metalness:0.5"></a-box>
-      <a-box position="-100 -800 -60" width="35" height="60" depth="35" material="color:#aab; metalness:0.5"></a-box>
-      <!-- Ocean -->
-      <a-plane position="0 -828 -600" rotation="-90 0 0" width="3000" height="1500" material="color:#1a6688; metalness:0.5; opacity:0.9; transparent:true"></a-plane>
-      <!-- Clouds FAR BELOW -->
-      <a-entity position="100 -400 -200" float-anim="amplitude:5; speed:25000">
-        <a-sphere radius="30" material="color:#fff; opacity:0.6; transparent:true; fog:false"></a-sphere>
-        <a-sphere position="25 3 5" radius="22" material="color:#fff; opacity:0.5; transparent:true; fog:false"></a-sphere>
+      <!-- Cracked rooftop platform -->
+      <a-box position="0 0 0" width="28" height="0.3" depth="28" material="color:#777; roughness:0.95"></a-box>
+      <!-- Crack lines across floor -->
+      <a-box position="-3 0.16 2" width="14" height="0.02" depth="0.08" material="color:#333" rotation="0 15 0"></a-box>
+      <a-box position="4 0.16 -3" width="10" height="0.02" depth="0.06" material="color:#333" rotation="0 -25 0"></a-box>
+      <a-box position="1 0.16 5" width="12" height="0.02" depth="0.05" material="color:#333" rotation="0 40 0"></a-box>
+      <a-box position="-5 0.16 -7" width="8" height="0.02" depth="0.07" material="color:#444" rotation="0 -60 0"></a-box>
+
+      <!-- Gaping hole in floor -->
+      <a-box position="9 -0.2 -7" width="6" height="0.4" depth="5" material="color:#222; side:back"></a-box>
+
+      <!-- Rebar sticking out of edges -->
+      <a-cylinder position="-13.8 0.5 -5" radius="0.03" height="1.8" material="color:#8B4513; metalness:0.7" rotation="15 0 10"></a-cylinder>
+      <a-cylinder position="-13.6 0.3 -3" radius="0.03" height="1.2" material="color:#8B4513; metalness:0.7" rotation="-10 0 25"></a-cylinder>
+      <a-cylinder position="13.5 0.4 3" radius="0.03" height="1" material="color:#8B4513; metalness:0.7" rotation="20 0 -15"></a-cylinder>
+      <a-cylinder position="5 0.3 -13.8" radius="0.03" height="1.5" material="color:#8B4513; metalness:0.7" rotation="-5 0 30"></a-cylinder>
+
+      <!-- Broken railing (partial, only one side) -->
+      <a-box position="-5 0.5 -13.8" width="12" height="1" depth="0.1" material="color:#666; metalness:0.5"></a-box>
+      <a-box position="10 0.3 -13.8" width="3" height="0.5" depth="0.1" material="color:#666; metalness:0.5" rotation="0 0 -25"></a-box>
+      <!-- All other sides: NO railing -->
+
+      <!-- Rooftop structures (damaged) -->
+      <a-box position="-8 1.5 8" width="4" height="3" depth="3" material="color:#666"></a-box>
+      <a-box position="-8 3.2 8" width="3.5" height="0.5" depth="2.8" material="color:#555" rotation="0 0 8"></a-box>
+      <!-- HVAC unit toppled -->
+      <a-box position="7 0.4 9" width="2" height="1.5" depth="2" material="color:#888; metalness:0.4" rotation="0 0 35"></a-box>
+
+      <!-- Building going DOWN 300m -->
+      <a-box position="0 -150 0" width="28" height="300" depth="28" material="color:#556677; metalness:0.3"></a-box>
+      <!-- Glass facade -->
+      <a-box position="0 -100 -14.1" width="27" height="260" depth="0.1" material="color:#334455; metalness:0.8; opacity:0.7; transparent:true"></a-box>
+      <a-box position="14.1 -100 0" width="0.1" height="260" depth="27" material="color:#334455; metalness:0.8; opacity:0.7; transparent:true"></a-box>
+      <a-box position="-14.1 -100 0" width="0.1" height="260" depth="27" material="color:#334455; metalness:0.8; opacity:0.7; transparent:true"></a-box>
+
+      <!-- Falling debris (animated) -->
+      <a-box position="-4 5 -8" width="0.8" height="0.3" depth="0.6" material="color:#888"
+             animation="property:position; to:-6 -300 -12; dur:7000; loop:true; easing:easeInQuad"
+             animation__rot="property:rotation; from:0 0 0; to:120 250 80; dur:7000; loop:true"></a-box>
+      <a-box position="6 3 5" width="0.5" height="0.2" depth="0.4" material="color:#777"
+             animation="property:position; to:8 -300 3; dur:9000; loop:true; easing:easeInQuad; delay:2000"
+             animation__rot="property:rotation; from:0 0 0; to:90 180 45; dur:9000; loop:true; delay:2000"></a-box>
+      <a-sphere position="2 4 -10" radius="0.2" material="color:#999"
+               animation="property:position; to:3 -300 -14; dur:5000; loop:true; easing:easeInQuad; delay:4000"></a-sphere>
+      <a-box position="-8 6 2" width="1.2" height="0.5" depth="0.8" material="color:#666"
+             animation="property:position; to:-10 -300 -2; dur:11000; loop:true; easing:easeInQuad; delay:6000"
+             animation__rot="property:rotation; from:0 0 0; to:200 90 150; dur:11000; loop:true; delay:6000"></a-box>
+
+      <!-- Ground 300m below -->
+      <a-plane position="0 -300 0" rotation="-90 0 0" width="4000" height="4000" material="color:#4a5a3a"></a-plane>
+      <!-- Streets grid -->
+      <a-box position="0 -299.9 -50" width="14" height="0.05" depth="4000" material="color:#333"></a-box>
+      <a-box position="70 -299.9 0" width="14" height="0.05" depth="4000" material="color:#333"></a-box>
+      <a-box position="-70 -299.9 0" width="14" height="0.05" depth="4000" material="color:#333"></a-box>
+      <a-box position="0 -299.9 0" width="4000" height="0.05" depth="14" material="color:#333"></a-box>
+
+      <!-- Flashing emergency vehicles far below -->
+      <a-box position="5 -299 -20" width="0.5" height="0.25" depth="1" material="color:#ff0000; emissive:#ff0000; emissiveIntensity:0"
+             animation="property:material.emissiveIntensity; from:0; to:0.8; dur:500; dir:alternate; loop:true"></a-box>
+      <a-box position="8 -299 -22" width="0.5" height="0.25" depth="1" material="color:#0000ff; emissive:#0000ff; emissiveIntensity:0"
+             animation="property:material.emissiveIntensity; from:0.8; to:0; dur:500; dir:alternate; loop:true"></a-box>
+      <a-box position="-3 -299 -18" width="0.5" height="0.25" depth="1" material="color:#ff0000; emissive:#ff0000; emissiveIntensity:0"
+             animation="property:material.emissiveIntensity; from:0; to:0.6; dur:600; dir:alternate; loop:true"></a-box>
+
+      <!-- Massive city skyline -->
+      <a-box position="-90 -80 -60" width="35" height="440" depth="35" material="color:#667788; metalness:0.5"></a-box>
+      <a-box position="100 -60 -80" width="28" height="480" depth="28" material="color:#556677; metalness:0.5"></a-box>
+      <a-box position="-60 -120 80" width="32" height="360" depth="32" material="color:#778899; metalness:0.5"></a-box>
+      <a-box position="70 -140 70" width="24" height="320" depth="24" material="color:#889999; metalness:0.5"></a-box>
+      <a-box position="-120 -70 -110" width="40" height="460" depth="35" material="color:#5a6a7a; metalness:0.5"></a-box>
+      <a-box position="140 -100 -40" width="22" height="400" depth="22" material="color:#6a7a8a; metalness:0.5"></a-box>
+      <a-box position="-40 -150 -140" width="45" height="300" depth="40" material="color:#7788aa; metalness:0.5"></a-box>
+      <a-box position="50 -130 140" width="30" height="340" depth="30" material="color:#667799; metalness:0.5"></a-box>
+      <a-box position="160 -90 60" width="26" height="420" depth="26" material="color:#5a7a8a; metalness:0.5"></a-box>
+      <a-box position="-150 -110 50" width="33" height="380" depth="28" material="color:#6a8899; metalness:0.5"></a-box>
+
+      <!-- Helicopter circling building -->
+      <a-entity animation="property:rotation; from:0 0 0; to:0 360 0; dur:20000; loop:true; easing:linear">
+        <a-entity position="35 8 0">
+          <a-box width="1.8" height="0.6" depth="0.6" material="color:#333"></a-box>
+          <a-box position="-1 0 0" width="1.5" height="0.2" depth="0.2" material="color:#555"></a-box>
+          <a-cylinder position="0 0.5 0" radius="2" height="0.05" material="color:#555; opacity:0.5; transparent:true"
+                      animation="property:rotation; from:0 0 0; to:0 360 0; dur:150; loop:true; easing:linear"></a-cylinder>
+        </a-entity>
       </a-entity>
-      <a-entity position="-150 -350 100" float-anim="amplitude:4; speed:30000">
-        <a-sphere radius="25" material="color:#fff; opacity:0.5; transparent:true; fog:false"></a-sphere>
-        <a-sphere position="18 2 0" radius="18" material="color:#fff; opacity:0.4; transparent:true; fog:false"></a-sphere>
+
+      <!-- Storm clouds approaching -->
+      <a-entity position="-70 40 -100">
+        <a-sphere radius="30" material="color:#445566; opacity:0.6; transparent:true; fog:false"></a-sphere>
+        <a-sphere position="25 -5 10" radius="22" material="color:#445566; opacity:0.5; transparent:true; fog:false"></a-sphere>
+        <a-sphere position="-15 3 15" radius="18" material="color:#3a4a5a; opacity:0.4; transparent:true; fog:false"></a-sphere>
       </a-entity>
-      <a-entity position="50 -500 150" float-anim="amplitude:6; speed:20000">
-        <a-sphere radius="35" material="color:#fff; opacity:0.4; transparent:true; fog:false"></a-sphere>
+      <a-entity position="60 35 -120">
+        <a-sphere radius="25" material="color:#3a4a55; opacity:0.5; transparent:true; fog:false"></a-sphere>
+        <a-sphere position="18 2 8" radius="20" material="color:#3a4a55; opacity:0.4; transparent:true; fog:false"></a-sphere>
       </a-entity>
-      <!-- Haze layer -->
-      <a-plane position="0 -600 0" rotation="-90 0 0" width="5000" height="5000" material="color:#aabbcc; opacity:0.15; transparent:true; fog:false"></a-plane>
+
       <!-- Violent wind streaks -->
-      <a-entity animation="property:position; from:-40 2 -3; to:40 1 -5; dur:2000; loop:true; easing:linear">
-        <a-box width="5" height="0.01" depth="0.01" material="color:#fff; opacity:0.4; transparent:true"></a-box>
+      <a-entity animation="property:position; from:-40 2 -5; to:40 3 -8; dur:2200; loop:true; easing:linear">
+        <a-box width="6" height="0.01" depth="0.01" material="color:#fff; opacity:0.4; transparent:true"></a-box>
       </a-entity>
-      <a-entity animation="property:position; from:-35 4 2; to:35 3 0; dur:2500; loop:true; easing:linear">
-        <a-box width="4" height="0.01" depth="0.01" material="color:#fff; opacity:0.3; transparent:true"></a-box>
+      <a-entity animation="property:position; from:-35 5 3; to:35 4 1; dur:1800; loop:true; easing:linear">
+        <a-box width="5" height="0.01" depth="0.01" material="color:#fff; opacity:0.3; transparent:true"></a-box>
       </a-entity>
-      <a-entity animation="property:position; from:-45 1 5; to:45 2 3; dur:1800; loop:true; easing:linear">
-        <a-box width="6" height="0.01" depth="0.01" material="color:#fff; opacity:0.25; transparent:true"></a-box>
+      <a-entity animation="property:position; from:-45 1 8; to:45 2 5; dur:1500; loop:true; easing:linear">
+        <a-box width="7" height="0.01" depth="0.01" material="color:#fff; opacity:0.25; transparent:true"></a-box>
       </a-entity>
-      <a-text value="Burj Khalifa Summit - 828 METERS above Dubai.\nClouds are BELOW you. The ground is almost invisible.\nThe wind screams past you." position="0 3 -2" align="center" color="#ffa94d" scale="0.5 0.5 0.5" face-camera></a-text>
+      <a-entity animation="property:position; from:40 7 -3; to:-40 6 -6; dur:2000; loop:true; easing:linear">
+        <a-box width="4" height="0.01" depth="0.01" material="color:#fff; opacity:0.2; transparent:true"></a-box>
+      </a-entity>
+
+      <a-text value="COLLAPSING SKYSCRAPER — 300m up.\nThe floor is cracking. Debris falls into the void.\nNo complete railing. The building groans and shifts.\nLook down through the hole in the floor." position="0 3.5 -6" align="center" color="#ffa94d" scale="0.55 0.55 0.55" face-camera></a-text>
     </a-entity>
 
-    <!-- LEVEL 3: Space Elevator 100km -->
+    <!-- ======= LEVEL 2: Active Volcano Rim — 3,700m ======= -->
+    <a-entity id="level2" visible="false">
+      <a-sky color="#1a0800"></a-sky>
+      <a-light type="ambient" color="#ff4400" intensity="0.15"></a-light>
+      <a-light type="point" position="0 -200 0" color="#ff3300" intensity="3" distance="500"></a-light>
+      <a-light type="point" position="0 -100 0" color="#ff6600" intensity="2" distance="300"></a-light>
+      <a-light type="directional" position="30 40 20" color="#ffaa66" intensity="0.5"></a-light>
+
+      <!-- Volcano rim (irregular rocky ring) -->
+      <a-torus position="0 0 0" radius="22" radius-tubular="5" material="color:#2a1a0a; roughness:1" rotation="90 0 0" segments-tubular="24" segments-radial="12"></a-torus>
+      <!-- Standing platform -->
+      <a-box position="0 -1 20" width="8" height="2.5" depth="5" material="color:#3a2510; roughness:1"></a-box>
+      <a-box position="4 -0.5 19" width="3" height="1.8" depth="3" material="color:#2a1a08; roughness:1"></a-box>
+      <a-box position="-3 -0.8 21" width="2.5" height="1.2" depth="2.5" material="color:#4a3015; roughness:1"></a-box>
+      <a-sphere position="6 -0.2 18" radius="1" material="color:#3a2010; roughness:1"></a-sphere>
+      <a-sphere position="-5 -0.3 19" radius="0.8" material="color:#2a1508; roughness:1"></a-sphere>
+
+      <!-- Lava lake 400m below -->
+      <a-circle position="0 -400 0" radius="20" rotation="-90 0 0" material="color:#ff3300; emissive:#ff4400; emissiveIntensity:0.8"
+                animation="property:material.emissiveIntensity; from:0.5; to:1; dur:3000; dir:alternate; loop:true"></a-circle>
+      <a-circle position="0 -399 0" radius="22" rotation="-90 0 0" material="color:#ff6600; opacity:0.3; transparent:true; emissive:#ff4400; emissiveIntensity:0.5"></a-circle>
+      <!-- Lava rivers on surface -->
+      <a-box position="5 -398 -3" width="1.5" height="0.1" depth="8" material="color:#ff5500; emissive:#ff3300; emissiveIntensity:0.6"
+             animation="property:material.emissiveIntensity; from:0.4; to:0.9; dur:2000; dir:alternate; loop:true"></a-box>
+      <a-box position="-4 -398 5" width="1" height="0.1" depth="6" material="color:#ff4400; emissive:#ff2200; emissiveIntensity:0.5" rotation="0 30 0"
+             animation="property:material.emissiveIntensity; from:0.3; to:0.8; dur:2500; dir:alternate; loop:true"></a-box>
+
+      <!-- Inner caldera walls -->
+      <a-cylinder position="0 -200 0" radius="21" height="400" material="color:#1a0a04; roughness:1; side:back" open-ended="true"></a-cylinder>
+
+      <!-- Volcanic rocks -->
+      <a-sphere position="7 0.2 17" radius="1" material="color:#2a1508; roughness:1"></a-sphere>
+      <a-sphere position="-6 -0.3 18" radius="0.6" material="color:#3a2010; roughness:1"></a-sphere>
+      <a-sphere position="2 0.3 16" radius="0.8" material="color:#1a0a04; roughness:1"></a-sphere>
+      <a-box position="-2 0 15" width="2" height="1" depth="1.5" material="color:#2a1a08; roughness:1" rotation="10 20 5"></a-box>
+
+      <!-- Rising lava bubbles -->
+      <a-sphere position="3 -380 -5" radius="1.5" material="color:#ff5500; emissive:#ff3300; emissiveIntensity:0.8"
+                animation="property:position; from:3 -380 -5; to:5 -280 -3; dur:6000; loop:true; easing:easeOutQuad"
+                animation__pop="property:scale; from:1 1 1; to:0.1 0.1 0.1; dur:6000; loop:true; easing:easeInQuad"></a-sphere>
+      <a-sphere position="-5 -390 8" radius="1.2" material="color:#ff6600; emissive:#ff4400; emissiveIntensity:0.7"
+                animation="property:position; from:-5 -390 8; to:-3 -300 6; dur:8000; loop:true; easing:easeOutQuad; delay:2000"
+                animation__pop="property:scale; from:1 1 1; to:0.1 0.1 0.1; dur:8000; loop:true; easing:easeInQuad; delay:2000"></a-sphere>
+      <a-sphere position="0 -370 0" radius="2" material="color:#ff4400; emissive:#ff2200; emissiveIntensity:0.9"
+                animation="property:position; from:0 -370 0; to:2 -260 -2; dur:10000; loop:true; easing:easeOutQuad; delay:4000"
+                animation__pop="property:scale; from:1 1 1; to:0.1 0.1 0.1; dur:10000; loop:true; easing:easeInQuad; delay:4000"></a-sphere>
+
+      <!-- Smoke columns rising -->
+      <a-sphere position="10 3 12" radius="3" material="color:#554433; opacity:0.2; transparent:true"
+                animation="property:position; from:10 3 12; to:14 40 10; dur:12000; loop:true"
+                animation__fade="property:material.opacity; from:0.2; to:0; dur:12000; loop:true"></a-sphere>
+      <a-sphere position="-8 2 14" radius="2.5" material="color:#665544; opacity:0.15; transparent:true"
+                animation="property:position; from:-8 2 14; to:-5 35 16; dur:10000; loop:true; delay:3000"
+                animation__fade="property:material.opacity; from:0.15; to:0; dur:10000; loop:true; delay:3000"></a-sphere>
+      <a-sphere position="3 4 22" radius="4" material="color:#443322; opacity:0.2; transparent:true"
+                animation="property:position; from:3 4 22; to:1 50 24; dur:15000; loop:true; delay:5000"
+                animation__fade="property:material.opacity; from:0.2; to:0; dur:15000; loop:true; delay:5000"></a-sphere>
+      <a-sphere position="-3 5 16" radius="2" material="color:#554433; opacity:0.18; transparent:true"
+                animation="property:position; from:-3 5 16; to:-1 30 18; dur:9000; loop:true; delay:7000"
+                animation__fade="property:material.opacity; from:0.18; to:0; dur:9000; loop:true; delay:7000"></a-sphere>
+
+      <!-- Outer mountain slope -->
+      <a-cone position="0 -600 0" radius-bottom="900" radius-top="24" height="1200" material="color:#3a2a15; roughness:1; side:double" open-ended="true"></a-cone>
+      <!-- Distant landscape -->
+      <a-plane position="0 -900 0" rotation="-90 0 0" width="8000" height="8000" material="color:#2a4a2a"></a-plane>
+
+      <!-- Glowing cracks in rock near edge -->
+      <a-box position="2 -0.7 17" width="4" height="0.02" depth="0.12" material="color:#ff4400; emissive:#ff2200; emissiveIntensity:0.6" rotation="0 20 0"
+             animation="property:material.emissiveIntensity; from:0.3; to:0.9; dur:2000; dir:alternate; loop:true"></a-box>
+      <a-box position="-1 -0.7 19" width="3" height="0.02" depth="0.1" material="color:#ff5500; emissive:#ff3300; emissiveIntensity:0.5" rotation="0 -30 0"
+             animation="property:material.emissiveIntensity; from:0.2; to:0.8; dur:2500; dir:alternate; loop:true"></a-box>
+      <a-box position="4 -0.6 15.5" width="2.5" height="0.02" depth="0.08" material="color:#ff3300; emissive:#ff1100; emissiveIntensity:0.4" rotation="0 50 0"
+             animation="property:material.emissiveIntensity; from:0.2; to:0.7; dur:3000; dir:alternate; loop:true"></a-box>
+
+      <!-- Heat shimmer -->
+      <a-plane position="0 8 0" rotation="-90 0 0" width="50" height="50" material="color:#ff4400; opacity:0.03; transparent:true"
+               animation="property:material.opacity; from:0.02; to:0.06; dur:3000; dir:alternate; loop:true"></a-plane>
+
+      <!-- Ash particles -->
+      <a-entity animation="property:position; from:0 35 5; to:5 -3 8; dur:8000; loop:true; easing:linear">
+        <a-sphere radius="0.06" material="color:#444; opacity:0.5; transparent:true"></a-sphere>
+      </a-entity>
+      <a-entity animation="property:position; from:-12 30 8; to:-5 -2 12; dur:10000; loop:true; easing:linear; delay:2000">
+        <a-sphere radius="0.05" material="color:#555; opacity:0.4; transparent:true"></a-sphere>
+      </a-entity>
+      <a-entity animation="property:position; from:8 32 -3; to:12 -1 2; dur:9000; loop:true; easing:linear; delay:4000">
+        <a-sphere radius="0.07" material="color:#444; opacity:0.35; transparent:true"></a-sphere>
+      </a-entity>
+      <a-entity animation="property:position; from:-6 28 15; to:-2 0 18; dur:7000; loop:true; easing:linear; delay:1000">
+        <a-sphere radius="0.04" material="color:#555; opacity:0.4; transparent:true"></a-sphere>
+      </a-entity>
+      <a-entity animation="property:position; from:4 25 20; to:7 1 22; dur:11000; loop:true; easing:linear; delay:6000">
+        <a-sphere radius="0.08" material="color:#444; opacity:0.3; transparent:true"></a-sphere>
+      </a-entity>
+
+      <a-text value="ACTIVE VOLCANO — 3,700m elevation.\nThe caldera drops 400m to molten lava below.\nThe ground shakes. Toxic fumes burn your lungs.\nRock crumbles at the edge. One wrong step..." position="0 4 14" align="center" color="#ff8844" scale="0.5 0.5 0.5" face-camera></a-text>
+    </a-entity>
+
+    <!-- ======= LEVEL 3: Disintegrating Space Station 400km ======= -->
     <a-entity id="level3" visible="false">
-      <a-sky color="#000005"></a-sky>
-      <a-light type="directional" position="100 50 -50" color="#ffffff" intensity="3" cast-shadow="true"></a-light>
-      <a-light type="ambient" color="#112244" intensity="0.1"></a-light>
-      <!-- Raw sun in space -->
-      <a-sphere position="100 50 -50" radius="8" material="color:#fff; emissive:#ffffff; emissiveIntensity:1; fog:false"></a-sphere>
-      <a-sphere position="100 50 -50" radius="20" material="color:#ffffdd; opacity:0.08; transparent:true; fog:false; side:double"></a-sphere>
-      <a-sphere position="100 50 -50" radius="35" material="color:#ffffaa; opacity:0.03; transparent:true; fog:false; side:double"></a-sphere>
-      <!-- Glass platform -->
-      <a-cylinder position="0 0 0" radius="4" height="0.15" material="color:#88aacc; opacity:0.3; transparent:true; metalness:0.8; side:double"></a-cylinder>
-      <!-- Thin cable railing -->
-      <a-torus position="0 1 0" radius="4" radius-tubular="0.02" material="color:#ccc; metalness:0.9" rotation="90 0 0"></a-torus>
-      <a-cylinder position="4 0.5 0" radius="0.02" height="1" material="color:#ccc; metalness:0.9"></a-cylinder>
-      <a-cylinder position="-4 0.5 0" radius="0.02" height="1" material="color:#ccc; metalness:0.9"></a-cylinder>
-      <a-cylinder position="0 0.5 4" radius="0.02" height="1" material="color:#ccc; metalness:0.9"></a-cylinder>
-      <a-cylinder position="0 0.5 -4" radius="0.02" height="1" material="color:#ccc; metalness:0.9"></a-cylinder>
-      <a-cylinder position="2.83 0.5 2.83" radius="0.02" height="1" material="color:#ccc; metalness:0.9"></a-cylinder>
-      <a-cylinder position="-2.83 0.5 2.83" radius="0.02" height="1" material="color:#ccc; metalness:0.9"></a-cylinder>
-      <a-cylinder position="2.83 0.5 -2.83" radius="0.02" height="1" material="color:#ccc; metalness:0.9"></a-cylinder>
-      <a-cylinder position="-2.83 0.5 -2.83" radius="0.02" height="1" material="color:#ccc; metalness:0.9"></a-cylinder>
-      <!-- Cable to infinity -->
-      <a-cylinder position="0 250 0" radius="0.1" height="500" material="color:#aaa; metalness:0.9"></a-cylinder>
-      <a-cylinder position="0 -500 0" radius="0.1" height="1000" material="color:#aaa; metalness:0.9"></a-cylinder>
-      <!-- EARTH below with curvature -->
-      <a-sphere position="0 -6471 0" radius="6371" material="color:#1a5588; fog:false"></a-sphere>
-      <a-sphere position="30 -6470 -20" radius="80" material="color:#3a7a3a; opacity:0.8; transparent:true; fog:false"></a-sphere>
-      <a-sphere position="-50 -6470 40" radius="60" material="color:#4a8a2a; opacity:0.7; transparent:true; fog:false"></a-sphere>
-      <a-sphere position="10 -6470 60" radius="45" material="color:#d4c090; opacity:0.6; transparent:true; fog:false"></a-sphere>
+      <a-sky color="#000002"></a-sky>
+      <a-light type="directional" position="80 30 -40" color="#ffffff" intensity="3.5" cast-shadow="true"></a-light>
+      <a-light type="ambient" color="#0a0a20" intensity="0.05"></a-light>
+
+      <!-- Blinding sun in space -->
+      <a-sphere position="80 30 -40" radius="6" material="color:#fff; emissive:#ffffff; emissiveIntensity:1.5; fog:false"></a-sphere>
+      <a-sphere position="80 30 -40" radius="15" material="color:#ffffcc; opacity:0.1; transparent:true; fog:false; side:double"></a-sphere>
+      <a-sphere position="80 30 -40" radius="30" material="color:#ffffaa; opacity:0.04; transparent:true; fog:false; side:double"></a-sphere>
+
+      <!-- Station hull fragment you stand on -->
+      <a-box position="0 0 0" width="10" height="0.15" depth="14" material="color:#888; metalness:0.8; roughness:0.3"></a-box>
+      <!-- Torn jagged edges -->
+      <a-box position="5.5 0.1 -3" width="1.2" height="0.15" depth="4" material="color:#777; metalness:0.7" rotation="0 0 18"></a-box>
+      <a-box position="-5.2 0.08 2" width="1" height="0.15" depth="3" material="color:#999; metalness:0.8" rotation="0 0 -12"></a-box>
+      <a-box position="3 0.12 -7.2" width="4" height="0.15" depth="1" material="color:#888; metalness:0.7" rotation="10 5 0"></a-box>
+
+      <!-- Exposed wiring and pipes (damaged) -->
+      <a-cylinder position="3 0.3 -5" radius="0.03" height="3.5" material="color:#cc0000" rotation="30 0 60"></a-cylinder>
+      <a-cylinder position="-2 0.2 -6" radius="0.04" height="2.5" material="color:#0066cc" rotation="-20 0 45"></a-cylinder>
+      <a-cylinder position="1 0.4 -6.3" radius="0.02" height="4.5" material="color:#cccc00" rotation="45 10 30"></a-cylinder>
+      <a-cylinder position="-4 0.15 -4" radius="0.035" height="2" material="color:#00cc66" rotation="60 20 -15"></a-cylinder>
+
+      <!-- Sparking electronics -->
+      <a-sphere position="2.5 0.5 -4" radius="0.1" material="color:#ffff00; emissive:#ffff00; emissiveIntensity:0"
+                animation="property:material.emissiveIntensity; from:0; to:2; dur:100; delay:3000; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="-1.5 0.3 -5.5" radius="0.08" material="color:#00ffff; emissive:#00ffff; emissiveIntensity:0"
+                animation="property:material.emissiveIntensity; from:0; to:2; dur:80; delay:5500; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="4 0.2 2" radius="0.06" material="color:#ff8800; emissive:#ff8800; emissiveIntensity:0"
+                animation="property:material.emissiveIntensity; from:0; to:1.5; dur:120; delay:8000; dir:alternate; loop:true"></a-sphere>
+
+      <!-- Thin guardrail (barely functional) -->
+      <a-cylinder position="0 0.5 -7" radius="0.02" height="10" material="color:#aaa; metalness:0.9" rotation="0 0 90"></a-cylinder>
+
+      <!-- Drifting station debris chunks -->
+      <a-entity animation="property:position; from:18 5 -12; to:-22 -4 18; dur:45000; loop:true; easing:linear">
+        <a-box width="5" height="2.5" depth="3.5" material="color:#777; metalness:0.7"
+               animation="property:rotation; from:0 0 0; to:45 180 90; dur:45000; loop:true; easing:linear"></a-box>
+        <a-box position="4 0 0" width="6" height="0.1" depth="2.5" material="color:#224488; metalness:0.6"></a-box>
+      </a-entity>
+      <a-entity animation="property:position; from:-15 -3 22; to:20 5 -18; dur:60000; loop:true; easing:linear">
+        <a-box width="3" height="2" depth="1.5" material="color:#888; metalness:0.6"
+               animation="property:rotation; from:0 0 0; to:90 270 45; dur:60000; loop:true; easing:linear"></a-box>
+      </a-entity>
+      <a-entity animation="property:position; from:30 10 5; to:-25 -8 -20; dur:50000; loop:true; easing:linear">
+        <a-cylinder radius="0.5" height="8" material="color:#999; metalness:0.7"
+                    animation="property:rotation; from:0 0 0; to:60 120 30; dur:50000; loop:true; easing:linear"></a-cylinder>
+      </a-entity>
+
+      <!-- Empty astronaut suit drifting (haunting) -->
+      <a-entity animation="property:position; from:28 0 5; to:-28 4 -10; dur:70000; loop:true; easing:linear">
+        <a-entity animation="property:rotation; from:0 0 0; to:20 180 40; dur:70000; loop:true; easing:linear">
+          <a-cylinder radius="0.22" height="1.1" material="color:#fff; metalness:0.3"></a-cylinder>
+          <a-sphere position="0 0.75 0" radius="0.27" material="color:#fff; metalness:0.3"></a-sphere>
+          <a-sphere position="0 0.8 0.22" radius="0.17" material="color:#1a1a40; metalness:0.9; opacity:0.8; transparent:true"></a-sphere>
+          <a-cylinder position="0.3 0.2 0" radius="0.08" height="0.8" material="color:#fff; metalness:0.3" rotation="0 0 20"></a-cylinder>
+          <a-cylinder position="-0.3 0.2 0" radius="0.08" height="0.8" material="color:#fff; metalness:0.3" rotation="0 0 -20"></a-cylinder>
+        </a-entity>
+      </a-entity>
+
+      <!-- EARTH below (massive) -->
+      <a-sphere position="0 -6771 0" radius="6371" material="color:#1a4a77; fog:false"></a-sphere>
+      <!-- Continents -->
+      <a-sphere position="40 -6770 -30" radius="100" material="color:#3a7a3a; opacity:0.7; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="-60 -6770 50" radius="80" material="color:#4a8a2a; opacity:0.6; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="20 -6770 80" radius="60" material="color:#d4c090; opacity:0.5; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="-30 -6770 -70" radius="90" material="color:#3a6a3a; opacity:0.6; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="80 -6770 -80" radius="70" material="color:#5a9a4a; opacity:0.5; transparent:true; fog:false"></a-sphere>
       <!-- Cloud layer -->
-      <a-sphere position="0 -6360 0" radius="6362" material="color:#ffffff; opacity:0.2; transparent:true; fog:false"></a-sphere>
+      <a-sphere position="0 -6760 0" radius="6362" material="color:#ffffff; opacity:0.15; transparent:true; fog:false"></a-sphere>
       <!-- Atmosphere glow -->
-      <a-sphere position="0 -6471 0" radius="6381" material="color:#4488ff; opacity:0.08; transparent:true; fog:false; side:back"></a-sphere>
-      <a-sphere position="0 -6471 0" radius="6385" material="color:#2266dd; opacity:0.05; transparent:true; fog:false; side:back"></a-sphere>
-      <!-- Stars everywhere -->
+      <a-sphere position="0 -6771 0" radius="6381" material="color:#4488ff; opacity:0.06; transparent:true; fog:false; side:back"></a-sphere>
+      <a-sphere position="0 -6771 0" radius="6390" material="color:#2266cc; opacity:0.03; transparent:true; fog:false; side:back"></a-sphere>
+
+      <!-- Dense starfield (24 stars) -->
       <a-sphere position="50 40 -80" radius="0.15" material="color:#fff; emissive:#fff; emissiveIntensity:1; fog:false"></a-sphere>
       <a-sphere position="-70 60 -50" radius="0.1" material="color:#fff; emissive:#fff; emissiveIntensity:1; fog:false"></a-sphere>
       <a-sphere position="30 80 40" radius="0.12" material="color:#fff; emissive:#fff; emissiveIntensity:1; fog:false"></a-sphere>
@@ -206,21 +359,27 @@
       <a-sphere position="-15 80 -80" radius="0.08" material="color:#fff; emissive:#fff; emissiveIntensity:1; fog:false"></a-sphere>
       <a-sphere position="55 50 55" radius="0.15" material="color:#fff; emissive:#fff; emissiveIntensity:1; fog:false"></a-sphere>
       <a-sphere position="-85 35 -15" radius="0.1" material="color:#ddf; emissive:#ddf; emissiveIntensity:1; fog:false"></a-sphere>
+      <a-sphere position="35 -10 85" radius="0.14" material="color:#fff; emissive:#fff; emissiveIntensity:1; fog:false"></a-sphere>
+      <a-sphere position="-50 70 -70" radius="0.09" material="color:#ffd; emissive:#ffd; emissiveIntensity:1; fog:false"></a-sphere>
+      <a-sphere position="70 85 -60" radius="0.11" material="color:#fff; emissive:#fff; emissiveIntensity:1; fog:false"></a-sphere>
+      <a-sphere position="-90 15 40" radius="0.13" material="color:#ddf; emissive:#ddf; emissiveIntensity:1; fog:false"></a-sphere>
+
+      <!-- Warning lights -->
+      <a-sphere position="-3 1 -3" radius="0.1" material="color:#ff0000; emissive:#ff0000; emissiveIntensity:0"
+                animation="property:material.emissiveIntensity; from:0; to:1; dur:800; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="3 1 2" radius="0.1" material="color:#ff0000; emissive:#ff0000; emissiveIntensity:0"
+                animation="property:material.emissiveIntensity; from:1; to:0; dur:800; dir:alternate; loop:true"></a-sphere>
+
       <!-- Moon -->
-      <a-sphere position="-200 80 -300" radius="15" material="color:#ddd; emissive:#aaa; emissiveIntensity:0.2; fog:false"></a-sphere>
-      <!-- Satellite passing -->
-      <a-entity animation="property:position; from:60 10 -80; to:-60 15 80; dur:30000; loop:true; easing:linear">
-        <a-box width="0.5" height="0.1" depth="0.1" material="color:#ccc; metalness:0.9; fog:false"></a-box>
-        <a-box position="-0.5 0 0" width="0.8" height="0.01" depth="0.3" material="color:#224488; metalness:0.8; fog:false"></a-box>
-        <a-box position="0.5 0 0" width="0.8" height="0.01" depth="0.3" material="color:#224488; metalness:0.8; fog:false"></a-box>
-      </a-entity>
-      <a-text value="SPACE ELEVATOR - 100km above Earth.\nYou see the curvature of the planet.\nGlass floor reveals the infinite void below.\nNo ground. Only the abyss." position="0 3 -3" align="center" color="#ffa94d" scale="0.45 0.45 0.45" face-camera></a-text>
+      <a-sphere position="-150 60 -250" radius="12" material="color:#ddd; emissive:#aaa; emissiveIntensity:0.15; fog:false"></a-sphere>
+
+      <a-text value="DISINTEGRATING SPACE STATION — 400km above Earth.\nThe station is tearing apart. An empty suit drifts past.\nBelow is 400km of nothing. You are utterly alone.\nSparks fly. Oxygen is running out." position="0 3 -5" align="center" color="#ffa94d" scale="0.4 0.4 0.4" face-camera></a-text>
     </a-entity>
   </a-scene>
 
   <script src="shared.js"></script>
   <script>
-    var altitudes = { 1: '200m', 2: '828m', 3: '100km' };
+    var altitudes = { 1: '300m', 2: '3,700m', 3: '400km' };
     function setLevel(num) {
       document.getElementById('level1').setAttribute('visible', num === 1);
       document.getElementById('level2').setAttribute('visible', num === 2);
@@ -229,13 +388,19 @@
       var scene = document.getElementById('vrscene');
       var wind = document.getElementById('wind-overlay');
       var vertigo = document.getElementById('vertigo-overlay');
-      if (num === 1) { rig.setAttribute('position','0 1.6 8'); scene.setAttribute('fog','type:linear; color:#88bbee; near:100; far:800'); wind.style.opacity='0.3'; vertigo.style.opacity='0.2'; }
-      if (num === 2) { rig.setAttribute('position','0 1.6 0'); scene.setAttribute('fog','type:linear; color:#6688bb; near:200; far:1500'); wind.style.opacity='0.6'; vertigo.style.opacity='0.5'; }
-      if (num === 3) { rig.setAttribute('position','0 1.6 0'); scene.setAttribute('fog','type:linear; color:#000005; near:500; far:10000'); wind.style.opacity='0'; vertigo.style.opacity='0.7'; }
+      if (num === 1) { rig.setAttribute('position','0 1.6 5'); scene.setAttribute('fog','type:linear; color:#8899aa; near:80; far:600'); wind.style.opacity='0.35'; vertigo.style.opacity='0.25'; }
+      if (num === 2) { rig.setAttribute('position','0 1.6 20'); scene.setAttribute('fog','type:linear; color:#1a0800; near:50; far:400'); wind.style.opacity='0.5'; vertigo.style.opacity='0.5'; }
+      if (num === 3) { rig.setAttribute('position','0 1.6 0'); scene.setAttribute('fog','type:linear; color:#000002; near:200; far:8000'); wind.style.opacity='0'; vertigo.style.opacity='0.7'; }
       document.getElementById('alt-display').textContent = altitudes[num];
       document.querySelectorAll('.level-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === num - 1); });
       showComfortMessage();
     }
+    setInterval(function() {
+      if (document.getElementById('level1').getAttribute('visible')) {
+        document.getElementById('vertigo-overlay').style.animation = 'screenShake 0.6s ease';
+        setTimeout(function() { document.getElementById('vertigo-overlay').style.animation = ''; }, 600);
+      }
+    }, 7000 + Math.random() * 5000);
     window.addEventListener('load', function() { initPhobiaScene(); initVRPhobiaApp(); setLevel(1); });
   </script>
 </body>

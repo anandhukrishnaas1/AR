@@ -7,9 +7,17 @@
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    #dark-indicator{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:100;color:#aa66ff;font-family:Inter,sans-serif;font-size:14px;text-align:right;pointer-events:none;text-shadow:0 0 10px rgba(170,102,255,0.8)}
+    #dark-indicator .dark-val{font-size:28px;font-weight:800;display:block}
+    #darkness-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50;opacity:0;transition:opacity 2s;background:radial-gradient(ellipse at center, transparent 15%, rgba(0,0,0,0.9) 100%)}
+    #flicker-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:51;opacity:0;background:#fff}
+  </style>
 </head>
 <body>
-  <!-- UI Overlay -->
+  <div id="dark-indicator"><span class="dark-val" id="dark-display">Dim</span>light level</div>
+  <div id="darkness-overlay"></div>
+  <div id="flicker-overlay"></div>
   <div class="scene-ui">
     <div class="scene-header">
       <a href="index.html" class="back-btn">← Back</a>
@@ -17,349 +25,264 @@
       <div></div>
     </div>
     <div class="level-selector">
-      <button class="level-btn active" onclick="setLevel(1)">Level 1: Dim Room</button>
-      <button class="level-btn" onclick="setLevel(2)">Level 2: Twilight Path</button>
-      <button class="level-btn" onclick="setLevel(3)">Level 3: Dark Forest</button>
+      <button class="level-btn active" onclick="setLevel(1)">Level 1: Abandoned Hospital</button>
+      <button class="level-btn" onclick="setLevel(2)">Level 2: Underground Catacombs</button>
+      <button class="level-btn" onclick="setLevel(3)">Level 3: The Void</button>
     </div>
   </div>
+  <div class="breathing-guide"><div class="breath-circle">Breathe In</div><div class="breath-label">Follow the rhythm</div></div>
+  <div class="anxiety-meter"><span class="meter-label">Anxiety</span><div class="meter-track"><div class="meter-fill" style="height:30%"></div></div></div>
+  <div class="comfort-msg" style="opacity:0;">You are safe here.</div>
 
-  <!-- Breathing Guide -->
-  <div class="breathing-guide">
-    <div class="breath-circle">Breathe In</div>
-    <div class="breath-label">Follow the rhythm</div>
-  </div>
-
-  <!-- Anxiety Meter -->
-  <div class="anxiety-meter">
-    <span class="meter-label">Anxiety</span>
-    <div class="meter-track">
-      <div class="meter-fill" style="height: 30%"></div>
-    </div>
-  </div>
-
-  <!-- Comfort Message -->
-  <div class="comfort-msg" style="opacity: 0;">You're safe here.</div>
-
-  <!-- A-Frame Scene -->
-  <a-scene id="vrscene" vr-mode-ui="enabled: true" renderer="antialias: true; precision: medium">
-    <!-- Camera with flashlight for level 3 -->
+  <a-scene id="vrscene" vr-mode-ui="enabled:true" renderer="antialias:true; colorManagement:true; physicallyCorrectLights:true; logarithmicDepthBuffer:true" fog="type:exponential; color:#000; density:0.03">
     <a-entity id="rig" position="0 1.6 0">
-      <a-camera look-controls wasd-controls="acceleration: 20">
-        <a-cursor color="#a78bfa" fuse="false" raycaster="far: 20"></a-cursor>
-        <!-- Flashlight (only visible in level 3) -->
-        <a-light id="flashlight" type="spot" color="#fff8cc" intensity="0" angle="25" 
-                 penumbra="0.3" distance="20" target=""></a-light>
+      <a-camera look-controls wasd-controls="acceleration:20">
+        <a-cursor color="#aa66ff" fuse="false" raycaster="far:50"></a-cursor>
       </a-camera>
     </a-entity>
 
-    <!-- ========== LEVEL 1: Dim Room (comfortable darkness) ========== -->
+    <!-- ======= LEVEL 1: ABANDONED HOSPITAL BLACKOUT ======= -->
     <a-entity id="level1" visible="true">
-      <!-- Very dim ambient -->
-      <a-sky color="#1a1520"></a-sky>
-      <a-light type="ambient" color="#443355" intensity="0.2" cast-shadow="false"></a-light>
-      
-      <!-- Warm lamp on table -->
-      <a-light type="point" position="2 1.2 -2" color="#ffaa44" intensity="0.8" distance="8" decay="2"></a-light>
-      
-      <!-- Nightlight glow -->
-      <a-light type="point" position="-3 0.3 -3" color="#ff8844" intensity="0.4" distance="5" decay="2"></a-light>
-      
-      <!-- Room -->
-      <a-plane position="0 0 0" rotation="-90 0 0" width="8" height="8" material="color: #3a2a1a; roughness: 1; metalness: 0; shader: standard"></a-plane>
-      <a-box position="0 2 -4" width="8" height="4" depth="0.2" material="color: #2a2030; roughness: 0.95; metalness: 0"></a-box>
-      <a-box position="-4 2 0" width="0.2" height="4" depth="8" material="color: #2a2030; roughness: 0.95; metalness: 0"></a-box>
-      <a-box position="4 2 0" width="0.2" height="4" depth="8" material="color: #2a2030; roughness: 0.95; metalness: 0"></a-box>
-      <a-box position="0 2 4" width="8" height="4" depth="0.2" material="color: #2a2030; roughness: 0.95; metalness: 0"></a-box>
-      <a-plane position="0 4 0" rotation="90 0 0" width="8" height="8" material="color: #1a1520; roughness: 1; metalness: 0"></a-plane>
-      
-      <!-- Bed -->
-      <a-box position="-2 0.3 -3" width="2" height="0.6" depth="2.5" material="color: #4a3a2a; roughness: 0.85; metalness: 0"></a-box>
-      <a-box position="-2 0.5 -3" width="1.8" height="0.2" depth="2.3" material="color: #6a5a8a; roughness: 0.8; metalness: 0; shader: standard"></a-box>
-      <a-box position="-2 0.5 -4" width="1.8" height="0.3" depth="0.5" material="color: #fff; opacity: 0.85; transparent: true; roughness: 0.6; metalness: 0; shader: standard"></a-box>
-      
-      <!-- Bedside table with lamp -->
-      <a-box position="2 0.4 -2" width="0.5" height="0.8" depth="0.5" material="color: #5a4a3a"></a-box>
-      <a-cylinder position="2 0.9 -2" radius="0.06" height="0.3" material="color: #888"></a-cylinder>
-      <a-cone position="2 1.15 -2" radius-bottom="0.2" radius-top="0.08" height="0.25" 
-              material="color: #ffcc88; opacity: 0.8; transparent: true; emissive: #ffaa44; emissiveIntensity: 0.5"></a-cone>
-      
-      <!-- Nightlight on the wall -->
-      <a-sphere position="-3 0.3 -3" radius="0.08" 
-                material="color: #ff8844; emissive: #ff6622; emissiveIntensity: 0.8"></a-sphere>
-      
-      <!-- Window with moonlight -->
-      <a-box position="4 2 -1" width="0.1" height="1.5" depth="1.2" 
-             material="color: #223344; opacity: 0.5; transparent: true"></a-box>
-      <a-light type="spot" position="4.5 2.5 -1" color="#bbccff" intensity="0.2" angle="40" distance="6" 
-               target=""></a-light>
-      
-      <!-- Bookshelf -->
-      <a-box position="-3.8 1 1" width="0.3" height="2" depth="1" material="color: #4a3a2a"></a-box>
-      <a-box position="-3.8 0.8 1" width="0.25" height="0.3" depth="0.2" material="color: #8a4a3a"></a-box>
-      <a-box position="-3.8 0.8 1.3" width="0.25" height="0.25" depth="0.15" material="color: #3a4a8a"></a-box>
-      <a-box position="-3.8 1.3 1" width="0.25" height="0.35" depth="0.2" material="color: #3a8a4a"></a-box>
-      
-      <!-- Soft rug -->
-      <a-circle position="0 0.01 -1" rotation="-90 0 0" radius="1.5" 
-                material="color: #5a4a6a; roughness: 1"></a-circle>
-      
-      <a-text value="Your bedroom at night.\nThe lamp and nightlight keep you company." 
-              position="0 3 -2" align="center" color="#a78bfa" scale="0.4 0.4 0.4" face-camera></a-text>
+      <a-sky color="#050505"></a-sky>
+      <a-light type="ambient" color="#111" intensity="0.08"></a-light>
+
+      <!-- Dying fluorescent light (flickers) -->
+      <a-light id="fluoro1" type="point" position="0 3.2 0" color="#ccffcc" intensity="0" distance="12"
+               animation="property:intensity; from:0.8; to:0; dur:200; delay:2000; dir:alternate; loop:true"></a-light>
+      <a-box position="0 3.3 0" width="0.8" height="0.05" depth="0.15" material="color:#ccffcc; emissive:#aaffaa; emissiveIntensity:0"
+             animation="property:material.emissiveIntensity; from:0.6; to:0; dur:200; delay:2000; dir:alternate; loop:true"></a-box>
+
+      <!-- Main corridor -->
+      <a-box position="0 1.7 -12" width="5" height="3.5" depth="30" material="color:#2a2a22; roughness:0.9; side:back"></a-box>
+      <!-- Floor (old linoleum) -->
+      <a-box position="0 0 -12" width="5" height="0.1" depth="30" material="color:#222218; roughness:0.8"></a-box>
+      <!-- Ceiling tiles (some missing) -->
+      <a-box position="0 3.45 -12" width="5" height="0.1" depth="30" material="color:#1a1a15; roughness:0.9"></a-box>
+      <a-box position="1.5 3.4 -8" width="1" height="0.12" depth="1" material="color:#111; roughness:1" rotation="0 0 15"></a-box>
+      <a-box position="-0.8 3.4 -18" width="1.2" height="0.12" depth="1" material="color:#111; roughness:1" rotation="0 0 -10"></a-box>
+
+      <!-- Blood-like stains on floor -->
+      <a-circle position="1 0.06 -6" radius="0.5" rotation="-90 0 0" material="color:#3a0000; roughness:1"></a-circle>
+      <a-circle position="-0.5 0.06 -14" radius="0.3" rotation="-90 0 0" material="color:#2a0000; roughness:1"></a-circle>
+      <a-circle position="0.8 0.06 -20" radius="0.8" rotation="-90 0 0" material="color:#4a0000; roughness:1"></a-circle>
+
+      <!-- Overturned wheelchairs -->
+      <a-box position="-1.5 0.4 -4" width="0.6" height="0.8" depth="0.7" material="color:#333; metalness:0.5" rotation="0 20 -30"></a-box>
+      <a-cylinder position="-1.2 0.15 -4.2" radius="0.15" height="0.05" material="color:#222; metalness:0.6" rotation="90 0 0"></a-cylinder>
+      <a-cylinder position="-1.8 0.15 -3.8" radius="0.15" height="0.05" material="color:#222; metalness:0.6" rotation="90 0 0"></a-cylinder>
+
+      <!-- Gurney blocking the hall -->
+      <a-box position="0.5 0.7 -10" width="0.8" height="0.05" depth="2" material="color:#777; metalness:0.6"></a-box>
+      <a-cylinder position="0.2 0.15 -9.2" radius="0.06" height="0.05" material="color:#555; metalness:0.7" rotation="90 0 0"></a-cylinder>
+      <a-cylinder position="0.8 0.15 -10.8" radius="0.06" height="0.05" material="color:#555; metalness:0.7" rotation="90 0 0"></a-cylinder>
+      <!-- Sheet hanging off gurney -->
+      <a-plane position="1 0.45 -10" width="1.2" height="0.7" material="color:#ddd8c8; opacity:0.6; transparent:true; side:double" rotation="10 0 80"></a-plane>
+
+      <!-- Doors (some open, dark rooms behind) -->
+      <a-box position="2.5 1.5 -7" width="0.12" height="2.8" depth="1.2" material="color:#3a2a1a" rotation="0 -30 0"></a-box>
+      <a-box position="2.5 1.5 -15" width="0.12" height="2.8" depth="1.2" material="color:#3a2a1a" rotation="0 -50 0"></a-box>
+      <a-box position="-2.5 1.5 -11" width="0.12" height="2.8" depth="1.2" material="color:#3a2a1a" rotation="0 20 0"></a-box>
+
+      <!-- Eerie exit sign glow at far end -->
+      <a-box position="0 3 -26" width="0.6" height="0.25" depth="0.05" material="color:#330000; emissive:#ff0000; emissiveIntensity:0.15"></a-box>
+      <a-text position="0 3 -25.9" value="EXIT" color="#ff0000" scale="0.18 0.18 0.18" align="center" material="opacity:0.3"></a-text>
+
+      <!-- Something at the end of corridor (shadow figure) -->
+      <a-cylinder position="0.3 1.2 -25" radius="0.25" height="2" material="color:#0a0a0a; opacity:0.7; transparent:true"></a-cylinder>
+      <a-sphere position="0.3 2.3 -25" radius="0.2" material="color:#0a0a0a; opacity:0.7; transparent:true"></a-sphere>
+
+      <!-- Dripping pipe sound visualization -->
+      <a-sphere position="1.8 2.8 -12" radius="0.03" material="color:#4488aa; opacity:0.6; transparent:true"
+                animation="property:position; from:1.8 2.8 -12; to:1.8 0.1 -12; dur:1500; loop:true; delay:3000"
+                animation__fade="property:material.opacity; from:0.6; to:0; dur:1500; loop:true; delay:3000"></a-sphere>
+
+      <!-- Scattered papers -->
+      <a-plane position="0.5 0.07 -8" width="0.25" height="0.35" material="color:#ddd8c0; opacity:0.5; transparent:true" rotation="-88 20 0"></a-plane>
+      <a-plane position="-0.3 0.07 -16" width="0.2" height="0.3" material="color:#ccc8b0; opacity:0.4; transparent:true" rotation="-88 -15 0"></a-plane>
+
+      <a-text value="ABANDONED HOSPITAL — Power failed 3 hours ago.\nThe emergency generator is dying. Lights flicker and fade.\nSomething stands at the end of the corridor.\nYou hear footsteps... but you're supposed to be alone." position="0 2.8 -4" align="center" color="#aa66ff" scale="0.35 0.35 0.35" face-camera></a-text>
     </a-entity>
 
-    <!-- ========== LEVEL 2: Twilight Garden Path ========== -->
+    <!-- ======= LEVEL 2: UNDERGROUND CATACOMBS ======= -->
     <a-entity id="level2" visible="false">
-      <!-- Dusk sky -->
-      <a-sky color="#1a1030"></a-sky>
-      
-      <!-- Very low ambient (twilight) -->
-      <a-light type="ambient" color="#221835" intensity="0.2"></a-light>
-      
-      <!-- Moon -->
-      <a-sphere position="20 15 -30" radius="2" 
-                material="color: #eeeeff; emissive: #ccccff; emissiveIntensity: 0.4"></a-sphere>
-      <a-light type="directional" position="20 15 -30" color="#667799" intensity="0.3"></a-light>
-      
-      <!-- Stars -->
-      <a-entity id="stars">
-        <a-sphere position="10 20 -30" radius="0.05" material="color: #fff; emissive: #fff; emissiveIntensity: 1"></a-sphere>
-        <a-sphere position="-15 25 -20" radius="0.04" material="color: #fff; emissive: #fff; emissiveIntensity: 1"></a-sphere>
-        <a-sphere position="5 22 -25" radius="0.06" material="color: #fff; emissive: #fff; emissiveIntensity: 1"></a-sphere>
-        <a-sphere position="-8 18 -35" radius="0.04" material="color: #fff; emissive: #fff; emissiveIntensity: 1"></a-sphere>
-        <a-sphere position="12 28 -15" radius="0.05" material="color: #fff; emissive: #fff; emissiveIntensity: 1"></a-sphere>
-        <a-sphere position="-20 22 -28" radius="0.03" material="color: #fff; emissive: #fff; emissiveIntensity: 1"></a-sphere>
-        <a-sphere position="18 24 -22" radius="0.04" material="color: #fff; emissive: #fff; emissiveIntensity: 1"></a-sphere>
-        <a-sphere position="-5 30 -18" radius="0.05" material="color: #fff; emissive: #fff; emissiveIntensity: 1"></a-sphere>
-        <a-sphere position="25 20 -32" radius="0.03" material="color: #fff; emissive: #fff; emissiveIntensity: 1"></a-sphere>
-        <a-sphere position="-12 26 -24" radius="0.06" material="color: #fff; emissive: #fff; emissiveIntensity: 1"></a-sphere>
+      <a-sky color="#020200"></a-sky>
+      <a-light type="ambient" color="#0a0800" intensity="0.03"></a-light>
+
+      <!-- Your dying torch (only light source) -->
+      <a-light id="torch-light" type="point" position="0.5 2 0.5" color="#ff8833" intensity="1.2" distance="10"
+               animation="property:intensity; from:1; to:0.6; dur:500; dir:alternate; loop:true"></a-light>
+      <a-entity position="0.5 1.8 0.5">
+        <a-cylinder radius="0.03" height="0.6" material="color:#5a3a1a"></a-cylinder>
+        <a-sphere position="0 0.35 0" radius="0.06" material="color:#ff6600; emissive:#ff4400; emissiveIntensity:1"
+                  animation="property:scale; from:1 1 1; to:1.2 1.3 1.2; dur:300; dir:alternate; loop:true"></a-sphere>
       </a-entity>
-      
-      <!-- Ground -->
-      <a-plane position="0 0 0" rotation="-90 0 0" width="40" height="40" material="color: #1a2a15; roughness: 1"></a-plane>
-      
-      <!-- Stone path -->
-      <a-box position="0 0.02 -2" width="1.5" height="0.04" depth="2" material="color: #555; roughness: 0.9"></a-box>
-      <a-box position="0.3 0.02 -5" width="1.5" height="0.04" depth="2" material="color: #555; roughness: 0.9"></a-box>
-      <a-box position="-0.2 0.02 -8" width="1.5" height="0.04" depth="2" material="color: #555; roughness: 0.9"></a-box>
-      <a-box position="0.1 0.02 -11" width="1.5" height="0.04" depth="2" material="color: #555; roughness: 0.9"></a-box>
-      
-      <!-- Garden lanterns (warm light sources along path) -->
-      <a-entity position="-1.5 0 -3">
-        <a-cylinder radius="0.05" height="0.8" material="color: #444"></a-cylinder>
-        <a-sphere position="0 0.5 0" radius="0.12" 
-                  material="color: #ffaa44; emissive: #ff8822; emissiveIntensity: 0.6; opacity: 0.8; transparent: true"></a-sphere>
-        <a-light type="point" position="0 0.5 0" color="#ffaa44" intensity="0.4" distance="5"></a-light>
+
+      <!-- Stone tunnel system -->
+      <!-- Main chamber -->
+      <a-box position="0 2 -4" width="6" height="4.5" depth="14" material="color:#1a1510; roughness:1; side:back"></a-box>
+      <a-box position="0 0 -4" width="6" height="0.1" depth="14" material="color:#151210; roughness:1"></a-box>
+
+      <!-- Branching tunnel left (darker) -->
+      <a-box position="-5 1.8 -6" width="8" height="3.8" depth="4" material="color:#110e08; roughness:1; side:back"></a-box>
+      <!-- Branching tunnel right -->
+      <a-box position="5 1.8 -8" width="8" height="3.8" depth="3.5" material="color:#0f0c06; roughness:1; side:back"></a-box>
+
+      <!-- Walls are lined with bones / skulls -->
+      <!-- Left wall skull rows -->
+      <a-sphere position="-2.9 1 -1" radius="0.12" material="color:#d4c8a0; roughness:0.8"></a-sphere>
+      <a-sphere position="-2.9 1 -1.8" radius="0.12" material="color:#c8bc90; roughness:0.8"></a-sphere>
+      <a-sphere position="-2.9 1 -2.6" radius="0.12" material="color:#d4c8a0; roughness:0.8"></a-sphere>
+      <a-sphere position="-2.9 1 -3.4" radius="0.11" material="color:#c0b488; roughness:0.8"></a-sphere>
+      <a-sphere position="-2.9 1.5 -1.4" radius="0.12" material="color:#d4c8a0; roughness:0.8"></a-sphere>
+      <a-sphere position="-2.9 1.5 -2.2" radius="0.11" material="color:#c8bc90; roughness:0.8"></a-sphere>
+      <a-sphere position="-2.9 1.5 -3" radius="0.12" material="color:#d4c8a0; roughness:0.8"></a-sphere>
+      <a-sphere position="-2.9 2 -1" radius="0.1" material="color:#c0b488; roughness:0.8"></a-sphere>
+      <a-sphere position="-2.9 2 -2" radius="0.12" material="color:#d4c8a0; roughness:0.8"></a-sphere>
+      <a-sphere position="-2.9 2 -3" radius="0.11" material="color:#c8bc90; roughness:0.8"></a-sphere>
+      <!-- Right wall skulls -->
+      <a-sphere position="2.9 1 -2" radius="0.12" material="color:#d4c8a0; roughness:0.8"></a-sphere>
+      <a-sphere position="2.9 1 -3" radius="0.11" material="color:#c8bc90; roughness:0.8"></a-sphere>
+      <a-sphere position="2.9 1 -4" radius="0.12" material="color:#c0b488; roughness:0.8"></a-sphere>
+      <a-sphere position="2.9 1 -5" radius="0.12" material="color:#d4c8a0; roughness:0.8"></a-sphere>
+      <a-sphere position="2.9 1.5 -2.5" radius="0.12" material="color:#d4c8a0; roughness:0.8"></a-sphere>
+      <a-sphere position="2.9 1.5 -3.5" radius="0.11" material="color:#c8bc90; roughness:0.8"></a-sphere>
+      <a-sphere position="2.9 1.5 -4.5" radius="0.12" material="color:#c0b488; roughness:0.8"></a-sphere>
+      <a-sphere position="2.9 2 -2" radius="0.11" material="color:#d4c8a0; roughness:0.8"></a-sphere>
+      <a-sphere position="2.9 2 -3.5" radius="0.12" material="color:#c8bc90; roughness:0.8"></a-sphere>
+      <!-- Bone shelves (long bones stacked) -->
+      <a-cylinder position="-2.9 0.5 -5" radius="0.03" height="1.8" material="color:#d4c8a0; roughness:0.8" rotation="0 0 90"></a-cylinder>
+      <a-cylinder position="-2.9 0.55 -5.3" radius="0.03" height="1.6" material="color:#c8bc90; roughness:0.8" rotation="0 0 90"></a-cylinder>
+      <a-cylinder position="-2.9 0.6 -5.6" radius="0.03" height="1.4" material="color:#d4c8a0; roughness:0.8" rotation="0 0 90"></a-cylinder>
+      <a-cylinder position="2.9 0.5 -6" radius="0.03" height="1.8" material="color:#c8bc90; roughness:0.8" rotation="0 0 90"></a-cylinder>
+      <a-cylinder position="2.9 0.55 -6.3" radius="0.03" height="1.5" material="color:#d4c8a0; roughness:0.8" rotation="0 0 90"></a-cylinder>
+
+      <!-- Cobwebs -->
+      <a-plane position="-2.8 3.5 -2" width="1.5" height="1.2" material="color:#999; opacity:0.08; transparent:true; side:double" rotation="10 0 20"></a-plane>
+      <a-plane position="2.7 3.3 -7" width="1" height="0.8" material="color:#aaa; opacity:0.06; transparent:true; side:double" rotation="-5 0 -15"></a-plane>
+      <a-plane position="0 3.8 -3" width="2" height="1.5" material="color:#888; opacity:0.05; transparent:true; side:double" rotation="80 20 0"></a-plane>
+
+      <!-- Puddles on floor (dark water) -->
+      <a-circle position="-1 0.06 -3" radius="0.6" rotation="-90 0 0" material="color:#0a0a15; metalness:0.8; roughness:0.1"></a-circle>
+      <a-circle position="1.5 0.06 -7" radius="0.4" rotation="-90 0 0" material="color:#0a0a15; metalness:0.8; roughness:0.1"></a-circle>
+
+      <!-- Rats (tiny dark shapes that move) -->
+      <a-entity animation="property:position; from:-2 0.08 -2; to:2.5 0.08 -5; dur:3000; loop:true; delay:5000">
+        <a-box width="0.12" height="0.06" depth="0.06" material="color:#1a1a1a"></a-box>
+        <a-box position="-0.08 0 0" width="0.06" height="0.03" depth="0.03" material="color:#1a1a1a"></a-box>
       </a-entity>
-      
-      <a-entity position="1.5 0 -6">
-        <a-cylinder radius="0.05" height="0.8" material="color: #444"></a-cylinder>
-        <a-sphere position="0 0.5 0" radius="0.12" 
-                  material="color: #ffaa44; emissive: #ff8822; emissiveIntensity: 0.6; opacity: 0.8; transparent: true"></a-sphere>
-        <a-light type="point" position="0 0.5 0" color="#ffaa44" intensity="0.4" distance="5"></a-light>
+      <a-entity animation="property:position; from:2 0.08 -6; to:-1.5 0.08 -9; dur:4000; loop:true; delay:8000">
+        <a-box width="0.1" height="0.05" depth="0.05" material="color:#151515"></a-box>
       </a-entity>
-      
-      <a-entity position="-1.5 0 -9">
-        <a-cylinder radius="0.05" height="0.8" material="color: #444"></a-cylinder>
-        <a-sphere position="0 0.5 0" radius="0.12" 
-                  material="color: #ffaa44; emissive: #ff8822; emissiveIntensity: 0.6; opacity: 0.8; transparent: true"></a-sphere>
-        <a-light type="point" position="0 0.5 0" color="#ffaa44" intensity="0.4" distance="5"></a-light>
-      </a-entity>
-      
-      <!-- Garden bushes (dark shapes) -->
-      <a-sphere position="-3 0.5 -4" radius="0.8" material="color: #1a3a1a"></a-sphere>
-      <a-sphere position="3 0.4 -7" radius="0.6" material="color: #1a3010"></a-sphere>
-      <a-sphere position="-4 0.6 -10" radius="1" material="color: #1a2a15"></a-sphere>
-      <a-sphere position="4 0.5 -3" radius="0.7" material="color: #1a3518"></a-sphere>
-      
-      <!-- Trees (silhouettes) -->
-      <a-entity position="-5 0 -6">
-        <a-cylinder radius="0.2" height="4" material="color: #2a1a0a"></a-cylinder>
-        <a-sphere position="0 2.5 0" radius="1.5" material="color: #1a2a10"></a-sphere>
-      </a-entity>
-      <a-entity position="6 0 -10">
-        <a-cylinder radius="0.25" height="5" material="color: #2a1a0a"></a-cylinder>
-        <a-sphere position="0 3 0" radius="1.8" material="color: #1a2810"></a-sphere>
-      </a-entity>
-      
-      <!-- Fireflies -->
-      <a-sphere position="-2 1.2 -5" radius="0.04" 
-                material="color: #aaffaa; emissive: #88ff88; emissiveIntensity: 1"
-                animation="property: position; to: -1.5 1.5 -5.5; dur: 5000; dir: alternate; loop: true; easing: easeInOutSine"
-                animation__glow="property: material.emissiveIntensity; from: 0.2; to: 1; dur: 2000; dir: alternate; loop: true"></a-sphere>
-      <a-sphere position="1 0.8 -7" radius="0.03" 
-                material="color: #aaffaa; emissive: #88ff88; emissiveIntensity: 1"
-                animation="property: position; to: 1.5 1.2 -7.5; dur: 4000; dir: alternate; loop: true; easing: easeInOutSine"
-                animation__glow="property: material.emissiveIntensity; from: 0.3; to: 1; dur: 1800; dir: alternate; loop: true"></a-sphere>
-      <a-sphere position="-3 1 -9" radius="0.035" 
-                material="color: #aaffaa; emissive: #88ff88; emissiveIntensity: 1"
-                animation="property: position; to: -2.5 1.4 -8.5; dur: 6000; dir: alternate; loop: true; easing: easeInOutSine"
-                animation__glow="property: material.emissiveIntensity; from: 0.1; to: 1; dur: 2500; dir: alternate; loop: true"></a-sphere>
-      <a-sphere position="2 1.5 -4" radius="0.03" 
-                material="color: #aaffaa; emissive: #88ff88; emissiveIntensity: 1"
-                animation="property: position; to: 2.5 1 -4.5; dur: 3500; dir: alternate; loop: true; easing: easeInOutSine"
-                animation__glow="property: material.emissiveIntensity; from: 0.2; to: 1; dur: 3000; dir: alternate; loop: true"></a-sphere>
-      
-      <!-- Bench -->
-      <a-box position="2.5 0.3 -5" width="1.5" height="0.1" depth="0.5" material="color: #5a4a3a"></a-box>
-      <a-box position="1.9 0.15 -5" width="0.1" height="0.3" depth="0.5" material="color: #5a4a3a"></a-box>
-      <a-box position="3.1 0.15 -5" width="0.1" height="0.3" depth="0.5" material="color: #5a4a3a"></a-box>
-      
-      <a-text value="Twilight Garden — Lanterns guide your path.\nWalk forward, enjoy the fireflies." 
-              position="0 2.5 -2" align="center" color="#a78bfa" scale="0.45 0.45 0.45" face-camera></a-text>
+
+      <!-- Stone archway -->
+      <a-torus position="0 2.1 -10" radius="2.2" radius-tubular="0.3" material="color:#2a2015; roughness:1" rotation="0 0 0"
+               theta-start="0" theta-length="180"></a-torus>
+
+      <!-- Cross / religious carving (old) -->
+      <a-box position="0 2.5 -10.5" width="0.2" height="0.8" depth="0.05" material="color:#8a7a60; roughness:0.9"></a-box>
+      <a-box position="0 2.7 -10.5" width="0.5" height="0.15" depth="0.05" material="color:#8a7a60; roughness:0.9"></a-box>
+
+      <!-- Candle remains (melted, unlit) -->
+      <a-cylinder position="2 0.15 -4" radius="0.04" height="0.15" material="color:#e8dcc0; roughness:0.8"></a-cylinder>
+      <a-circle position="2 0.06 -4" radius="0.15" rotation="-90 0 0" material="color:#d4c8a0; roughness:0.9"></a-circle>
+      <a-cylinder position="-1.8 0.12 -8" radius="0.035" height="0.1" material="color:#e8dcc0; roughness:0.8"></a-cylinder>
+
+      <a-text value="UNDERGROUND CATACOMBS — 30m below the city.\nWalls of skulls watch you. Your torch is dying.\nDark tunnels branch in every direction.\nSomething scratches deeper in the darkness." position="0 3.5 -3" align="center" color="#ff8833" scale="0.35 0.35 0.35" face-camera></a-text>
     </a-entity>
 
-    <!-- ========== LEVEL 3: Dark Forest at Midnight ========== -->
+    <!-- ======= LEVEL 3: THE VOID — Absolute Nothingness ======= -->
     <a-entity id="level3" visible="false">
-      <!-- Pitch dark sky -->
-      <a-sky color="#050508"></a-sky>
-      
-      <!-- Minimal ambient (almost nothing) -->
-      <a-light type="ambient" color="#111122" intensity="0.08"></a-light>
-      
-      <!-- Faint moonlight through canopy -->
-      <a-light type="directional" position="5 10 -5" color="#334466" intensity="0.15"></a-light>
-      
-      <!-- Ground -->
-      <a-plane position="0 0 0" rotation="-90 0 0" width="50" height="50" material="color: #0a0f08; roughness: 1"></a-plane>
-      
-      <!-- Fallen leaves / forest floor texture approximation -->
-      <a-plane position="0 0.01 -3" rotation="-90 45 0" width="3" height="3" 
-               material="color: #1a1a0a; roughness: 1; opacity: 0.5; transparent: true"></a-plane>
-      
-      <!-- Dense trees (dark, surrounding) -->
-      <!-- Near trees -->
-      <a-entity position="-2 0 -3">
-        <a-cylinder radius="0.3" height="6" material="color: #1a1008"></a-cylinder>
-        <a-sphere position="0 4 0" radius="2" material="color: #0a1508; opacity: 0.9; transparent: true"></a-sphere>
+      <a-sky color="#000000"></a-sky>
+      <a-light type="ambient" color="#000" intensity="0"></a-light>
+
+      <!-- You float in absolute nothing -->
+      <!-- Tiny fading light source (your last light, dying) -->
+      <a-light id="void-light" type="point" position="0 1.5 0" color="#4422aa" intensity="0.3" distance="4"
+               animation="property:intensity; to:0; dur:120000; easing:easeInQuad"></a-light>
+
+      <!-- Your body faintly visible (looking down at yourself) -->
+      <a-box position="0 -0.2 0" width="0.5" height="0.1" depth="0.3" material="color:#222; opacity:0.3; transparent:true"></a-box>
+
+      <!-- Whispers (visual representation — faint moving shapes) -->
+      <a-entity animation="property:position; from:5 2 -5; to:-5 1 5; dur:15000; loop:true; easing:linear">
+        <a-sphere radius="0.5" material="color:#110022; opacity:0.04; transparent:true"
+                  animation="property:scale; from:1 1 1; to:2 2 2; dur:15000; loop:true"></a-sphere>
       </a-entity>
-      <a-entity position="3 0 -5">
-        <a-cylinder radius="0.35" height="7" material="color: #181008"></a-cylinder>
-        <a-sphere position="0 4.5 0" radius="2.2" material="color: #0a1208; opacity: 0.9; transparent: true"></a-sphere>
+      <a-entity animation="property:position; from:-8 0 -8; to:8 3 8; dur:20000; loop:true; easing:linear; delay:5000">
+        <a-sphere radius="0.3" material="color:#0a0015; opacity:0.03; transparent:true"
+                  animation="property:scale; from:1 1 1; to:3 3 3; dur:20000; loop:true; delay:5000"></a-sphere>
       </a-entity>
-      <a-entity position="-4 0 -6">
-        <a-cylinder radius="0.25" height="5.5" material="color: #1a1008"></a-cylinder>
-        <a-sphere position="0 3.5 0" radius="1.8" material="color: #0a1508; opacity: 0.9; transparent: true"></a-sphere>
+      <a-entity animation="property:position; from:0 -3 10; to:0 4 -10; dur:18000; loop:true; easing:linear; delay:10000">
+        <a-sphere radius="0.4" material="color:#150025; opacity:0.05; transparent:true"
+                  animation="property:scale; from:1 1 1; to:2.5 2.5 2.5; dur:18000; loop:true; delay:10000"></a-sphere>
       </a-entity>
-      <a-entity position="1 0 -8">
-        <a-cylinder radius="0.4" height="8" material="color: #151008"></a-cylinder>
-        <a-sphere position="0 5 0" radius="2.5" material="color: #0a1008; opacity: 0.9; transparent: true"></a-sphere>
+
+      <!-- Occasional distant flickers (could be real or hallucination) -->
+      <a-sphere position="0 2 -40" radius="0.1" material="color:#ffffff; emissive:#ffffff; emissiveIntensity:0; fog:false"
+                animation="property:material.emissiveIntensity; from:0; to:0.5; dur:100; delay:8000; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="30 -5 -20" radius="0.08" material="color:#ffffff; emissive:#ffffff; emissiveIntensity:0; fog:false"
+                animation="property:material.emissiveIntensity; from:0; to:0.3; dur:80; delay:15000; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="-25 10 15" radius="0.06" material="color:#ffffff; emissive:#ffffff; emissiveIntensity:0; fog:false"
+                animation="property:material.emissiveIntensity; from:0; to:0.4; dur:120; delay:22000; dir:alternate; loop:true"></a-sphere>
+
+      <!-- Shadow figure that wasn't there before (appears after a delay) -->
+      <a-entity position="0 0 -8" visible="false"
+                animation="property:visible; from:false; to:true; dur:1; delay:30000">
+        <a-cylinder radius="0.3" height="2.2" material="color:#000; opacity:0.95; transparent:true"></a-cylinder>
+        <a-sphere position="0 1.3 0" radius="0.25" material="color:#000; opacity:0.95; transparent:true"></a-sphere>
+        <!-- Eyes -->
+        <a-sphere position="-0.08 1.35 0.22" radius="0.03" material="color:#ff0000; emissive:#ff0000; emissiveIntensity:0.5; fog:false"></a-sphere>
+        <a-sphere position="0.08 1.35 0.22" radius="0.03" material="color:#ff0000; emissive:#ff0000; emissiveIntensity:0.5; fog:false"></a-sphere>
       </a-entity>
-      <a-entity position="-3 0 -10">
-        <a-cylinder radius="0.3" height="6.5" material="color: #1a1008"></a-cylinder>
-        <a-sphere position="0 4 0" radius="2" material="color: #0a1508; opacity: 0.9; transparent: true"></a-sphere>
-      </a-entity>
-      
-      <!-- Side trees -->
-      <a-entity position="5 0 -2">
-        <a-cylinder radius="0.35" height="7" material="color: #180e06"></a-cylinder>
-        <a-sphere position="0 4.5 0" radius="2.3" material="color: #0a1308"></a-sphere>
-      </a-entity>
-      <a-entity position="-5 0 -1">
-        <a-cylinder radius="0.3" height="6" material="color: #1a1008"></a-cylinder>
-        <a-sphere position="0 3.8 0" radius="2" material="color: #0a1508"></a-sphere>
-      </a-entity>
-      <a-entity position="4 0 -9">
-        <a-cylinder radius="0.28" height="5.5" material="color: #1a1008"></a-cylinder>
-        <a-sphere position="0 3.5 0" radius="1.8" material="color: #0a1408"></a-sphere>
-      </a-entity>
-      <a-entity position="-6 0 -7">
-        <a-cylinder radius="0.32" height="6.5" material="color: #180e06"></a-cylinder>
-        <a-sphere position="0 4 0" radius="2.1" material="color: #0a1308"></a-sphere>
-      </a-entity>
-      
-      <!-- Behind trees -->
-      <a-entity position="2 0 3">
-        <a-cylinder radius="0.3" height="6" material="color: #1a1008"></a-cylinder>
-        <a-sphere position="0 4 0" radius="2" material="color: #0a1508"></a-sphere>
-      </a-entity>
-      <a-entity position="-3 0 4">
-        <a-cylinder radius="0.25" height="5" material="color: #181008"></a-cylinder>
-        <a-sphere position="0 3.5 0" radius="1.5" material="color: #0a1508"></a-sphere>
-      </a-entity>
-      
-      <!-- Faint path (barely visible) -->
-      <a-box position="0 0.01 -3" width="1" height="0.02" depth="3" material="color: #1a1510; roughness: 1"></a-box>
-      <a-box position="0.2 0.01 -7" width="1" height="0.02" depth="3" material="color: #1a1510; roughness: 1"></a-box>
-      
-      <!-- Owl eyes (spooky but gentle) -->
-      <a-entity position="-3 3.5 -5">
-        <a-sphere position="-0.08 0 0.3" radius="0.04" 
-                  material="color: #ffcc00; emissive: #ffaa00; emissiveIntensity: 0.5"
-                  animation="property: material.emissiveIntensity; from: 0.2; to: 0.8; dur: 3000; dir: alternate; loop: true"></a-sphere>
-        <a-sphere position="0.08 0 0.3" radius="0.04" 
-                  material="color: #ffcc00; emissive: #ffaa00; emissiveIntensity: 0.5"
-                  animation="property: material.emissiveIntensity; from: 0.2; to: 0.8; dur: 3000; dir: alternate; loop: true"></a-sphere>
-      </a-entity>
-      
-      <!-- Single distant light (cabin?) -->
-      <a-sphere position="8 1 -15" radius="0.1" 
-                material="color: #ffaa44; emissive: #ff8822; emissiveIntensity: 0.6"></a-sphere>
-      <a-light type="point" position="8 1 -15" color="#ffaa44" intensity="0.15" distance="8"></a-light>
-      
-      <!-- Fog/mist (low-lying) -->
-      <a-entity position="0 0.3 -5">
-        <a-plane rotation="-90 0 0" width="15" height="15" 
-                 material="color: #223344; opacity: 0.08; transparent: true"></a-plane>
-      </a-entity>
-      
-      <!-- Mushrooms with faint glow -->
-      <a-entity position="1.5 0 -2">
-        <a-cylinder radius="0.02" height="0.1" material="color: #aa9988"></a-cylinder>
-        <a-sphere position="0 0.08 0" radius="0.06" 
-                  material="color: #44aa88; emissive: #22aa66; emissiveIntensity: 0.3"></a-sphere>
-      </a-entity>
-      <a-entity position="-1 0 -5">
-        <a-cylinder radius="0.02" height="0.08" material="color: #aa9988"></a-cylinder>
-        <a-sphere position="0 0.06 0" radius="0.05" 
-                  material="color: #44aa88; emissive: #22aa66; emissiveIntensity: 0.3"></a-sphere>
-      </a-entity>
-      
-      <!-- Sound indicators -->
-      <a-text value="~ hoot... hoot ~" position="-3 4 -5" color="#554433" scale="0.2 0.2 0.2"
-              animation="property: material.opacity; from: 0; to: 0.6; dur: 5000; dir: alternate; loop: true"></a-text>
-      <a-text value="~ rustle ~" position="4 1 -7" color="#443322" scale="0.2 0.2 0.2"
-              animation="property: material.opacity; from: 0; to: 0.5; dur: 3000; dir: alternate; loop: true; startEvents: none" 
-              animation__show="property: material.opacity; from: 0; to: 0.5; dur: 3000; dir: alternate; loop: true"></a-text>
-      
-      <a-text value="Dark Forest — Use your flashlight (look around).\nEvery shadow is just a tree. You're okay." 
-              position="0 2.5 -2" align="center" color="#a78bfa" scale="0.4 0.4 0.4" face-camera></a-text>
+
+      <!-- Floor? Is there one? (barely visible, might not exist) -->
+      <a-plane position="0 -0.5 0" rotation="-90 0 0" width="3" height="3" material="color:#020204; opacity:0.2; transparent:true"
+               animation="property:material.opacity; from:0.2; to:0; dur:60000; easing:easeInQuad"></a-plane>
+
+      <!-- No walls. No ceiling. No floor. Nothing. -->
+      <!-- Just you. And whatever else is in here. -->
+
+      <a-text value="THE VOID — Location unknown. Depth unknown.\nThere is nothing here. No walls. No floor. No sky.\nYour light is dying. Something watches from the dark.\nYou cannot tell if your eyes are open or closed." position="0 3 -3" align="center" color="#4422aa" scale="0.35 0.35 0.35" face-camera
+              animation="property:material.opacity; from:1; to:0; dur:90000; easing:easeInQuad"></a-text>
     </a-entity>
   </a-scene>
 
   <script src="shared.js"></script>
   <script>
+    var darkLevels = { 1: 'Dim', 2: 'Dark', 3: 'Void' };
     function setLevel(num) {
       document.getElementById('level1').setAttribute('visible', num === 1);
       document.getElementById('level2').setAttribute('visible', num === 2);
       document.getElementById('level3').setAttribute('visible', num === 3);
-
-      const rig = document.getElementById('rig');
-      const flashlight = document.getElementById('flashlight');
-      
-      if (num === 1) {
-        rig.setAttribute('position', '0 1.6 1');
-        flashlight.setAttribute('intensity', 0);
-      }
-      if (num === 2) {
-        rig.setAttribute('position', '0 1.6 2');
-        flashlight.setAttribute('intensity', 0);
-      }
-      if (num === 3) {
-        rig.setAttribute('position', '0 1.6 2');
-        flashlight.setAttribute('intensity', 1.5);
-      }
-
-      document.querySelectorAll('.level-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', i === num - 1);
-      });
+      var rig = document.getElementById('rig');
+      var scene = document.getElementById('vrscene');
+      var dark = document.getElementById('darkness-overlay');
+      if (num === 1) { rig.setAttribute('position','0 1.6 3'); scene.setAttribute('fog','type:exponential; color:#050505; density:0.06'); dark.style.opacity='0.4'; }
+      if (num === 2) { rig.setAttribute('position','0 1.6 2'); scene.setAttribute('fog','type:exponential; color:#020200; density:0.08'); dark.style.opacity='0.6'; }
+      if (num === 3) { rig.setAttribute('position','0 1.6 0'); scene.setAttribute('fog','type:exponential; color:#000; density:0.15'); dark.style.opacity='0.85'; }
+      document.getElementById('dark-display').textContent = darkLevels[num];
+      document.querySelectorAll('.level-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === num - 1); });
       showComfortMessage();
     }
-
-    window.addEventListener('load', () => {
-      initPhobiaScene();
-      initVRPhobiaApp();
-      setLevel(1);
-    });
+    // Flicker effect for level 1
+    setInterval(function(){
+      if (document.getElementById('level1').getAttribute('visible')){
+        var f = document.getElementById('flicker-overlay');
+        f.style.opacity='0.08';
+        setTimeout(function(){ f.style.opacity='0'; },80);
+        setTimeout(function(){ f.style.opacity='0.05'; },200);
+        setTimeout(function(){ f.style.opacity='0'; },280);
+      }
+    }, 5000 + Math.random()*8000);
+    // Void: random ambient sounds (visual pulse)
+    setInterval(function(){
+      if (document.getElementById('level3').getAttribute('visible')){
+        var d = document.getElementById('darkness-overlay');
+        d.style.background='radial-gradient(ellipse at center, transparent 5%, rgba(10,0,20,0.95) 100%)';
+        setTimeout(function(){ d.style.background='radial-gradient(ellipse at center, transparent 15%, rgba(0,0,0,0.9) 100%)'; },500);
+      }
+    }, 6000 + Math.random()*10000);
+    window.addEventListener('load', function() { initPhobiaScene(); initVRPhobiaApp(); setLevel(1); });
   </script>
 </body>
 </html>

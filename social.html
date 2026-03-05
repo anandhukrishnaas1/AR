@@ -5,304 +5,371 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Social Anxiety — PhobiaVR</title>
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <script src="https://unpkg.com/aframe-environment-component@1.3.3/dist/aframe-environment-component.min.js"></script>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    #crowd-indicator{position:fixed;right:20px;top:50%;transform:translateY(-50%);z-index:100;color:#ff6688;font-family:Inter,sans-serif;font-size:14px;text-align:right;pointer-events:none;text-shadow:0 0 10px rgba(255,102,136,0.8)}
+    #crowd-indicator .crowd-val{font-size:28px;font-weight:800;display:block}
+    #crowd-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:50;opacity:0;transition:opacity 1.5s;background:radial-gradient(ellipse at center, transparent 20%, rgba(80,0,0,0.25) 100%)}
+    #spotlight-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:49;opacity:0;transition:opacity 2s;background:radial-gradient(circle at 50% 40%, rgba(255,255,200,0.15) 0%, transparent 40%, rgba(0,0,0,0.3) 100%)}
+  </style>
 </head>
 <body>
-  <!-- UI Overlay -->
+  <div id="crowd-indicator"><span class="crowd-val" id="crowd-display">12</span>people watching</div>
+  <div id="crowd-overlay"></div>
+  <div id="spotlight-overlay"></div>
   <div class="scene-ui">
     <div class="scene-header">
       <a href="index.html" class="back-btn">← Back</a>
-      <h1>🗣️ Social Anxiety Therapy</h1>
+      <h1>👥 Social Anxiety Therapy</h1>
       <div></div>
     </div>
     <div class="level-selector">
-      <button class="level-btn active" onclick="setLevel(1)">Level 1: Café</button>
-      <button class="level-btn" onclick="setLevel(2)">Level 2: Classroom</button>
-      <button class="level-btn" onclick="setLevel(3)">Level 3: Auditorium</button>
+      <button class="level-btn active" onclick="setLevel(1)">Level 1: Interrogation Room</button>
+      <button class="level-btn" onclick="setLevel(2)">Level 2: Live TV Broadcast</button>
+      <button class="level-btn" onclick="setLevel(3)">Level 3: World Arena Summit</button>
     </div>
   </div>
+  <div class="breathing-guide"><div class="breath-circle">Breathe In</div><div class="breath-label">Follow the rhythm</div></div>
+  <div class="anxiety-meter"><span class="meter-label">Anxiety</span><div class="meter-track"><div class="meter-fill" style="height:30%"></div></div></div>
+  <div class="comfort-msg" style="opacity:0;">You are safe here.</div>
 
-  <!-- Breathing Guide -->
-  <div class="breathing-guide">
-    <div class="breath-circle">Breathe In</div>
-    <div class="breath-label">Follow the rhythm</div>
-  </div>
-
-  <!-- Anxiety Meter -->
-  <div class="anxiety-meter">
-    <span class="meter-label">Anxiety</span>
-    <div class="meter-track">
-      <div class="meter-fill" style="height: 30%"></div>
-    </div>
-  </div>
-
-  <!-- Comfort Message -->
-  <div class="comfort-msg" style="opacity: 0;">You're safe here.</div>
-
-  <!-- A-Frame Scene -->
-  <a-scene id="vrscene" vr-mode-ui="enabled: true" renderer="antialias: true; precision: medium">
-    <!-- Assets -->
-    <a-assets>
-      <img id="wood-texture" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Crect fill='%238B6F47' width='256' height='256'/%3E%3Cpath stroke='%236B5A3A' stroke-width='1' fill='none' d='M0,50 Q50,45 100,50 T200,50 T300,50 M0,100 Q50,95 100,100 T200,100 T300,100 M0,150 Q50,145 100,150 T200,150 T300,150 M0,200 Q50,195 100,200 T200,200 T300,200'/%3E%3C/svg%3E" crossorigin="anonymous">
-      <a-mixin id="person-body" geometry="primitive: cylinder; radius: 0.2; height: 1.2" 
-               material="color: #555; metalness: 0.1; roughness: 0.8; shader: standard"></a-mixin>
-      <a-mixin id="person-head" geometry="primitive: sphere; radius: 0.18" 
-               material="color: #ffcc99; metalness: 0; roughness: 0.7; shader: standard"></a-mixin>
-    </a-assets>
-
-    <!-- Camera -->
+  <a-scene id="vrscene" vr-mode-ui="enabled:true" renderer="antialias:true; colorManagement:true; physicallyCorrectLights:true; logarithmicDepthBuffer:true" fog="type:linear; color:#1a1a1a; near:20; far:60">
     <a-entity id="rig" position="0 1.6 0">
-      <a-camera look-controls wasd-controls="acceleration: 20">
-        <a-cursor color="#6c63ff" fuse="false" raycaster="far: 20"></a-cursor>
+      <a-camera look-controls wasd-controls="acceleration:20">
+        <a-cursor color="#ff6688" fuse="false" raycaster="far:200"></a-cursor>
       </a-camera>
     </a-entity>
 
-    <!-- ========== LEVEL 1: Cozy Café (2-3 people) ========== -->
+    <!-- ======= LEVEL 1: INTERROGATION ROOM ======= -->
     <a-entity id="level1" visible="true">
-      <!-- Environment: indoor café feel -->
-      <a-entity environment="preset: contact; skyType: gradient; skyColor: #2c1810; horizonColor: #4a3020; 
-                             ground: flat; groundColor: #3a2515; groundColor2: #2a1a0f;
-                             dressingAmount: 0; fog: 0.4; lighting: distant;
-                             lightPosition: 0 2 0"></a-entity>
-      
-      <!-- Floor (hardwood with texture) -->
-      <a-plane position="0 0 0" rotation="-90 0 0" width="12" height="12" 
-               material="color: #5a3d2b; roughness: 0.85; metalness: 0.05; shader: standard"></a-plane>
-      
-      <!-- Warm ambient light -->
-      <a-light type="ambient" color="#ffd4a0" intensity="0.45" cast-shadow="false"></a-light>
-      <a-light type="point" position="0 3 0" color="#ffaa44" intensity="1" distance="15" decay="2"></a-light>
-      
-      <!-- Café walls (textured plaster) -->
-      <a-box position="0 1.5 -5" width="12" height="3" depth="0.2" material="color: #4a3020; roughness: 0.9; metalness: 0"></a-box>
-      <a-box position="-6 1.5 0" width="0.2" height="3" depth="12" material="color: #4a3020; roughness: 0.9; metalness: 0"></a-box>
-      <a-box position="6 1.5 0" width="0.2" height="3" depth="12" material="color: #4a3020; roughness: 0.9; metalness: 0"></a-box>
-      
-      <!-- Tables (wood) -->
-      <a-cylinder position="-2 0.4 -2" radius="0.5" height="0.05" material="color: #8b6f47; roughness: 0.7; metalness: 0.1; shader: standard"></a-cylinder>
-      <a-cylinder position="-2 0.2 -2" radius="0.06" height="0.4" material="color: #555; roughness: 0.6; metalness: 0.3; shader: standard"></a-cylinder>
-      
-      <a-cylinder position="2 0.4 -3" radius="0.5" height="0.05" material="color: #8b6f47; roughness: 0.7; metalness: 0.1; shader: standard"></a-cylinder>
-      <a-cylinder position="2 0.2 -3" radius="0.06" height="0.4" material="color: #555; roughness: 0.6; metalness: 0.3; shader: standard"></a-cylinder>
+      <a-sky color="#0a0a0a"></a-sky>
+      <a-light type="ambient" color="#111" intensity="0.1"></a-light>
 
-      <!-- Counter -->
-      <a-box position="0 0.5 -4.5" width="4" height="1" depth="0.8" material="color: #6b4c33; roughness: 0.8; metalness: 0.05; shader: standard"></a-box>
-      
-      <!-- Person 1: sitting at table, friendly -->
-      <a-entity position="-2 0 -2.8">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #3a6b5e"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
-        <!-- Friendly smile indicator -->
-        <a-text value="☺" position="0 1.55 0.2" align="center" color="#333" scale="0.5 0.5 0.5" face-camera></a-text>
-      </a-entity>
-      
-      <!-- Person 2: at counter -->
-      <a-entity position="1 0 -4">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #5a3d6b"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
+      <!-- Harsh overhead spotlight directly on you -->
+      <a-light type="spot" position="0 4 0" color="#ffffdd" intensity="5" distance="8" angle="25" decay="1.5" target="#interrogation-target"></a-light>
+      <a-entity id="interrogation-target" position="0 0 0"></a-entity>
+
+      <!-- The Room: Small, claustrophobic, concrete -->
+      <a-box position="0 2.5 0" width="6" height="5" depth="6" material="color:#222; roughness:0.9; side:back"></a-box>
+      <a-box position="0 0 0" width="6" height="0.1" depth="6" material="color:#1a1a1a; roughness:0.8"></a-box>
+      <a-box position="0 5 0" width="6" height="0.1" depth="6" material="color:#1a1a1a; roughness:0.9"></a-box>
+
+      <!-- Metal table in front of you -->
+      <a-box position="0 0.9 -1.3" width="2" height="0.06" depth="1" material="color:#888; metalness:0.8; roughness:0.2"></a-box>
+      <a-cylinder position="-0.8 0.45 -1.6" radius="0.03" height="0.9" material="color:#666; metalness:0.8"></a-cylinder>
+      <a-cylinder position="0.8 0.45 -1.6" radius="0.03" height="0.9" material="color:#666; metalness:0.8"></a-cylinder>
+      <a-cylinder position="-0.8 0.45 -1" radius="0.03" height="0.9" material="color:#666; metalness:0.8"></a-cylinder>
+      <a-cylinder position="0.8 0.45 -1" radius="0.03" height="0.9" material="color:#666; metalness:0.8"></a-cylinder>
+
+      <!-- Your chair (metal, uncomfortable) -->
+      <a-box position="0 0.5 0.5" width="0.5" height="0.05" depth="0.5" material="color:#777; metalness:0.7"></a-box>
+      <a-box position="0 0.85 0.75" width="0.5" height="0.7" depth="0.05" material="color:#777; metalness:0.7"></a-box>
+
+      <!-- INTERROGATORS (3 seated across — staring at you) -->
+      <!-- Person 1 (center, arms crossed) -->
+      <a-entity position="0 0 -2.2">
+        <a-cylinder position="0 0.8 0" radius="0.2" height="1" material="color:#1a1a2a"></a-cylinder>
+        <a-sphere position="0 1.5 0" radius="0.18" material="color:#c8a080"></a-sphere>
+        <a-sphere position="-0.05 1.53 0.15" radius="0.025" material="color:#111"></a-sphere>
+        <a-sphere position="0.05 1.53 0.15" radius="0.025" material="color:#111"></a-sphere>
+        <!-- Arms crossed -->
+        <a-cylinder position="0.2 1 0.1" radius="0.06" height="0.5" material="color:#1a1a2a" rotation="0 0 -40"></a-cylinder>
+        <a-cylinder position="-0.2 1 0.1" radius="0.06" height="0.5" material="color:#1a1a2a" rotation="0 0 40"></a-cylinder>
       </a-entity>
 
-      <!-- Warm decorations -->
-      <a-text value="☕ Welcome to the Café" position="0 2.5 -4.9" align="center" 
-              color="#ffd4a0" scale="0.8 0.8 0.8"></a-text>
-      
-      <!-- Soft music note indicators -->
-      <a-text value="♪" position="-4 2 -4" color="#ffd4a0" scale="0.5 0.5 0.5" 
-              float-anim="amplitude: 0.2; speed: 3000"></a-text>
+      <!-- Person 2 (left, leaning forward) -->
+      <a-entity position="-1.5 0 -2.2">
+        <a-cylinder position="0 0.85 0" radius="0.2" height="1.1" material="color:#2a2a1a" rotation="-10 0 0"></a-cylinder>
+        <a-sphere position="0 1.55 -0.1" radius="0.18" material="color:#c0a888"></a-sphere>
+        <a-sphere position="-0.05 1.58 0.05" radius="0.025" material="color:#111"></a-sphere>
+        <a-sphere position="0.05 1.58 0.05" radius="0.025" material="color:#111"></a-sphere>
+      </a-entity>
+
+      <!-- Person 3 (right, writing notes) -->
+      <a-entity position="1.5 0 -2.2">
+        <a-cylinder position="0 0.8 0" radius="0.18" height="0.95" material="color:#222233"></a-cylinder>
+        <a-sphere position="0 1.48 0" radius="0.17" material="color:#b89878"></a-sphere>
+        <a-sphere position="-0.04 1.51 0.14" radius="0.023" material="color:#111"></a-sphere>
+        <a-sphere position="0.04 1.51 0.14" radius="0.023" material="color:#111"></a-sphere>
+        <!-- Hand on table with pen -->
+        <a-cylinder position="-0.15 0.96 0.3" radius="0.05" height="0.4" material="color:#222233" rotation="0 0 70"></a-cylinder>
+      </a-entity>
+
+      <!-- Manila folder and papers on table -->
+      <a-box position="-0.3 0.94 -1.3" width="0.3" height="0.03" depth="0.4" material="color:#c8a860"></a-box>
+      <a-plane position="0.3 0.94 -1.3" width="0.25" height="0.35" material="color:#eee8d0" rotation="-90 5 0"></a-plane>
+
+      <!-- One-way mirror (dark, you can see your reflection faintly) -->
+      <a-box position="2.99 2.5 0" width="0.05" height="3" depth="4" material="color:#111; metalness:0.9; opacity:0.8; transparent:true"></a-box>
+
+      <!-- Recording indicator (red dot) -->
+      <a-sphere position="2 4.5 -2" radius="0.05" material="color:#ff0000; emissive:#ff0000; emissiveIntensity:0"
+                animation="property:material.emissiveIntensity; from:0; to:0.8; dur:1500; dir:alternate; loop:true"></a-sphere>
+
+      <a-text value="INTERROGATION ROOM — 3 senior agents stare at you.\nA blinding light shines down. They know everything.\nThe one-way mirror hides more watchers.\nThey're waiting for you to speak. The silence is deafening." position="0 3.8 -1" align="center" color="#ff6688" scale="0.3 0.3 0.3" face-camera></a-text>
     </a-entity>
 
-    <!-- ========== LEVEL 2: Classroom (8-10 people) ========== -->
+    <!-- ======= LEVEL 2: LIVE TV BROADCAST ======= -->
     <a-entity id="level2" visible="false">
-      <!-- Environment -->
-      <a-sky color="#e8e4df"></a-sky>
-      
-      <!-- Floor -->
-      <a-plane position="0 0 0" rotation="-90 0 0" width="16" height="16" 
-               material="color: #b8a88a; roughness: 0.8; metalness: 0; shader: standard"></a-plane>
-      
-      <!-- Lighting -->
-      <a-light type="ambient" color="#ffffff" intensity="0.6" cast-shadow="false"></a-light>
-      <a-light type="directional" position="2 4 1" color="#ffffff" intensity="0.85" cast-shadow="true" 
-               shadow-mapsize="512"></a-light>
-      
-      <!-- Classroom walls -->
-      <a-box position="0 2 -7" width="16" height="4" depth="0.2" material="color: #f0ebe0; roughness: 0.85; metalness: 0"></a-box>
-      <a-box position="-8 2 0" width="0.2" height="4" depth="16" material="color: #f0ebe0; roughness: 0.85; metalness: 0"></a-box>
-      <a-box position="8 2 0" width="0.2" height="4" depth="16" material="color: #f0ebe0; roughness: 0.85; metalness: 0"></a-box>
-      
-      <!-- Whiteboard -->
-      <a-box position="0 2.2 -6.8" width="5" height="2" depth="0.05" material="color: #f8f8f8; roughness: 0.5; metalness: 0.1; shader: standard"></a-box>
-      <a-text value="Today's Topic: Introduction" position="0 2.5 -6.7" align="center" 
-              color="#333" scale="0.6 0.6 0.6"></a-text>
-      
-      <!-- Teacher desk -->
-      <a-box position="0 0.4 -5.5" width="2" height="0.8" depth="0.8" material="color: #8b7355; roughness: 0.75; metalness: 0.08; shader: standard"></a-box>
-      
-      <!-- Rows of desks -->
-      <!-- Row 1 -->
-      <a-box position="-3 0.35 -3" width="1.2" height="0.7" depth="0.5" material="color: #a08060"></a-box>
-      <a-box position="-1 0.35 -3" width="1.2" height="0.7" depth="0.5" material="color: #a08060"></a-box>
-      <a-box position="1 0.35 -3" width="1.2" height="0.7" depth="0.5" material="color: #a08060"></a-box>
-      <a-box position="3 0.35 -3" width="1.2" height="0.7" depth="0.5" material="color: #a08060"></a-box>
-      
-      <!-- Row 2 -->
-      <a-box position="-3 0.35 -1" width="1.2" height="0.7" depth="0.5" material="color: #a08060"></a-box>
-      <a-box position="-1 0.35 -1" width="1.2" height="0.7" depth="0.5" material="color: #a08060"></a-box>
-      <a-box position="1 0.35 -1" width="1.2" height="0.7" depth="0.5" material="color: #a08060"></a-box>
-      <a-box position="3 0.35 -1" width="1.2" height="0.7" depth="0.5" material="color: #a08060"></a-box>
+      <a-sky color="#111118"></a-sky>
+      <a-light type="ambient" color="#222" intensity="0.15"></a-light>
 
-      <!-- Students - Row 1 -->
-      <a-entity position="-3 0 -3.5">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #4a7a9b"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
+      <!-- Studio lights (blindingly bright) -->
+      <a-light type="spot" position="-3 6 3" color="#ffffee" intensity="4" distance="15" angle="35" target="#tv-target" cast-shadow="true"></a-light>
+      <a-light type="spot" position="3 6 3" color="#ffffee" intensity="4" distance="15" angle="35" target="#tv-target" cast-shadow="true"></a-light>
+      <a-light type="spot" position="0 7 -2" color="#eeeeff" intensity="3" distance="12" angle="25" target="#tv-target" cast-shadow="true"></a-light>
+      <a-entity id="tv-target" position="0 1.2 0"></a-entity>
+
+      <!-- Studio ceiling grid -->
+      <a-box position="0 7 0" width="20" height="0.1" depth="16" material="color:#111; metalness:0.5"></a-box>
+      <!-- Light rigs -->
+      <a-cylinder position="-3 6.5 3" radius="0.15" height="0.3" material="color:#333; metalness:0.7"></a-cylinder>
+      <a-cylinder position="3 6.5 3" radius="0.15" height="0.3" material="color:#333; metalness:0.7"></a-cylinder>
+      <a-cylinder position="0 7.2 -2" radius="0.12" height="0.5" material="color:#333; metalness:0.7"></a-cylinder>
+
+      <!-- Studio floor -->
+      <a-box position="0 0 0" width="20" height="0.1" depth="16" material="color:#1a1a22; roughness:0.3; metalness:0.2"></a-box>
+
+      <!-- News desk (you sit behind) -->
+      <a-box position="0 0.6 0" width="3.5" height="1.2" depth="0.8" material="color:#1a2233; metalness:0.4; roughness:0.3"></a-box>
+      <!-- Desk front panel (branded) -->
+      <a-box position="0 0.6 -0.41" width="3.4" height="1.15" depth="0.02" material="color:#cc2244; metalness:0.3"></a-box>
+      <a-text position="0 0.6 -0.43" value="BREAKING NEWS" color="#ffffff" scale="0.35 0.35 0.35" align="center"></a-text>
+      <!-- Teleprompter (blank — words disappeared) -->
+      <a-box position="0 1.8 -2.5" width="0.8" height="0.5" depth="0.05" material="color:#000; emissive:#001100; emissiveIntensity:0.1"
+             animation="property:material.emissiveIntensity; from:0.1; to:0; dur:5000; easing:easeInQuad"></a-box>
+      <!-- Your microphone -->
+      <a-cylinder position="0.6 1.35 0" radius="0.02" height="0.3" material="color:#333; metalness:0.8"></a-cylinder>
+      <a-sphere position="0.6 1.5 0" radius="0.035" material="color:#222; metalness:0.6"></a-sphere>
+      <!-- Papers scattered -->
+      <a-plane position="-0.3 1.21 0.1" width="0.25" height="0.35" material="color:#fff; opacity:0.8; transparent:true" rotation="-85 10 0"></a-plane>
+      <a-plane position="0.2 1.21 -0.1" width="0.22" height="0.3" material="color:#fff; opacity:0.7; transparent:true" rotation="-85 -8 0"></a-plane>
+
+      <!-- CAMERAS pointed at you (3 large TV cameras) -->
+      <!-- Camera 1 (center, red tally light ON) -->
+      <a-entity position="0 1.5 -5">
+        <a-box width="0.8" height="0.6" depth="1.2" material="color:#222; metalness:0.5"></a-box>
+        <a-cylinder position="0 0 -0.7" radius="0.15" height="0.3" material="color:#111; metalness:0.8" rotation="90 0 0"></a-cylinder>
+        <a-sphere position="0 0.35 -0.3" radius="0.06" material="color:#ff0000; emissive:#ff0000; emissiveIntensity:0.8"
+                  animation="property:material.emissiveIntensity; from:0.8; to:0.3; dur:1000; dir:alternate; loop:true"></a-sphere>
+        <a-cylinder position="0 -0.5 0" radius="0.06" height="1.5" material="color:#333; metalness:0.7"></a-cylinder>
       </a-entity>
-      <a-entity position="-1 0 -3.5">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #7a4a6b"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
+      <!-- Camera 2 (left) -->
+      <a-entity position="-4 1.4 -4" rotation="0 25 0">
+        <a-box width="0.7" height="0.55" depth="1.1" material="color:#222; metalness:0.5"></a-box>
+        <a-cylinder position="0 0 -0.65" radius="0.13" height="0.3" material="color:#111; metalness:0.8" rotation="90 0 0"></a-cylinder>
+        <a-sphere position="0 0.32 -0.3" radius="0.05" material="color:#ff0000; emissive:#ff0000; emissiveIntensity:0.5"></a-sphere>
       </a-entity>
-      <a-entity position="1 0 -3.5">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #6b7a4a"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
-      </a-entity>
-      <a-entity position="3 0 -3.5">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #9b6a4a"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
-      </a-entity>
-      
-      <!-- Students - Row 2 -->
-      <a-entity position="-3 0 -1.5">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #5a5a8b"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
-      </a-entity>
-      <a-entity position="-1 0 -1.5">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #8b5a5a"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
-      </a-entity>
-      <a-entity position="1 0 -1.5">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #5a8b6a"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
-      </a-entity>
-      <a-entity position="3 0 -1.5">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #8b8b5a"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
+      <!-- Camera 3 (right, on crane) -->
+      <a-entity position="4 2.5 -3" rotation="0 -20 0">
+        <a-box width="0.6" height="0.5" depth="1" material="color:#222; metalness:0.5"></a-box>
+        <a-cylinder position="0 0 -0.6" radius="0.12" height="0.25" material="color:#111; metalness:0.8" rotation="90 0 0"></a-cylinder>
       </a-entity>
 
-      <!-- People behind user (ambient) -->
-      <a-entity position="-2 0 2">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #6b5a7a"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
+      <!-- Live studio monitors showing YOUR face (behind cameras) -->
+      <a-box position="-3 3 -7" width="3" height="2" depth="0.1" material="color:#111"></a-box>
+      <a-plane position="-3 3 -6.94" width="2.8" height="1.8" material="color:#c8a080; opacity:0.3; transparent:true"
+               animation="property:material.opacity; from:0.25; to:0.35; dur:2000; dir:alternate; loop:true"></a-plane>
+      <a-text position="-3 2.2 -6.9" value="LIVE" color="#ff0000" scale="0.25 0.25 0.25" align="center"></a-text>
+      <a-box position="3 3 -7" width="3" height="2" depth="0.1" material="color:#111"></a-box>
+      <a-plane position="3 3 -6.94" width="2.8" height="1.8" material="color:#c8a080; opacity:0.3; transparent:true"></a-plane>
+      <a-text position="3 2.2 -6.9" value="LIVE" color="#ff0000" scale="0.25 0.25 0.25" align="center"></a-text>
+
+      <!-- Crew members (silhouettes in darkness behind cameras) -->
+      <a-entity position="-2 0 -6">
+        <a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#111"></a-cylinder>
+        <a-sphere position="0 1.35 0" radius="0.14" material="color:#111"></a-sphere>
       </a-entity>
-      <a-entity position="2 0 2">
-        <a-entity mixin="person-body" position="0 0.8 0" material="color: #7a6b5a"></a-entity>
-        <a-entity mixin="person-head" position="0 1.55 0"></a-entity>
+      <a-entity position="2 0 -5.5">
+        <a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#111"></a-cylinder>
+        <a-sphere position="0 1.35 0" radius="0.14" material="color:#111"></a-sphere>
       </a-entity>
-      
-      <!-- Instruction text -->
-      <a-text value="You're asked to introduce yourself.\nTake a deep breath. You can do this." 
-              position="0 2.8 -3" align="center" color="#6c63ff" scale="0.5 0.5 0.5" face-camera></a-text>
+      <a-entity position="5 0 -5">
+        <a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#111"></a-cylinder>
+        <a-sphere position="0 1.35 0" radius="0.14" material="color:#111"></a-sphere>
+      </a-entity>
+      <a-entity position="-5 0 -4">
+        <a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#111"></a-cylinder>
+        <a-sphere position="0 1.35 0" radius="0.14" material="color:#111"></a-sphere>
+      </a-entity>
+
+      <!-- "ON AIR" sign on wall -->
+      <a-box position="0 5 -8" width="2" height="0.8" depth="0.1" material="color:#330000; emissive:#ff0000; emissiveIntensity:0.3"></a-box>
+      <a-text position="0 5 -7.94" value="ON AIR" color="#ff0000" scale="0.5 0.5 0.5" align="center"
+              animation="property:material.opacity; from:1; to:0.4; dur:1500; dir:alternate; loop:true"></a-text>
+
+      <!-- Viewer count display -->
+      <a-box position="6 4 -3" width="1.2" height="0.6" depth="0.05" material="color:#111"></a-box>
+      <a-text position="6 4.1 -2.94" value="VIEWERS" color="#aaa" scale="0.12 0.12 0.12" align="center"></a-text>
+      <a-text position="6 3.9 -2.94" value="14,200,000" color="#ff4444" scale="0.15 0.15 0.15" align="center"
+              animation="property:value; from:14200000; to:14200000; dur:1; loop:false"></a-text>
+
+      <a-text value="LIVE TV — 14.2 MILLION watching right now.\nThe teleprompter just went blank. You're on your own.\nThree cameras record every bead of sweat.\nThe producer screams in your earpiece: KEEP TALKING!" position="0 4.5 -2" align="center" color="#ff6688" scale="0.35 0.35 0.35" face-camera></a-text>
     </a-entity>
 
-    <!-- ========== LEVEL 3: Auditorium Stage (large crowd) ========== -->
+    <!-- ======= LEVEL 3: WORLD ARENA SUMMIT ======= -->
     <a-entity id="level3" visible="false">
-      <!-- Environment -->
-      <a-sky color="#1a1520"></a-sky>
-      
-      <!-- Stage floor -->
-      <a-box position="0 0.5 0" width="10" height="0.1" depth="6" material="color: #8b6f47"></a-box>
-      
-      <!-- Stage lights -->
-      <a-light type="spot" position="0 6 2" target="#rig" color="#fff8e0" intensity="1.5" 
-               angle="40" penumbra="0.3"></a-light>
-      <a-light type="spot" position="-3 6 2" target="#rig" color="#ff8888" intensity="0.5" 
-               angle="30" penumbra="0.5"></a-light>
-      <a-light type="spot" position="3 6 2" target="#rig" color="#8888ff" intensity="0.5" 
-               angle="30" penumbra="0.5"></a-light>
-      <a-light type="ambient" color="#221830" intensity="0.3"></a-light>
-      
-      <!-- Podium -->
-      <a-box position="0 0.8 1" width="0.8" height="0.6" depth="0.5" material="color: #5a4530"></a-box>
-      <a-box position="0 1.2 1" width="0.6" height="0.04" depth="0.35" material="color: #444"></a-box>
-      
-      <!-- Microphone -->
-      <a-cylinder position="0.15 1.5 1" radius="0.01" height="0.5" material="color: #333"></a-cylinder>
-      <a-sphere position="0.15 1.76 1" radius="0.03" material="color: #222"></a-sphere>
-      
-      <!-- Curtains -->
-      <a-box position="-5.5 3 0" width="1.5" height="6" depth="7" material="color: #8b1a1a"></a-box>
-      <a-box position="5.5 3 0" width="1.5" height="6" depth="7" material="color: #8b1a1a"></a-box>
-      
-      <!-- Audience Area (dark, many rows) -->
-      <a-plane position="0 -0.1 -5" rotation="-5 0 0" width="20" height="20" 
-               material="color: #1a1520"></a-plane>
-      
-      <!-- Row 1 (closest) - 8 people -->
-      <a-entity id="audience-row1">
-        <a-entity position="-3.5 0 -3"><a-entity mixin="person-body" position="0 0.8 0" material="color: #444"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="-2.5 0 -3"><a-entity mixin="person-body" position="0 0.8 0" material="color: #4a4a4a"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="-1.5 0 -3"><a-entity mixin="person-body" position="0 0.8 0" material="color: #454545"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="-0.5 0 -3"><a-entity mixin="person-body" position="0 0.8 0" material="color: #4d4d4d"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="0.5 0 -3"><a-entity mixin="person-body" position="0 0.8 0" material="color: #424242"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="1.5 0 -3"><a-entity mixin="person-body" position="0 0.8 0" material="color: #484848"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="2.5 0 -3"><a-entity mixin="person-body" position="0 0.8 0" material="color: #434343"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="3.5 0 -3"><a-entity mixin="person-body" position="0 0.8 0" material="color: #464646"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-      </a-entity>
-      
-      <!-- Row 2 -->
-      <a-entity id="audience-row2">
-        <a-entity position="-4 -0.2 -5"><a-entity mixin="person-body" position="0 0.8 0" material="color: #3a3a3a"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="-3 -0.2 -5"><a-entity mixin="person-body" position="0 0.8 0" material="color: #3d3d3d"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="-2 -0.2 -5"><a-entity mixin="person-body" position="0 0.8 0" material="color: #383838"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="-1 -0.2 -5"><a-entity mixin="person-body" position="0 0.8 0" material="color: #3c3c3c"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="0 -0.2 -5"><a-entity mixin="person-body" position="0 0.8 0" material="color: #3b3b3b"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="1 -0.2 -5"><a-entity mixin="person-body" position="0 0.8 0" material="color: #393939"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="2 -0.2 -5"><a-entity mixin="person-body" position="0 0.8 0" material="color: #3e3e3e"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="3 -0.2 -5"><a-entity mixin="person-body" position="0 0.8 0" material="color: #373737"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-        <a-entity position="4 -0.2 -5"><a-entity mixin="person-body" position="0 0.8 0" material="color: #3f3f3f"></a-entity><a-entity mixin="person-head" position="0 1.55 0"></a-entity></a-entity>
-      </a-entity>
-      
-      <!-- Row 3 (farther, dimmer) -->
-      <a-entity id="audience-row3">
-        <a-entity position="-4.5 -0.5 -7"><a-entity mixin="person-body" position="0 0.8 0" material="color: #2a2a2a"></a-entity><a-entity mixin="person-head" position="0 1.55 0" material="color: #cc9966"></a-entity></a-entity>
-        <a-entity position="-3 -0.5 -7"><a-entity mixin="person-body" position="0 0.8 0" material="color: #2d2d2d"></a-entity><a-entity mixin="person-head" position="0 1.55 0" material="color: #cc9966"></a-entity></a-entity>
-        <a-entity position="-1.5 -0.5 -7"><a-entity mixin="person-body" position="0 0.8 0" material="color: #282828"></a-entity><a-entity mixin="person-head" position="0 1.55 0" material="color: #cc9966"></a-entity></a-entity>
-        <a-entity position="0 -0.5 -7"><a-entity mixin="person-body" position="0 0.8 0" material="color: #2c2c2c"></a-entity><a-entity mixin="person-head" position="0 1.55 0" material="color: #cc9966"></a-entity></a-entity>
-        <a-entity position="1.5 -0.5 -7"><a-entity mixin="person-body" position="0 0.8 0" material="color: #2b2b2b"></a-entity><a-entity mixin="person-head" position="0 1.55 0" material="color: #cc9966"></a-entity></a-entity>
-        <a-entity position="3 -0.5 -7"><a-entity mixin="person-body" position="0 0.8 0" material="color: #2e2e2e"></a-entity><a-entity mixin="person-head" position="0 1.55 0" material="color: #cc9966"></a-entity></a-entity>
-        <a-entity position="4.5 -0.5 -7"><a-entity mixin="person-body" position="0 0.8 0" material="color: #292929"></a-entity><a-entity mixin="person-head" position="0 1.55 0" material="color: #cc9966"></a-entity></a-entity>
+      <a-sky color="#0a0a15"></a-sky>
+      <a-light type="ambient" color="#1a1a25" intensity="0.15"></a-light>
+
+      <!-- Massive spotlight on your podium -->
+      <a-light type="spot" position="0 30 0" color="#ffffee" intensity="6" distance="40" angle="15" target="#podium-target" cast-shadow="true"></a-light>
+      <a-entity id="podium-target" position="0 0 0"></a-entity>
+      <a-light type="point" position="0 3 0" color="#ffeedd" intensity="0.5" distance="8"></a-light>
+
+      <!-- The Arena (massive circular) -->
+      <a-cylinder position="0 0 0" radius="60" height="0.3" material="color:#1a1520; roughness:0.3; metalness:0.2" open-ended="false"></a-cylinder>
+
+      <!-- Your podium (glass + steel) -->
+      <a-box position="0 0.7 0" width="1.2" height="1.4" depth="0.6" material="color:#333; metalness:0.6; roughness:0.2"></a-box>
+      <a-box position="0 0.7 -0.31" width="1.1" height="1.3" depth="0.02" material="color:#99aacc; opacity:0.3; transparent:true; metalness:0.8"></a-box>
+      <!-- Microphones on podium -->
+      <a-cylinder position="-0.2 1.55 -0.1" radius="0.015" height="0.3" material="color:#333; metalness:0.8"></a-cylinder>
+      <a-sphere position="-0.2 1.7 -0.1" radius="0.025" material="color:#222; metalness:0.6"></a-sphere>
+      <a-cylinder position="0.2 1.55 -0.1" radius="0.015" height="0.3" material="color:#333; metalness:0.8"></a-cylinder>
+      <a-sphere position="0.2 1.7 -0.1" radius="0.025" material="color:#222; metalness:0.6"></a-sphere>
+
+      <!-- MASSIVE tiered seating — 500+ audience arranged in semicircle -->
+      <!-- Row 1 (closest, 30 people — leaders, suits) -->
+      <a-entity id="row1">
+        <a-entity position="-12 0 -8"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#1a1a33"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#c8a888"></a-sphere></a-entity>
+        <a-entity position="-10 0 -9"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#2a1a1a"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#b89878"></a-sphere></a-entity>
+        <a-entity position="-8 0 -10"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#1a2a1a"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#d4b898"></a-sphere></a-entity>
+        <a-entity position="-6 0 -10.5"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#2a2a2a"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#c0a080"></a-sphere></a-entity>
+        <a-entity position="-4 0 -11"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#1a1a2a"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#c8b090"></a-sphere></a-entity>
+        <a-entity position="-2 0 -11.2"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#2a1a2a"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#b89070"></a-sphere></a-entity>
+        <a-entity position="0 0 -11.5"><a-cylinder position="0 0.7 0" radius="0.16" height="1.05" material="color:#111133"></a-cylinder><a-sphere position="0 1.4 0" radius="0.15" material="color:#c8a080"></a-sphere></a-entity>
+        <a-entity position="2 0 -11.2"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#1a2a2a"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#d0b090"></a-sphere></a-entity>
+        <a-entity position="4 0 -11"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#2a2a1a"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#c0a888"></a-sphere></a-entity>
+        <a-entity position="6 0 -10.5"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#1a1a1a"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#b89878"></a-sphere></a-entity>
+        <a-entity position="8 0 -10"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#2a1a2a"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#d4b898"></a-sphere></a-entity>
+        <a-entity position="10 0 -9"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#1a2a1a"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#c8a080"></a-sphere></a-entity>
+        <a-entity position="12 0 -8"><a-cylinder position="0 0.7 0" radius="0.15" height="1" material="color:#222233"></a-cylinder><a-sphere position="0 1.35 0" radius="0.14" material="color:#c0a888"></a-sphere></a-entity>
       </a-entity>
 
-      <!-- Stage prompt -->
-      <a-text value="You're on stage. Hundreds are watching.\nRemember: they want you to succeed." 
-              position="0 3.5 -2" align="center" color="#ff6b9d" scale="0.6 0.6 0.6" face-camera></a-text>
+      <!-- Row 2 (elevated, wider arc) -->
+      <a-entity id="row2">
+        <a-entity position="-16 1.5 -12"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#1a1a2a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#c0a080"></a-sphere></a-entity>
+        <a-entity position="-13 1.5 -14"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#2a2a1a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#b89878"></a-sphere></a-entity>
+        <a-entity position="-10 1.5 -15.5"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#1a2a2a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#d4b898"></a-sphere></a-entity>
+        <a-entity position="-7 1.5 -16.5"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#2a1a1a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#c8a888"></a-sphere></a-entity>
+        <a-entity position="-3.5 1.5 -17"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#1a1a33"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#c0a080"></a-sphere></a-entity>
+        <a-entity position="0 1.5 -17.2"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#222222"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#b89070"></a-sphere></a-entity>
+        <a-entity position="3.5 1.5 -17"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#2a2a1a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#d0b090"></a-sphere></a-entity>
+        <a-entity position="7 1.5 -16.5"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#1a2a1a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#c8a080"></a-sphere></a-entity>
+        <a-entity position="10 1.5 -15.5"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#2a1a2a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#b89878"></a-sphere></a-entity>
+        <a-entity position="13 1.5 -14"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#1a1a1a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#d4b898"></a-sphere></a-entity>
+        <a-entity position="16 1.5 -12"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#2a2a2a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#c0a888"></a-sphere></a-entity>
+      </a-entity>
+
+      <!-- Row 3 (even higher, masses) -->
+      <a-entity id="row3">
+        <a-entity position="-20 3.5 -16"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#1a1a22"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#c0a080"></a-sphere></a-entity>
+        <a-entity position="-17 3.5 -19"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#22221a"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#b89878"></a-sphere></a-entity>
+        <a-entity position="-13 3.5 -21"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#1a2222"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#d4b898"></a-sphere></a-entity>
+        <a-entity position="-9 3.5 -22.5"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#221a1a"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#c8a888"></a-sphere></a-entity>
+        <a-entity position="-5 3.5 -23"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#1a1a2a"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#c0a080"></a-sphere></a-entity>
+        <a-entity position="0 3.5 -23.5"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#222"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#b89070"></a-sphere></a-entity>
+        <a-entity position="5 3.5 -23"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#2a1a22"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#d0b090"></a-sphere></a-entity>
+        <a-entity position="9 3.5 -22.5"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#1a221a"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#c8a080"></a-sphere></a-entity>
+        <a-entity position="13 3.5 -21"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#222a1a"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#b89878"></a-sphere></a-entity>
+        <a-entity position="17 3.5 -19"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#1a1a22"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#d4b898"></a-sphere></a-entity>
+        <a-entity position="20 3.5 -16"><a-cylinder position="0 0.6 0" radius="0.12" height="0.85" material="color:#22221a"></a-cylinder><a-sphere position="0 1.15 0" radius="0.11" material="color:#c0a888"></a-sphere></a-entity>
+      </a-entity>
+
+      <!-- Row 4 (upper gallery, hundreds more, smaller) -->
+      <a-entity id="row4">
+        <a-entity position="-24 6 -18"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#1a1a22"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#c0a080"></a-sphere></a-entity>
+        <a-entity position="-21 6 -22"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#22221a"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#b89878"></a-sphere></a-entity>
+        <a-entity position="-17 6 -25"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#1a2222"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#d4b898"></a-sphere></a-entity>
+        <a-entity position="-12 6 -27"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#221a1a"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#c8a888"></a-sphere></a-entity>
+        <a-entity position="-6 6 -28"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#1a1a2a"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#c0a080"></a-sphere></a-entity>
+        <a-entity position="0 6 -28.5"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#222"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#b89070"></a-sphere></a-entity>
+        <a-entity position="6 6 -28"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#2a1a22"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#d0b090"></a-sphere></a-entity>
+        <a-entity position="12 6 -27"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#1a221a"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#c8a080"></a-sphere></a-entity>
+        <a-entity position="17 6 -25"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#222a1a"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#b89878"></a-sphere></a-entity>
+        <a-entity position="21 6 -22"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#1a1a22"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#d4b898"></a-sphere></a-entity>
+        <a-entity position="24 6 -18"><a-cylinder position="0 0.5 0" radius="0.1" height="0.7" material="color:#22221a"></a-cylinder><a-sphere position="0 0.95 0" radius="0.09" material="color:#c0a888"></a-sphere></a-entity>
+      </a-entity>
+
+      <!-- Side wings with additional audience -->
+      <!-- Left wing -->
+      <a-entity position="-22 2 -3"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#1a1a22"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#c0a080"></a-sphere></a-entity>
+      <a-entity position="-23 2 -6"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#22221a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#b89878"></a-sphere></a-entity>
+      <a-entity position="-24 2 -9"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#1a2222"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#d4b898"></a-sphere></a-entity>
+      <!-- Right wing -->
+      <a-entity position="22 2 -3"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#221a1a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#c8a888"></a-sphere></a-entity>
+      <a-entity position="23 2 -6"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#1a1a2a"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#c0a080"></a-sphere></a-entity>
+      <a-entity position="24 2 -9"><a-cylinder position="0 0.7 0" radius="0.14" height="0.95" material="color:#2a1a22"></a-cylinder><a-sphere position="0 1.3 0" radius="0.13" material="color:#d0b090"></a-sphere></a-entity>
+
+      <!-- Arena walls (massive, dark) -->
+      <a-cylinder position="0 10 -5" radius="55" height="25" material="color:#0a0a12; side:back" open-ended="true"></a-cylinder>
+
+      <!-- Country flag banners (hanging from ceiling) -->
+      <a-plane position="-15 12 -25" width="1.5" height="3" material="color:#0055a4; side:double"
+               animation="property:rotation; from:0 0 -2; to:0 0 2; dur:3000; dir:alternate; loop:true"></a-plane>
+      <a-plane position="-10 12 -26" width="1.5" height="3" material="color:#cc0000; side:double"
+               animation="property:rotation; from:0 0 2; to:0 0 -2; dur:3500; dir:alternate; loop:true"></a-plane>
+      <a-plane position="-5 12 -27" width="1.5" height="3" material="color:#006633; side:double"
+               animation="property:rotation; from:0 0 -1; to:0 0 1; dur:2800; dir:alternate; loop:true"></a-plane>
+      <a-plane position="0 12 -27.5" width="1.5" height="3" material="color:#0033a0; side:double"
+               animation="property:rotation; from:0 0 1; to:0 0 -1; dur:3200; dir:alternate; loop:true"></a-plane>
+      <a-plane position="5 12 -27" width="1.5" height="3" material="color:#ff6600; side:double"
+               animation="property:rotation; from:0 0 -2; to:0 0 2; dur:2900; dir:alternate; loop:true"></a-plane>
+      <a-plane position="10 12 -26" width="1.5" height="3" material="color:#cc0033; side:double"
+               animation="property:rotation; from:0 0 2; to:0 0 -2; dur:3100; dir:alternate; loop:true"></a-plane>
+      <a-plane position="15 12 -25" width="1.5" height="3" material="color:#003366; side:double"
+               animation="property:rotation; from:0 0 -1; to:0 0 1; dur:3400; dir:alternate; loop:true"></a-plane>
+
+      <!-- Massive screen behind showing your face (jumbotron) -->
+      <a-box position="0 12 -35" width="30" height="12" depth="0.3" material="color:#111"></a-box>
+      <a-plane position="0 12 -34.8" width="29" height="11" material="color:#c8a080; opacity:0.2; transparent:true"
+               animation="property:material.opacity; from:0.15; to:0.25; dur:3000; dir:alternate; loop:true"></a-plane>
+      <a-text position="0 7 -34.7" value="LIVE BROADCAST TO 194 NATIONS" color="#ff4444" scale="0.6 0.6 0.6" align="center"
+              animation="property:material.opacity; from:1; to:0.5; dur:2000; dir:alternate; loop:true"></a-text>
+
+      <!-- Press photographers (flashes randomly) -->
+      <a-sphere position="-8 1.5 -9" radius="0.08" material="color:#fff; emissive:#fff; emissiveIntensity:0; fog:false"
+                animation="property:material.emissiveIntensity; from:0; to:3; dur:50; delay:3000; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="5 1.5 -10" radius="0.08" material="color:#fff; emissive:#fff; emissiveIntensity:0; fog:false"
+                animation="property:material.emissiveIntensity; from:0; to:3; dur:50; delay:5500; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="-3 2 -12" radius="0.06" material="color:#fff; emissive:#fff; emissiveIntensity:0; fog:false"
+                animation="property:material.emissiveIntensity; from:0; to:2; dur:50; delay:8000; dir:alternate; loop:true"></a-sphere>
+      <a-sphere position="10 1.5 -8" radius="0.07" material="color:#fff; emissive:#fff; emissiveIntensity:0; fog:false"
+                animation="property:material.emissiveIntensity; from:0; to:3; dur:50; delay:11000; dir:alternate; loop:true"></a-sphere>
+
+      <a-text value="WORLD SUMMIT — 500+ world leaders stare at you.\nJumbotron shows your face to 194 nations.\nCamera flashes blind you. The silence is crushing.\nBillions watch live. Every pause feels like eternity." position="0 5 -5" align="center" color="#ff6688" scale="0.4 0.4 0.4" face-camera></a-text>
     </a-entity>
   </a-scene>
 
   <script src="shared.js"></script>
   <script>
+    var crowds = { 1: '3', 2: '14.2M', 3: '500+' };
     function setLevel(num) {
       document.getElementById('level1').setAttribute('visible', num === 1);
       document.getElementById('level2').setAttribute('visible', num === 2);
       document.getElementById('level3').setAttribute('visible', num === 3);
-
-      // Update camera position based on level
-      const rig = document.getElementById('rig');
-      if (num === 1) rig.setAttribute('position', '0 1.6 2');
-      if (num === 2) rig.setAttribute('position', '0 1.6 4');
-      if (num === 3) rig.setAttribute('position', '0 2.1 2');
-
-      document.querySelectorAll('.level-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', i === num - 1);
-      });
+      var rig = document.getElementById('rig');
+      var scene = document.getElementById('vrscene');
+      var crowd = document.getElementById('crowd-overlay');
+      var spot = document.getElementById('spotlight-overlay');
+      if (num === 1) { rig.setAttribute('position','0 1.6 1'); scene.setAttribute('fog','type:linear; color:#0a0a0a; near:5; far:10'); crowd.style.opacity='0.3'; spot.style.opacity='0.4'; }
+      if (num === 2) { rig.setAttribute('position','0 1.6 1'); scene.setAttribute('fog','type:linear; color:#111118; near:10; far:25'); crowd.style.opacity='0.4'; spot.style.opacity='0.6'; }
+      if (num === 3) { rig.setAttribute('position','0 1.6 1'); scene.setAttribute('fog','type:linear; color:#0a0a15; near:20; far:70'); crowd.style.opacity='0.55'; spot.style.opacity='0.7'; }
+      document.getElementById('crowd-display').textContent = crowds[num];
+      document.querySelectorAll('.level-btn').forEach(function(btn, i) { btn.classList.toggle('active', i === num - 1); });
       showComfortMessage();
     }
-
-    window.addEventListener('load', () => {
-      initPhobiaScene();
-      initVRPhobiaApp();
-      setLevel(1);
-    });
+    // Camera flash simulation
+    setInterval(function(){
+      if (document.getElementById('level3').getAttribute('visible')){
+        var s = document.getElementById('spotlight-overlay');
+        s.style.opacity='0.9';
+        setTimeout(function(){ s.style.opacity='0.7'; },100);
+      }
+    }, 3000 + Math.random()*5000);
+    window.addEventListener('load', function() { initPhobiaScene(); initVRPhobiaApp(); setLevel(1); });
   </script>
 </body>
 </html>
