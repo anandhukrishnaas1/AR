@@ -54,8 +54,8 @@
       <a-camera look-controls wasd-controls="acceleration:30">
         <a-cursor color="#ffa94d" fuse="false" raycaster="far:500"></a-cursor>
       </a-camera>
-      <a-entity id="left-hand" oculus-touch-controls="hand:left" laser-controls="hand:left"></a-entity>
-      <a-entity id="right-hand" oculus-touch-controls="hand:right" laser-controls="hand:right"></a-entity>
+      <a-entity id="left-hand" laser-controls="hand:left" raycaster="showLine:true; lineColor:#44aaff; lineOpacity:0.5; far:3"></a-entity>
+      <a-entity id="right-hand" laser-controls="hand:right" raycaster="showLine:true; lineColor:#44aaff; lineOpacity:0.5; far:10"></a-entity>
     </a-entity>
 
     <!-- ======= LEVEL 1: Collapsing Skyscraper 300m ======= -->

@@ -4,7 +4,8 @@
    ============================================ */
 
 // ========== META QUEST THUMBSTICK LOCOMOTION ==========
-// Enables movement via VR controller thumbsticks (left stick = move, right stick = snap turn)
+// Polls WebXR Gamepad API directly each frame for reliable Quest controller input
+// Left stick = walk/strafe relative to head direction, Right stick = snap turn
 AFRAME.registerComponent('thumbstick-locomotion', {
   schema: {
     speed: { type: 'number', default: 4 },
@@ -12,30 +13,39 @@ AFRAME.registerComponent('thumbstick-locomotion', {
   },
 
   init: function () {
-    this.moveInput = { x: 0, y: 0 };
-    this.turnInput = 0;
+    this.moveX = 0;
+    this.moveY = 0;
+    this.turnX = 0;
     this.turnReady = true;
     this.direction = new THREE.Vector3();
     this.euler = new THREE.Euler(0, 0, 0, 'YXZ');
+    this.worldQuat = new THREE.Quaternion();
 
-    // Bind handlers
+    // Event-based fallback for desktop testing / non-WebXR
     var self = this;
-
-    // Left controller = movement
     this.el.sceneEl.addEventListener('loaded', function () {
       var leftHand = self.el.querySelector('#left-hand');
       var rightHand = self.el.querySelector('#right-hand');
-
       if (leftHand) {
         leftHand.addEventListener('thumbstickmoved', function (evt) {
-          self.moveInput.x = evt.detail.x;
-          self.moveInput.y = evt.detail.y;
+          self.moveX = evt.detail.x;
+          self.moveY = evt.detail.y;
+        });
+        leftHand.addEventListener('axismove', function (evt) {
+          if (evt.detail.axis && evt.detail.axis.length >= 4) {
+            self.moveX = evt.detail.axis[2] || evt.detail.axis[0];
+            self.moveY = evt.detail.axis[3] || evt.detail.axis[1];
+          }
         });
       }
-
       if (rightHand) {
         rightHand.addEventListener('thumbstickmoved', function (evt) {
-          self.turnInput = evt.detail.x;
+          self.turnX = evt.detail.x;
+        });
+        rightHand.addEventListener('axismove', function (evt) {
+          if (evt.detail.axis && evt.detail.axis.length >= 4) {
+            self.turnX = evt.detail.axis[2] || evt.detail.axis[0];
+          }
         });
       }
     });
@@ -48,13 +58,38 @@ AFRAME.registerComponent('thumbstick-locomotion', {
     var camera = rig.querySelector('[camera]');
     if (!camera) return;
 
+    var mx = this.moveX;
+    var my = this.moveY;
+    var tx = this.turnX;
+
+    // --- DIRECT WEBXR GAMEPAD POLLING (most reliable for Meta Quest) ---
+    try {
+      var renderer = this.el.sceneEl.renderer;
+      var xrSession = renderer && renderer.xr ? renderer.xr.getSession() : null;
+      if (xrSession && xrSession.inputSources) {
+        for (var i = 0; i < xrSession.inputSources.length; i++) {
+          var src = xrSession.inputSources[i];
+          if (src.gamepad) {
+            var axes = src.gamepad.axes;
+            if (src.handedness === 'left' && axes.length >= 4) {
+              mx = axes[2];
+              my = axes[3];
+            } else if (src.handedness === 'right' && axes.length >= 4) {
+              tx = axes[2];
+            }
+          }
+        }
+      }
+    } catch (e) { /* WebXR not available, use event fallback */ }
+
     // --- MOVEMENT (left thumbstick) ---
-    var ix = this.moveInput.x;
-    var iy = this.moveInput.y;
-    if (Math.abs(ix) > 0.15 || Math.abs(iy) > 0.15) {
-      var camRotY = camera.object3D.rotation.y;
-      this.direction.set(ix, 0, iy);
-      this.euler.set(0, camRotY, 0);
+    if (Math.abs(mx) > 0.12 || Math.abs(my) > 0.12) {
+      // Use camera WORLD quaternion for correct direction after snap turns
+      camera.object3D.getWorldQuaternion(this.worldQuat);
+      this.euler.setFromQuaternion(this.worldQuat, 'YXZ');
+
+      this.direction.set(mx, 0, my);
+      this.euler.set(0, this.euler.y, 0);
       this.direction.applyEuler(this.euler);
 
       var speed = this.data.speed * dt;
@@ -63,14 +98,14 @@ AFRAME.registerComponent('thumbstick-locomotion', {
     }
 
     // --- SNAP TURN (right thumbstick) ---
-    if (Math.abs(this.turnInput) > 0.7 && this.turnReady) {
+    if (Math.abs(tx) > 0.65 && this.turnReady) {
       this.turnReady = false;
-      var sign = this.turnInput > 0 ? -1 : 1;
+      var sign = tx > 0 ? -1 : 1;
       rig.object3D.rotation.y += THREE.MathUtils.degToRad(this.data.turnSize * sign);
       var self = this;
       setTimeout(function () { self.turnReady = true; }, 300);
     }
-    if (Math.abs(this.turnInput) < 0.3) {
+    if (Math.abs(tx) < 0.25) {
       this.turnReady = true;
     }
   }
