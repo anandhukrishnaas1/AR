@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nyctophobia — PhobiaVR</title>
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="shared.js"></script>
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -35,10 +36,12 @@
   <div class="comfort-msg" style="opacity:0;">You are safe here.</div>
 
   <a-scene id="vrscene" vr-mode-ui="enabled:true" renderer="antialias:true; colorManagement:true; physicallyCorrectLights:true; logarithmicDepthBuffer:true" fog="type:exponential; color:#000; density:0.03">
-    <a-entity id="rig" position="0 1.6 0">
+    <a-entity id="rig" position="0 1.6 0" thumbstick-locomotion="speed:3">
       <a-camera look-controls wasd-controls="acceleration:20">
         <a-cursor color="#aa66ff" fuse="false" raycaster="far:50"></a-cursor>
       </a-camera>
+      <a-entity id="left-hand" oculus-touch-controls="hand:left" laser-controls="hand:left"></a-entity>
+      <a-entity id="right-hand" oculus-touch-controls="hand:right" laser-controls="hand:right"></a-entity>
     </a-entity>
 
     <!-- ======= LEVEL 1: ABANDONED HOSPITAL BLACKOUT ======= -->

@@ -58,19 +58,20 @@ Server will run at: `http://localhost:3009`
 
 | Action | Button |
 |--------|--------|
-| **Look Around** | Head movement |
+| **Look Around** | Head movement (6DoF tracking) |
+| **Walk / Move** | **Left Thumbstick** (push forward/back/left/right) |
+| **Snap Turn** | **Right Thumbstick** (push left/right for 45° turns) |
 | **Select Level** | Right Trigger (click) |
 | **Go Back** | Left Trigger |
-| **Teleport** | Right Thumbstick forward |
-| **Turn** | Left/Right Thumbstick |
-| **Grab UI** | Grip buttons |
+| **Laser Pointer** | Point controller at UI — laser beam appears |
 
 ### Hand Controller Tips
 
-- **Point Your Hand** — Aim with your hand
-- **Trigger = Click** — Pull right trigger to interact
-- **Thumbstick = Move** — Teleport forward/backward
-- **Head Tracking** — Natural head movements control view
+- **Left Thumbstick = Move** — Push in any direction to walk (moves relative to where you're looking)
+- **Right Thumbstick = Turn** — Quick snap turns left/right (45° increments)
+- **Trigger = Click** — Pull right trigger to interact with buttons and UI
+- **Laser Pointer** — Both controllers project a laser beam for selecting things
+- **Head Tracking** — Natural head movements control your view (6DoF)
 
 ## ⚡ Performance Tips
 

@@ -3,6 +3,79 @@
    Optimized for Meta Quest & Desktop VR
    ============================================ */
 
+// ========== META QUEST THUMBSTICK LOCOMOTION ==========
+// Enables movement via VR controller thumbsticks (left stick = move, right stick = snap turn)
+AFRAME.registerComponent('thumbstick-locomotion', {
+  schema: {
+    speed: { type: 'number', default: 4 },
+    turnSize: { type: 'number', default: 45 }
+  },
+
+  init: function () {
+    this.moveInput = { x: 0, y: 0 };
+    this.turnInput = 0;
+    this.turnReady = true;
+    this.direction = new THREE.Vector3();
+    this.euler = new THREE.Euler(0, 0, 0, 'YXZ');
+
+    // Bind handlers
+    var self = this;
+
+    // Left controller = movement
+    this.el.sceneEl.addEventListener('loaded', function () {
+      var leftHand = self.el.querySelector('#left-hand');
+      var rightHand = self.el.querySelector('#right-hand');
+
+      if (leftHand) {
+        leftHand.addEventListener('thumbstickmoved', function (evt) {
+          self.moveInput.x = evt.detail.x;
+          self.moveInput.y = evt.detail.y;
+        });
+      }
+
+      if (rightHand) {
+        rightHand.addEventListener('thumbstickmoved', function (evt) {
+          self.turnInput = evt.detail.x;
+        });
+      }
+    });
+  },
+
+  tick: function (time, delta) {
+    if (!delta) return;
+    var dt = delta / 1000;
+    var rig = this.el;
+    var camera = rig.querySelector('[camera]');
+    if (!camera) return;
+
+    // --- MOVEMENT (left thumbstick) ---
+    var ix = this.moveInput.x;
+    var iy = this.moveInput.y;
+    if (Math.abs(ix) > 0.15 || Math.abs(iy) > 0.15) {
+      var camRotY = camera.object3D.rotation.y;
+      this.direction.set(ix, 0, iy);
+      this.euler.set(0, camRotY, 0);
+      this.direction.applyEuler(this.euler);
+
+      var speed = this.data.speed * dt;
+      rig.object3D.position.x += this.direction.x * speed;
+      rig.object3D.position.z += this.direction.z * speed;
+    }
+
+    // --- SNAP TURN (right thumbstick) ---
+    if (Math.abs(this.turnInput) > 0.7 && this.turnReady) {
+      this.turnReady = false;
+      var sign = this.turnInput > 0 ? -1 : 1;
+      rig.object3D.rotation.y += THREE.MathUtils.degToRad(this.data.turnSize * sign);
+      var self = this;
+      setTimeout(function () { self.turnReady = true; }, 300);
+    }
+    if (Math.abs(this.turnInput) < 0.3) {
+      this.turnReady = true;
+    }
+  }
+});
+
 // Breathing guide controller
 class BreathingGuide {
   constructor() {
